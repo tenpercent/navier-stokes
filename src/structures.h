@@ -10,7 +10,6 @@ typedef struct {
 typedef struct {
   unsigned X_nodes;
   unsigned T_nodes;
-  unsigned total_nodes;
   double X_step;
   double T_step;
 } Grid;

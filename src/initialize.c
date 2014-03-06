@@ -17,7 +17,6 @@ void grid_Initialize (
   grid->X_nodes = 20 << space_steps_magnifier;
   grid->T_nodes = 20 << time_steps_magnifier;
 
-  grid->total_nodes = grid->X_nodes * grid->T_nodes; // +1? nah.
   grid->X_step = parameters->space_upper_boundary / (grid->X_nodes - 1);
   grid->T_step = parameters->time_upper_boundary / (grid->T_nodes - 1);
 

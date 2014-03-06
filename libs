@@ -1,0 +1,11 @@
+lib/laspack/eigenval.o
+lib/laspack/errhandl.o
+lib/laspack/factor.o
+lib/laspack/itersolv.o
+lib/laspack/matrix.o
+lib/laspack/mlsolv.o
+lib/laspack/operats.o
+lib/laspack/precond.o
+lib/laspack/qmatrix.o
+lib/laspack/rtc.o
+lib/laspack/vector.o
