@@ -11,12 +11,16 @@ typedef struct {
 } Gas_parameters;
 
 typedef struct {
-  unsigned X_nodes;
-  unsigned T_nodes;
-  double X_step;
-  double T_step;
+  unsigned X_nodes; // total space nodes
+  unsigned T_nodes; // total time nodes
+  double X_step;    // distance between space nodes
+  double T_step;    // distance between time nodes
 } Grid;
 
+// equations at the edges of space segment and in its middle are different.
+// because of chosen differential scheme
+// so we need to know where we are when we construct the matrix of SLE
+// corresponding to chosen differential scheme
 typedef enum {
   LEFT = 0,
   MIDDLE = 1,

@@ -14,12 +14,10 @@ int main () {
   double * residual_norm_G_C;
   double * residual_norm_G_L2;
   double * time_elapsed_at_iteration;
-  double * results[5];
+  double * results[RESULTS_SIZE];
 
   clock_t start_time;
   clock_t finish_time;
-
-  // what about double*[5] results ?
 
   double * space_coordinates = NULL;
   Node_status * node_statuses = NULL;
@@ -32,9 +30,7 @@ int main () {
   unsigned max_global_iteration = (max_iteration_space + 1) * (max_iteration_time + 1);
 
   gas_parameters_Initialize (&parameters);
-
   results_Construct (results, max_global_iteration);
-
   residual_norm_V_C = results[0];
   residual_norm_V_L2 = results[1];
   residual_norm_G_C = results[2];
@@ -44,17 +40,12 @@ int main () {
   for (unsigned iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
     for (unsigned iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {
       grid_Initialize (&grid, &parameters, iteration_space, iteration_time);
-
       scheme_elements_Construct (G, V, grid.X_nodes);
-
       mesh_elements_Construct (node_statuses, space_coordinates, grid.X_nodes);
-
       mesh_Initialize (node_statuses, space_coordinates, &grid);
 
       start_time = clock();
-
       next_TimeLayer_Calculate (G, V, node_statuses, space_coordinates, &grid);
-
       finish_time = clock();
 
       time_elapsed_at_iteration[global_iteration] = (finish_time - start_time) / (double) CLOCKS_PER_SEC;
@@ -83,10 +74,6 @@ int main () {
       ++global_iteration;
     }
   }
-
   results_Destruct (results);
-
   return 0;
 }
-// too much code
-// I want to create something like constructors and destructors for all of this
