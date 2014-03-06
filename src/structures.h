@@ -1,3 +1,6 @@
+#ifndef STRUCTURES
+#define STRUCTURES
+
 typedef struct {
   double time_upper_boundary;     // time boundaries: [0, T]
   double space_upper_boundary;    // space boundaries: [0, X]
@@ -19,3 +22,5 @@ typedef enum {
   MIDDLE = 1,
   RIGHT = 2
 } Node_status;
+
+#endif

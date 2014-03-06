@@ -1,7 +1,9 @@
-#include <stdlib.h>
 #include <time.h>
 #include "initialize.h"
 #include "functions.h"
+#include "norm.h"
+#include "calculation.h"
+#include "construction.h"
 
 int main () {
   Gas_parameters parameters;
@@ -11,17 +13,18 @@ int main () {
   double * residual_norm_V_L2;
   double * residual_norm_G_C;
   double * residual_norm_G_L2;
-
   double * time_elapsed_at_iteration;
+  double * results[5];
+
   clock_t start_time;
   clock_t finish_time;
 
   // what about double*[5] results ?
 
-  double * space_coordinates;
-  Node_status * node_statuses;
-  double * V;
-  double * G;
+  double * space_coordinates = NULL;
+  Node_status * node_statuses = NULL;
+  double * V = NULL;
+  double * G = NULL;
 
   unsigned global_iteration = 0;
   unsigned max_iteration_space = 3;
@@ -29,26 +32,28 @@ int main () {
   unsigned max_global_iteration = (max_iteration_space + 1) * (max_iteration_time + 1);
 
   gas_parameters_Initialize (&parameters);
-  residual_norm_V_C = (double *) malloc (max_global_iteration * sizeof (double));
-  residual_norm_V_L2 = (double *) malloc (max_global_iteration * sizeof (double));
-  residual_norm_G_C = (double *) malloc (max_global_iteration * sizeof (double));
-  residual_norm_G_L2 = (double *) malloc (max_global_iteration * sizeof (double));
-  time_elapsed_at_iteration = (double *) malloc (max_global_iteration * sizeof (double));
+
+  results_Construct (results, max_global_iteration);
+
+  residual_norm_V_C = results[0];
+  residual_norm_V_L2 = results[1];
+  residual_norm_G_C = results[2];
+  residual_norm_G_L2 = results[3];
+  time_elapsed_at_iteration = results[4];
 
   for (unsigned iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
     for (unsigned iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {
       grid_Initialize (&grid, &parameters, iteration_space, iteration_time);
 
-      V = (double *) malloc (grid.X_nodes * sizeof (double));
-      G = (double *) malloc (grid.X_nodes * sizeof (double));
-      space_coordinates = (double *) malloc (grid.X_nodes * sizeof (double));
-      node_statuses = (Node_status *) malloc (grid.X_nodes * sizeof (Node_status));
+      scheme_elements_Construct (G, V, grid.X_nodes);
+
+      mesh_elements_Construct (node_statuses, space_coordinates, grid.X_nodes);
 
       mesh_Initialize (node_statuses, space_coordinates, &grid);
 
       start_time = clock();
 
-      next_time_layer_Calculate (G, V, node_statuses, space_coordinates, &grid);
+      next_TimeLayer_Calculate (G, V, node_statuses, space_coordinates, &grid);
 
       finish_time = clock();
 
@@ -73,21 +78,13 @@ int main () {
                                                                      space_coordinates, 
                                                                      parameters.time_upper_boundary, 
                                                                      logp_bound);
-
-      free (V);
-      free (G);
-      free (space_coordinates);
-      free (node_statuses);
-
+      scheme_elements_Destruct (G, V);
+      mesh_elements_Destruct (node_statuses, space_coordinates);
       ++global_iteration;
     }
   }
 
-  free (residual_norm_V_C);
-  free (residual_norm_G_C);
-  free (residual_norm_V_L2);
-  free (residual_norm_G_L2);
-  free (time_elapsed_at_iteration);
+  results_Destruct (results);
 
   return 0;
 }

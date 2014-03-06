@@ -1,5 +1,7 @@
 #include <math.h>
 
+// Dunno why. Really
+
 double u_bound (double x, double t) {
   return cos (2 * M_PI * t) * sin (M_PI * x * x / 100);
 }

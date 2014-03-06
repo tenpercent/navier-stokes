@@ -1,6 +1,6 @@
 #include "calculation.h"
 
-void next_time_layer_Calculate (
+void next_TimeLayer_Calculate (
     double * G, 
     double * V, 
     Node_status * node_status, 
@@ -27,10 +27,10 @@ void next_time_layer_Calculate (
             2 * grid->X_nodes, 
             Normal, 
             True);
-
   SetRTCAccuracy (1e-8);
 
   fill_system (&lh_side, &rh_side, grid, node_status);
+  
   // launch iteration algorithm
   CGNIter (&lh_side, 
           &unknown_vector, 

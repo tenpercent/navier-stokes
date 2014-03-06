@@ -7,7 +7,7 @@
 #include <rtc.h>
 #include <operats.h>
 
-void next_time_layer_Calculate (
+void next_TimeLayer_Calculate (
   double * G, 
   double * V, 
   Node_status * node_status, 
