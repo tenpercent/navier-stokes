@@ -38,10 +38,7 @@ void next_time_layer_Calculate (
 
   SetRTCAccuracy (1e-8);
 
-  /*
-  заполняем матрицу и правую часть
-  */
-
+  fill_system (&lh_side, &rh_side, grid, node_status);
   // launch iteration algorithm
   CGNIter (&lh_side, 
           &unknown_vector, 
@@ -49,5 +46,21 @@ void next_time_layer_Calculate (
           2000, // max iterations
           JacobiPrecond, // preconditioner type
           1.2); // preconditioner relaxation constant; probably, should be changed
+
+  for (unsigned i = 0, j = 1; // it's convenient
+        i < grid->X_nodes; 
+        ++i, j += 2) {
+    G[i] = V_GetCmp (&unknown_vector, j);
+    V[i] = V_GetCmp (&unknown_vector, j + 1);
+  }
+
+  Q_Destr (&lh_side);
+  V_Destr (&unknown_vector);
+  V_Destr (&rh_side);
+
+  return;
+}
+
+void fill_system (QMatrix* lh_side, Vector* rh_side, Grid * grid, Node_status * node_status) {
   return;
 }
