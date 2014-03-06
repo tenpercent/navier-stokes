@@ -27,4 +27,3 @@ all: $(OFILES) $(LASPACKOFILES)
 	
 clean:
 	rm -f $(OFILES) $(LASPACKOFILES)
-

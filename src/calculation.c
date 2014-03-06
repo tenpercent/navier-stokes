@@ -18,7 +18,7 @@ void next_time_layer_Calculate (
             Normal, // internal laspack stuff
             True); // internal laspack stuff
   V_Constr (&rh_side, 
-            "Right-hand side", 
+            "Right-hand side of equation", 
             2 * grid->X_nodes, // size
             Normal, // internal laspack stuff
             True); // internal laspack stuff
@@ -39,7 +39,7 @@ void next_time_layer_Calculate (
           JacobiPrecond, // preconditioner type
           1.2); // preconditioner relaxation constant; probably, should be changed
 
-  for (unsigned i = 0, j = 1; // it's convenient
+  for (unsigned i = 0, j = 1;
         i < grid->X_nodes; 
         ++i, j += 2) {
     G[i] = V_GetCmp (&unknown_vector, j);
@@ -53,6 +53,6 @@ void next_time_layer_Calculate (
   return;
 }
 
-void fill_system (QMatrix* lh_side, Vector* rh_side, Grid * grid, Node_status * node_status) {
+void fill_system (QMatrix * lh_side, Vector * rh_side, Grid * grid, Node_status * node_status) {
   return;
 }
