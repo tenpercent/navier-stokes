@@ -16,7 +16,8 @@ LASPACKOFILES = ./lib/laspack/eigenval.o \
 
 OFILES = ./src/calculation.o \
          ./src/initialize.o \
-         ./src/main.o
+         ./src/main.o \
+         ./src/norm.o
 
 all: $(OFILES) $(LASPACKOFILES)
 	$(LD) $(LFLAGS) -o gas $(OFILES) $(LASPACKOFILES)

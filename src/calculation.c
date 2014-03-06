@@ -1,12 +1,4 @@
 #include "calculation.h"
-#include <vector.h>
-#include <errhandl.h>
-#include <qmatrix.h>
-#include <itersolv.h>
-#include <rtc.h>
-#include <operats.h>
-#include <version.h>
-#include <copyrght.h>
 
 void next_time_layer_Calculate (
     double * G, 
