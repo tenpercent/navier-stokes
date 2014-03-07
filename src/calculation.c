@@ -29,21 +29,23 @@ void next_TimeLayer_Calculate (
             True);
   SetRTCAccuracy (1e-8);
 
-  fill_system (&lh_side, &rh_side, grid, node_status);
-  
-  // launch iteration algorithm
-  CGNIter (&lh_side, 
-          &unknown_vector, 
-          &rh_side, 
-          2000, // max iterations
-          JacobiPrecond, // preconditioner type
-          1.2); // preconditioner relaxation constant; probably, should be changed
+  for (unsigned time_step = 0; time_step < grid->T_nodes; ++time_step) {
+    fill_system (&lh_side, &rh_side, grid, node_status); // gotta think about parameters
 
-  for (unsigned i = 0, j = 1;
-        i < grid->X_nodes; 
-        ++i, j += 2) {
-    G[i] = V_GetCmp (&unknown_vector, j);
-    V[i] = V_GetCmp (&unknown_vector, j + 1);
+    // launch iteration algorithm
+    CGNIter (&lh_side, 
+            &unknown_vector, 
+            &rh_side, 
+            2000, // max iterations
+            JacobiPrecond, // preconditioner type
+            1.2); // preconditioner relaxation constant; probably, should be changed
+
+    for (unsigned i = 0, j = 1;
+          i < grid->X_nodes; 
+          ++i, j += 2) {
+      G[i] = V_GetCmp (&unknown_vector, j);
+      V[i] = V_GetCmp (&unknown_vector, j + 1);
+    }
   }
 
   Q_Destr (&lh_side);
