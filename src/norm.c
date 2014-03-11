@@ -1,6 +1,14 @@
 #include "norm.h"
 #include <math.h>
 
+inline double max (double x, double y) {
+  return (x > y) ? x : y;
+}
+
+inline double square (double x) {
+  return x * x;
+}
+
 double residual_norm_C (double * approximation, 
                         unsigned dimension, 
                         double * space_coordinate, 
