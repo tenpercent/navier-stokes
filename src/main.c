@@ -29,6 +29,8 @@ int main () {
   unsigned max_iteration_time = 3;
   unsigned max_global_iteration = (max_iteration_space + 1) * (max_iteration_time + 1);
 
+  unsigned iteration_time, iteration_space;
+
   gas_parameters_Initialize (&parameters);
   results_Construct (results, max_global_iteration);
   residual_norm_V_C = results[0];
@@ -37,8 +39,8 @@ int main () {
   residual_norm_G_L2 = results[3];
   time_elapsed_at_iteration = results[4];
 
-  for (unsigned iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
-    for (unsigned iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {
+  for (iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
+    for (iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {
       grid_Initialize (&grid, &parameters, iteration_space, iteration_time);
       scheme_elements_Construct (G, V, grid.X_nodes);
       mesh_elements_Construct (node_statuses, space_coordinates, grid.X_nodes);

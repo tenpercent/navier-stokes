@@ -2,14 +2,16 @@
 #include "construction.h"
 
 void results_Construct (double ** results, unsigned max_global_iteration) {
-  for (unsigned i = 0; i < RESULTS_SIZE; ++i) {
+  unsigned i;
+  for (i = 0; i < RESULTS_SIZE; ++i) {
     results[i] = (double *) malloc (max_global_iteration * sizeof (double));
   }
   return;
 }
 
 void results_Destruct (double ** results) {
-  for (unsigned i = 0; i < RESULTS_SIZE; ++i) {
+  unsigned i;
+  for (i = 0; i < RESULTS_SIZE; ++i) {
     free (results[i]);
   }
   return;

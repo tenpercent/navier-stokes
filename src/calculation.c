@@ -9,6 +9,7 @@ void next_TimeLayer_Calculate (
   QMatrix lh_side; // left-hand side of the system
   Vector rh_side; // right-hand side of the system
   Vector unknown_vector; // which will be found when we solve the system
+  unsigned time_step, i, j;
 
   Q_Constr (&lh_side, 
             "Matrix", 
@@ -29,7 +30,7 @@ void next_TimeLayer_Calculate (
             True);
   SetRTCAccuracy (1e-8);
 
-  for (unsigned time_step = 0; time_step < grid->T_nodes; ++time_step) {
+  for (time_step = 0; time_step < grid->T_nodes; ++time_step) {
     fill_system (&lh_side, &rh_side, grid, node_status); // gotta think about parameters
 
     // launch iteration algorithm
@@ -40,7 +41,7 @@ void next_TimeLayer_Calculate (
             JacobiPrecond, // preconditioner type
             1.2); // preconditioner relaxation constant; probably, should be changed
 
-    for (unsigned i = 0, j = 1;
+    for (i = 0, j = 1;
           i < grid->X_nodes; 
           ++i, j += 2) {
       G[i] = V_GetCmp (&unknown_vector, j);
