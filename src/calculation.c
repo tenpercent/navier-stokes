@@ -110,7 +110,7 @@ void fill_system (
                                 .25 * (V[M] - 2 * V[M-1] + V[M-2]) * (2 - G[M]) / h);
 
   for (m = 1; m < M; ++m) {
-    Q_SetLen  (lh_side, V_IND(m), 3 + (m > 1) + (m < M - 1);
+    Q_SetLen  (lh_side, V_IND(m), 3 + (m > 1) + (m < M - 1));
     Q_SetEntry(lh_side, V_IND(m), ++i, G_IND(m - 1), -.5 * parameters->p_ro / h);
     Q_SetEntry(lh_side, V_IND(m), ++i, G_IND(m + 1), .5 * parameters->p_ro / h);
     if (m > 1) {
