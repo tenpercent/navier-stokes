@@ -16,6 +16,7 @@ void next_TimeLayer_Calculate (
     double * V, 
     Node_status * node_status, 
     double * space_coordinate, 
+    Gas_parameters * parameters,
     Grid * grid) {
   QMatrix lh_side; // left-hand side of the system
   Vector rh_side; // right-hand side of the system
@@ -42,7 +43,7 @@ void next_TimeLayer_Calculate (
   SetRTCAccuracy (1e-8);
 
   for (time_step = 0; time_step < grid->T_nodes; ++time_step) {
-    fill_system (&lh_side, &rh_side, grid, node_status, G, V); // gotta think about parameters
+    fill_system (&lh_side, &rh_side, grid, node_status, parameters, G, V);
 
     // launch iteration algorithm
     CGNIter (&lh_side, 
@@ -72,6 +73,7 @@ void fill_system (
     Vector * rh_side,
     Grid * grid,
     Node_status * node_status,
+    Gas_parameters * parameters,
     double * G,
     double * V) {
 
@@ -108,11 +110,11 @@ void fill_system (
 
   for (m = 1; m < M; ++m) {
     Q_SetLen  (lh_side, V_IND(m), 5);
- // Q_SetEntry(lh_side, V_IND(m), 0, G_IND(m - 1), -.5 * p'(G) / h);
- // Q_SetEntry(lh_side, V_IND(m), 1, G_IND(m + 1), .5 * p'(G) / h);
+    Q_SetEntry(lh_side, V_IND(m), 0, G_IND(m - 1), -.5 * parameters->p_ro / h);
+    Q_SetEntry(lh_side, V_IND(m), 1, G_IND(m + 1), .5 * parameters->p_ro / h);
     Q_SetEntry(lh_side, V_IND(m), 2, V_IND(m - 1), -(V[m] + V[m-1]) / (h * 6));
     Q_SetEntry(lh_side, V_IND(m), 3, V_IND(m), 1. / tau);
     Q_SetEntry(lh_side, V_IND(m), 4, V_IND(m + 1), (V[m] + V[m+1]) / (h * 6));
- // V_SetCmp  (rh_side, V_IND(m), V[m] / tau + f);
+    V_SetCmp  (rh_side, V_IND(m), V[m] / tau);
   }
 }

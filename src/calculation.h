@@ -12,6 +12,7 @@ void next_TimeLayer_Calculate (
   double * V, 
   Node_status * node_status, 
   double * space_coordinate, 
+  Gas_parameters * parameters,
   Grid * grid);
 
 void fill_system (
@@ -19,5 +20,6 @@ void fill_system (
     Vector * rh_side,
     Grid * grid,
     Node_status * node_status,
+    Gas_parameters * parameters,
     double * G,
     double * V);
