@@ -79,6 +79,7 @@ void fill_system (
 
   unsigned m, M = grid->X_nodes - 1;
   double h = grid->X_step, tau = grid->T_step;
+  int i = -1;
 
   Q_SetLen  (lh_side, G_IND(0), 4);
   Q_SetEntry(lh_side, G_IND(0), 0, G_IND(0), 1. / tau - .5 * V[0] / h);
@@ -109,12 +110,16 @@ void fill_system (
                                 .25 * (V[M] - 2 * V[M-1] + V[M-2]) * (2 - G[M]) / h);
 
   for (m = 1; m < M; ++m) {
-    Q_SetLen  (lh_side, V_IND(m), 5);
-    Q_SetEntry(lh_side, V_IND(m), 0, G_IND(m - 1), -.5 * parameters->p_ro / h);
-    Q_SetEntry(lh_side, V_IND(m), 1, G_IND(m + 1), .5 * parameters->p_ro / h);
-    Q_SetEntry(lh_side, V_IND(m), 2, V_IND(m - 1), -(V[m] + V[m-1]) / (h * 6));
-    Q_SetEntry(lh_side, V_IND(m), 3, V_IND(m), 1. / tau);
-    Q_SetEntry(lh_side, V_IND(m), 4, V_IND(m + 1), (V[m] + V[m+1]) / (h * 6));
+    Q_SetLen  (lh_side, V_IND(m), 3 + (m > 1) + (m < M - 1);
+    Q_SetEntry(lh_side, V_IND(m), ++i, G_IND(m - 1), -.5 * parameters->p_ro / h);
+    Q_SetEntry(lh_side, V_IND(m), ++i, G_IND(m + 1), .5 * parameters->p_ro / h);
+    if (m > 1) {
+      Q_SetEntry(lh_side, V_IND(m), ++i, V_IND(m - 1), -(V[m] + V[m-1]) / (h * 6));
+    }
+    Q_SetEntry(lh_side, V_IND(m), ++i, V_IND(m), 1. / tau);
+    if (m < M - 1) {
+      Q_SetEntry(lh_side, V_IND(m), ++i, V_IND(m + 1), (V[m] + V[m+1]) / (h * 6));
+    }
     V_SetCmp  (rh_side, V_IND(m), V[m] / tau);
   }
 }
