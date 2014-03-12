@@ -14,4 +14,10 @@ void next_TimeLayer_Calculate (
   double * space_coordinate, 
   Grid * grid);
 
-void fill_system (QMatrix* lh_side, Vector* rh_side, Grid * grid, Node_status * node_status);
+void fill_system (
+    QMatrix * lh_side,
+    Vector * rh_side,
+    Grid * grid,
+    Node_status * node_status,
+    double * G,
+    double * V);
