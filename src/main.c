@@ -42,12 +42,12 @@ int main () {
   for (iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
     for (iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {
       grid_Initialize (&grid, &parameters, iteration_space, iteration_time);
-      scheme_elements_Construct (G, V, grid.X_nodes);
-      mesh_elements_Construct (node_statuses, space_coordinates, grid.X_nodes);
+      scheme_elements_Construct (&G, &V, grid.X_nodes);
+      mesh_elements_Construct (&node_statuses, &space_coordinates, grid.X_nodes);
       mesh_Initialize (node_statuses, space_coordinates, &grid);
 
       start_time = clock();
-      next_TimeLayer_Calculate (G, V, node_statuses, space_coordinates, &grid);
+      next_TimeLayer_Calculate (G, V, node_statuses, space_coordinates, &parameters, &grid);
       finish_time = clock();
 
       time_elapsed_at_iteration[global_iteration] = (finish_time - start_time) / (double) CLOCKS_PER_SEC;

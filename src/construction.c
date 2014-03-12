@@ -17,9 +17,9 @@ void results_Destruct (double ** results) {
   return;
 }
 
-void scheme_elements_Construct (double * G, double * V, unsigned X_nodes) {
-  V = (double *) malloc (X_nodes * sizeof (double));
-  G = (double *) malloc (X_nodes * sizeof (double));
+void scheme_elements_Construct (double ** G, double ** V, unsigned X_nodes) {
+  *V = (double *) malloc (X_nodes * sizeof (double));
+  *G = (double *) malloc (X_nodes * sizeof (double));
   return;
 }
 
@@ -29,9 +29,9 @@ void scheme_elements_Destruct (double * G, double * V) {
   return;
 }
 
-void mesh_elements_Construct (Node_status * node_statuses, double * space_coordinates, unsigned X_nodes) {
-  space_coordinates = (double *) malloc (X_nodes * sizeof (double));
-  node_statuses = (Node_status *) malloc (X_nodes * sizeof (Node_status));
+void mesh_elements_Construct (Node_status ** node_statuses, double ** space_coordinates, unsigned X_nodes) {
+  *space_coordinates = (double *) malloc (X_nodes * sizeof (double));
+  *node_statuses = (Node_status *) malloc (X_nodes * sizeof (Node_status));
   return;
 }
 
