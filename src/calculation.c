@@ -92,25 +92,31 @@ void fill_system (
 
   for (m = 1; m < M; ++m) {
     Q_SetLen  (lh_side, G_IND(m), 5);
+
     Q_SetEntry(lh_side, G_IND(m), 0, G_IND(m - 1), -(V[m] + V[m-1]) * .25 / h);
     Q_SetEntry(lh_side, G_IND(m), 1, G_IND(m), G[m] / tau);
     Q_SetEntry(lh_side, G_IND(m), 2, G_IND(m + 1), (V[m] + V[m+1]) * .25 / h);
     Q_SetEntry(lh_side, G_IND(m), 3, V_IND(m - 1), -.5 / h);
     Q_SetEntry(lh_side, G_IND(m), 4, V_IND(m + 1), .5 / h);
+
     V_SetCmp  (rh_side, G_IND(m), G[m] / tau + G[m] * (V[m+1] - V[m-1]) * .25 / h);
   }
 
   Q_SetLen  (lh_side, G_IND(M), 4);
+
   Q_SetEntry(lh_side, G_IND(M), 0, G_IND(M - 1), -.5 * V[M-1] / h);
   Q_SetEntry(lh_side, G_IND(M), 1, G_IND(M), 1. / tau + .5 * V[M] / h);
   Q_SetEntry(lh_side, G_IND(M), 2, V_IND(M - 1), -1. / h);
   Q_SetEntry(lh_side, G_IND(M), 3, V_IND(M), 1. / h);
+
   V_SetCmp  (rh_side, G_IND(M), G[M] / tau + G[M] * .5 * (V[M] - V[M-1]) / h -
                                 .25 * (G[M] * V[M] - 2 * G[M-1] * V[M-1] + G[M-2] * V[M-2]) / h -
                                 .25 * (V[M] - 2 * V[M-1] + V[M-2]) * (2 - G[M]) / h);
 
+  i = -1;
   for (m = 1; m < M; ++m) {
     Q_SetLen  (lh_side, V_IND(m), 3 + (m > 1) + (m < M - 1));
+
     Q_SetEntry(lh_side, V_IND(m), ++i, G_IND(m - 1), -.5 * parameters->p_ro / h);
     Q_SetEntry(lh_side, V_IND(m), ++i, G_IND(m + 1), .5 * parameters->p_ro / h);
     if (m > 1) {
@@ -120,6 +126,17 @@ void fill_system (
     if (m < M - 1) {
       Q_SetEntry(lh_side, V_IND(m), ++i, V_IND(m + 1), (V[m] + V[m+1]) / (h * 6));
     }
+
     V_SetCmp  (rh_side, V_IND(m), V[m] / tau);
   }
+}
+
+void fill_mesh_at_initial_time (
+    double * G,
+    double * V,
+    double (*g) (double, double),
+    double (*v) (double, double),
+    double * space_coordinates,
+    unsigned space_nodes) {
+  return;
 }

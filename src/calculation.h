@@ -16,10 +16,18 @@ void next_TimeLayer_Calculate (
   Grid * grid);
 
 void fill_system (
-    QMatrix * lh_side,
-    Vector * rh_side,
-    Grid * grid,
-    Node_status * node_status,
-    Gas_parameters * parameters,
-    double * G,
-    double * V);
+  QMatrix * lh_side,
+  Vector * rh_side,
+  Grid * grid,
+  Node_status * node_status,
+  Gas_parameters * parameters,
+  double * G,
+  double * V);
+
+void fill_mesh_at_initial_time (
+  double * G,
+  double * V,
+  double (*g) (double, double),
+  double (*v) (double, double),
+  double * space_coordinates,
+  unsigned space_nodes);
