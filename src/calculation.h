@@ -28,6 +28,5 @@ void fill_mesh_at_initial_time (
   double * G,
   double * V,
   double (*g) (double, double),
-  double (*v) (double, double),
   double * space_coordinates,
   unsigned space_nodes);
