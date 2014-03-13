@@ -5,7 +5,7 @@
 #include "calculation.h"
 #include "construction.h"
 
-int main () {
+int main (int argc, char ** argv) {
   Gas_parameters parameters;
   Grid grid;
 
