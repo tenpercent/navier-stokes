@@ -1,30 +1,41 @@
+BUILDDIR = build
 CC = cc
 CFLAGS = -Wall -O2 -Ilib -Ilib/laspack -Ilib/xc
 LD = cc
-LFLAGS = -lm 
-LASPACKOFILES = ./lib/laspack/eigenval.o \
-								./lib/laspack/errhandl.o \
-								./lib/laspack/factor.o \
-								./lib/laspack/itersolv.o \
-								./lib/laspack/matrix.o \
-								./lib/laspack/mlsolv.o \
-								./lib/laspack/operats.o \
-								./lib/laspack/precond.o \
-								./lib/laspack/qmatrix.o \
-								./lib/laspack/rtc.o \
-								./lib/laspack/vector.o
+LFLAGS = -lm
+LASPACKONAMES = eigenval.o \
+                errhandl.o \
+                factor.o \
+                itersolv.o \
+                matrix.o \
+                operats.o \
+                precond.o \
+                qmatrix.o \
+                rtc.o \
+                vector.o
+LASPACKOFILES = $(foreach fname,$(LASPACKONAMES),$(BUILDDIR)/laspack/$(fname))
+ONAMES = calculation.o \
+         construction.o \
+         initialize.o \
+         main.o \
+         norm.o
+OFILES = $(foreach fname,$(ONAMES),$(BUILDDIR)/program/$(fname))
 
-OFILES = ./src/calculation.o \
-         ./src/initialize.o \
-         ./src/main.o \
-         ./src/norm.o \
-         ./src/construction.o
+%/create-stamp:
+	mkdir -p $*
+	touch $@
 
-all: $(OFILES) $(LASPACKOFILES)
+gas: $(OFILES) $(LASPACKOFILES)
 	$(LD) $(LFLAGS) -o gas $(OFILES) $(LASPACKOFILES)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -o $*.o -c $*.c
-	
+$(BUILDDIR)/laspack/%.o: $(BUILDDIR)/laspack/create-stamp lib/laspack/%.c
+	$(CC) $(CFLAGS) -o $@ -c lib/laspack/$*.c
+
+$(BUILDDIR)/program/%.o: $(BUILDDIR)/program/create-stamp src/%.c
+	$(CC) $(CFLAGS) -o $@ -c src/$*.c
+
 clean:
-	rm -f $(OFILES) $(LASPACKOFILES)
+	rm -rf $(BUILDDIR)
+
+distclean: clean
+	rm -f gas
