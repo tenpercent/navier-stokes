@@ -2,7 +2,7 @@
 #include <string.h>
 #include "export.h"
 
-#define MAX_BUFFER_SIZE 2048
+#define MAX_BUFFER_SIZE 10000
 
 void export_results (double ** results, unsigned total_experiments) {
   FILE * csv_data; 
@@ -27,6 +27,12 @@ void export_results (double ** results, unsigned total_experiments) {
     result_to_string = temp;
   }
   csv_data = fopen ("results.csv", "w");
+
+  if (!csv_data) {
+    printf ("Could not open file to write results\n");
+    return;
+  }
+
   fputs (result_to_string, csv_data);
   fclose (csv_data);
   return;
