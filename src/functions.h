@@ -1,5 +1,5 @@
 #include <math.h>
-#include <structures.h>
+#include "structures.h"
 
 double u_exact (double x, double t) {
   return cos(2 * M_PI * t) * sin(M_PI * x * x * .01);
@@ -32,7 +32,7 @@ double u_xx (double x, double t) {
     );
 }
 
-double rhs_1st_eqation (double x, double t, Gas_parameters *) {
+double rhs_1st_eqation (double x, double t, Gas_parameters * parameters) {
   return ro_t (x, t) + 
     ro_x (x, t) * u_exact (x, t) + 
     ro_exact (x, t) * u_x (x, t);

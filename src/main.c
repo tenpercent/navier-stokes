@@ -4,6 +4,7 @@
 #include "norm.h"
 #include "calculation.h"
 #include "construction.h"
+#include "export.h"
 
 int main (int argc, char ** argv) {
   Gas_parameters parameters;
@@ -33,11 +34,12 @@ int main (int argc, char ** argv) {
 
   gas_parameters_Initialize (&parameters);
   results_Construct (results, max_global_iteration);
-  residual_norm_V_C = results[0];
-  residual_norm_V_L2 = results[1];
-  residual_norm_G_C = results[2];
-  residual_norm_G_L2 = results[3];
-  time_elapsed_at_iteration = results[4];
+
+  time_elapsed_at_iteration = results[0];
+  residual_norm_V_C = results[1];
+  residual_norm_V_L2 = results[2];
+  residual_norm_G_C = results[3];
+  residual_norm_G_L2 = results[4];
 
   for (iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
     for (iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {
@@ -65,17 +67,18 @@ int main (int argc, char ** argv) {
                                                                     grid.X_nodes, 
                                                                     space_coordinates, 
                                                                     parameters.time_upper_boundary, 
-                                                                    logp_exact);
+                                                                    ro_exact);
       residual_norm_G_L2[global_iteration]        = residual_norm_L2 (G, 
                                                                      grid.X_nodes, 
                                                                      space_coordinates, 
                                                                      parameters.time_upper_boundary, 
-                                                                     logp_exact);
+                                                                     ro_exact);
       scheme_elements_Destruct (G, V);
       mesh_elements_Destruct (node_statuses, space_coordinates);
       ++global_iteration;
     }
   }
+  export_results (results, max_global_iteration);
   results_Destruct (results);
   return 0;
 }
