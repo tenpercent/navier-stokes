@@ -134,13 +134,14 @@ void fill_system (
 void fill_mesh_at_initial_time (
     double * G,
     double * V,
-    double (*g) (double, double),
+    double (*g) (double, double), // log (ro_0)
+    double (*v) (double, double), // u_0
     double * space_coordinates,
     unsigned space_nodes) {
   unsigned space_step = 0;
   for (space_step = 0; space_step < space_nodes; ++space_step) {
     G[space_step] = g(space_coordinates[space_step], 0);
-    V[space_step] = 0.;
+    V[space_step] = v(space_coordinates[space_step], 0);
   }
   return;
 }
