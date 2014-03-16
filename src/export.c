@@ -11,7 +11,7 @@ void export_results (double ** results, unsigned total_experiments) {
   char * result_to_string = 
     ",Time elapsed,V residual in C,V residual in L2,G residual in C,G residual in L2\n\r";
   char * current_experiment_to_string = "";
-  char * temp = "";
+  char * combined = "";
   for (experiments_step = 0; experiments_step < total_experiments; ++experiments_step) {
     snprintf (
       current_experiment_to_string,
@@ -24,9 +24,10 @@ void export_results (double ** results, unsigned total_experiments) {
         results[4][experiments_step]
     );
     // |^ looks ugly, should fix later
-    snprintf (temp, MAX_BUFFER_SIZE, "%s%s", result_to_string, current_experiment_to_string);
-    result_to_string = temp;
+    snprintf (combined, MAX_BUFFER_SIZE, "%s%s", result_to_string, current_experiment_to_string);
+    result_to_string = combined;
   }
+
   csv_data = fopen ("results.csv", "w");
 
   if (!csv_data) {
