@@ -8,6 +8,7 @@
  * These macros make it possible to easily change packing order in
  * the future.
  */
+ 
 #define G_IND(i) (i)
 #define V_IND(i) (grid->X_nodes - 1 + (i))
 
@@ -42,7 +43,10 @@ void next_TimeLayer_Calculate (
             True);
   SetRTCAccuracy (1e-8);
 
-  for (time_step = 0; time_step < grid->T_nodes; ++time_step) {
+  // T == 0
+  // fill_mesh_at_initial_time (...); 
+
+  for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     fill_system (&lh_side, &rh_side, grid, node_status, parameters, G, V);
 
     // launch iteration algorithm

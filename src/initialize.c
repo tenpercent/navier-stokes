@@ -24,15 +24,15 @@ void grid_Initialize (
 }
 
 void mesh_Initialize (Node_status * node_status, double * space_coordinate, Grid * grid) {
-  unsigned i;
+  unsigned space_step;
   node_status[0] = LEFT;
   node_status[grid->X_nodes - 1] = RIGHT;
-  for (i = 1; i < grid->X_nodes - 1; ++i) {
-    node_status[i] = MIDDLE;
+  for (space_step = 1; space_step < grid->X_nodes - 1; ++space_step) {
+    node_status[space_step] = MIDDLE;
   }
 
-  for (i = 0; i < grid->X_nodes; ++i) {
-    space_coordinate[i] = i * grid->X_step;
+  for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
+    space_coordinate[space_step] = space_step * grid->X_step;
   }
 
   return;

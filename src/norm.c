@@ -15,9 +15,9 @@ double residual_norm_C (double * approximation,
                         double time_upper_boundary,
                         double (*approximated) (double, double)) {
   double norm = fabs (approximation[0] - approximated (time_upper_boundary, space_coordinate[0]));
-  unsigned i;
-  for (i = 1; i < dimension; ++i) {
-    norm = max (fabs (approximation[i] - approximated (time_upper_boundary, space_coordinate[i])), norm);
+  unsigned space_step;
+  for (space_step = 1; space_step < dimension; ++space_step) {
+    norm = max (fabs (approximation[space_step] - approximated (time_upper_boundary, space_coordinate[space_step])), norm);
   }
   return norm;
 }
@@ -28,9 +28,9 @@ double residual_norm_L2 (double * approximation,
                         double time_upper_boundary,
                         double (*approximated) (double, double)) {
   double norm = 0.;
-  unsigned i;
-  for (i = 0; i < dimension; ++i) {
-    norm += square (approximation[i] - approximated (time_upper_boundary, space_coordinate[i]));
+  unsigned space_step;
+  for (space_step = 0; space_step < dimension; ++space_step) {
+    norm += square (approximation[space_step] - approximated (time_upper_boundary, space_coordinate[space_step]));
   }
   norm = sqrt (norm);
   return norm;

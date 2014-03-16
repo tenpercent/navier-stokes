@@ -23,6 +23,7 @@ void export_results (double ** results, unsigned total_experiments) {
         results[3][experiments_step], 
         results[4][experiments_step]
     );
+    // |^ looks ugly, should fix later
     snprintf (temp, MAX_BUFFER_SIZE, "%s%s", result_to_string, current_experiment_to_string);
     result_to_string = temp;
   }
