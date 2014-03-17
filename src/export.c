@@ -2,7 +2,7 @@
 #include <string.h>
 #include "export.h"
 
-#define MAX_BUFFER_SIZE 10000
+#define MAX_BUFFER_SIZE 4096
 
 void export_results (double ** results, unsigned total_experiments) {
   FILE * csv_data; 
@@ -10,8 +10,8 @@ void export_results (double ** results, unsigned total_experiments) {
   // dangerous shit begins
   char * result_to_string = 
     ",Time elapsed,V residual in C,V residual in L2,G residual in C,G residual in L2\n";
-  char * current_experiment_to_string = "";
-  char * combined = "";
+  char current_experiment_to_string[MAX_BUFFER_SIZE];
+  char combined[MAX_BUFFER_SIZE];
   for (experiments_step = 0; experiments_step < total_experiments; ++experiments_step) {
     snprintf (
       current_experiment_to_string,
