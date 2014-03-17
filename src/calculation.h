@@ -7,6 +7,14 @@
 #include <rtc.h>
 #include <operats.h>
 
+typedef struct _SparseMatrix {
+  unsigned rows;
+  unsigned *cols;
+  unsigned *rows_numbers;
+  unsigned **cols_numbers;
+  double **values;
+} SparseMatrix;
+
 void next_TimeLayer_Calculate (
   double * G, 
   double * V, 
