@@ -33,3 +33,12 @@ void fill_mesh_at_initial_time (
   double (*v) (double, double),
   double * space_coordinates,
   unsigned space_nodes);
+
+void fill_approximation (double * G, double * V, Vector * unknown_vector, unsigned total_values);
+
+void set_qmatrix_entries (
+    QMatrix * matrix, 
+    unsigned row, 
+    unsigned * nonzero_columns, 
+    double * values, 
+    unsigned row_length);

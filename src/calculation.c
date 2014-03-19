@@ -8,8 +8,8 @@
  * I cannot into macroses, so working fix would be welcome
  */
 
-#define G_INDEX(i) 2 * i + 1
-#define V_INDEX(i) 2 * i + 2
+#define G_INDEX(i) (2 * i + 1)
+#define V_INDEX(i) (2 * i + 2)
 
 void next_TimeLayer_Calculate (
     double * G, 
@@ -21,7 +21,7 @@ void next_TimeLayer_Calculate (
   QMatrix lh_side; // left-hand side of the system
   Vector rh_side; // right-hand side of the system
   Vector unknown_vector; // which will be found when we solve the system
-  unsigned time_step, i;
+  unsigned time_step;
 
   Q_Constr (&lh_side, 
             "Matrix", 
@@ -56,14 +56,7 @@ void next_TimeLayer_Calculate (
             JacobiPrecond, // preconditioner type
             1.2); // preconditioner relaxation constant; probably, should be changed
 
-    for (i = 0; i < grid->X_nodes; ++i) {
-      G[i] = V_GetCmp (&unknown_vector, G_INDEX(i));
-    }
-    V[0] = 0.;
-    for (i = 1; i < grid->X_nodes - 1; ++i) {
-      V[i] = V_GetCmp (&unknown_vector, V_INDEX(i));
-    }
-    V[grid->X_nodes - 1] = 0.;
+    fill_approximation (G, V, &unknown_vector, grid->X_nodes);
   }
 
   Q_Destr (&lh_side);
@@ -110,10 +103,10 @@ void fill_system (
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
     switch (node_status[space_step]) {
       case LEFT:
-        nonzero_columns[0] = 1; // G_0
-        nonzero_columns[1] = 2; // V_0
-        nonzero_columns[2] = 3; // G_1
-        nonzero_columns[3] = 4; // V_1
+        nonzero_columns[0] = G_INDEX(0); // G_0
+        nonzero_columns[1] = V_INDEX(0); // V_0
+        nonzero_columns[2] = G_INDEX(1); // G_1
+        nonzero_columns[3] = V_INDEX(1); // V_1
 
         lh_values[0] = grid->T_step - .5 * grid->X_step * V[0];
         lh_values[1] = -grid->X_step;
@@ -136,11 +129,11 @@ void fill_system (
         break;
 
       case MIDDLE:
-        nonzero_columns[0] = 2 * space_step - 1; // G_{n-1}
-        nonzero_columns[1] = 2 * space_step;     // V_{n-1}
-        nonzero_columns[2] = 2 * space_step + 1; // G_{n}
-        nonzero_columns[3] = 2 * space_step + 3; // G_{n+1}
-        nonzero_columns[4] = 2 * space_step + 4; // V_{n+1}
+        nonzero_columns[0] = G_INDEX(space_step - 1); // G_{n-1}
+        nonzero_columns[1] = V_INDEX(space_step - 1); // V_{n-1}
+        nonzero_columns[2] = G_INDEX(space_step);     // G_{n}
+        nonzero_columns[3] = G_INDEX(space_step + 1); // G_{n+1}
+        nonzero_columns[4] = V_INDEX(space_step + 1); // V_{n+1}
 
         lh_values[0] = -.25 * grid->X_step * V[space_step] - .25 * grid->X_step * V[space_step - 1];
         lh_values[1] = -grid->X_step;
@@ -161,11 +154,11 @@ void fill_system (
 
         /* another equation */
 
-        nonzero_columns[0] = 2 * space_step - 1; // G_{n-1}
-        nonzero_columns[1] = 2 * space_step;     // V_{n-1}
-        nonzero_columns[2] = 2 * space_step + 2; // V_{n}
-        nonzero_columns[3] = 2 * space_step + 3; // G_{n+1}
-        nonzero_columns[4] = 2 * space_step + 4; // V_{n+1}
+        nonzero_columns[0] = G_INDEX(space_step - 1); // G_{n-1}
+        nonzero_columns[1] = V_INDEX(space_step - 1); // V_{n-1}
+        nonzero_columns[2] = V_INDEX(space_step);     // V_{n}
+        nonzero_columns[3] = G_INDEX(space_step + 1); // G_{n+1}
+        nonzero_columns[4] = V_INDEX(space_step + 1); // V_{n+1}
 
         // attention: these values should be changed when (viscosity != 0)
         lh_values[0] = -.5 * grid->X_step * parameters->p_ro;
@@ -188,10 +181,10 @@ void fill_system (
         break;
 
       case RIGHT:
-        nonzero_columns[0] = grid->X_nodes - 3; // G_{M-1}
-        nonzero_columns[1] = grid->X_nodes - 2; // V_{M-1}
-        nonzero_columns[2] = grid->X_nodes - 1; // G_{M}
-        nonzero_columns[3] = grid->X_nodes;     // V_{M}
+        nonzero_columns[0] = G_INDEX(grid->X_nodes - 2); // G_{M-1}
+        nonzero_columns[1] = V_INDEX(grid->X_nodes - 2); // V_{M-1}
+        nonzero_columns[2] = G_INDEX(grid->X_nodes - 1); // G_{M}
+        nonzero_columns[3] = V_INDEX(grid->X_nodes - 1); // V_{M}
 
         lh_values[0] = -.5 * grid->X_step * V[grid->X_nodes - 2];
         lh_values[1] = -grid->X_step;
@@ -232,4 +225,17 @@ void fill_mesh_at_initial_time (
     V[space_step] = v(space_coordinates[space_step], 0);
   }
   return;
+}
+
+void fill_approximation (double * G, double * V, Vector * unknown_vector, unsigned total_values) {
+  unsigned space_step = 0;
+  for (space_step = 0; space_step < total_values; ++space_step) {
+      G[space_step] = V_GetCmp (unknown_vector, G_INDEX(space_step));
+    }
+    V[0] = 0.;
+    for (space_step = 1; space_step < total_values - 1; ++space_step) {
+      V[space_step] = V_GetCmp (unknown_vector, V_INDEX(space_step));
+    }
+    V[total_values - 1] = 0.;
+    return;
 }
