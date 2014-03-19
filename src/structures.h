@@ -11,7 +11,7 @@ typedef struct {
 } Gas_parameters;
 
 typedef struct {
-  unsigned X_nodes; // total space nodes
+  unsigned X_nodes; // total space nodes; should be >= 3.
   unsigned T_nodes; // total time nodes
   double X_step;    // distance between space nodes
   double T_step;    // distance between time nodes

@@ -20,7 +20,7 @@ double ro_x (double x, double t);
 
 double u_xx (double x, double t);
 
-double rhs_1st_eqation (double x, double t, Gas_parameters * parameters);
+double rhs_1st_equation (double x, double t, Gas_parameters * parameters);
 
 double rhs_2nd_equation (double x, double t, Gas_parameters * parameters);
 
