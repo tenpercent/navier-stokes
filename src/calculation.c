@@ -243,8 +243,8 @@ void fill_system (
         nonzero_columns[2] = 3; // G_1
         nonzero_columns[3] = 4; // V_1
 
-        lh_values[0] = grid->T_step + .5 * grid->X_step * V[0];
-        lh_values[1] = grid->X_step;
+        lh_values[0] = grid->T_step - .5 * grid->X_step * V[0];
+        lh_values[1] = -grid->X_step;
         lh_values[2] = .5 * grid->X_step * V[1];
         lh_values[3] = grid->X_step;
 
@@ -265,11 +265,11 @@ void fill_system (
         nonzero_columns[3] = 2 * space_step + 3; // G_{n+1}
         nonzero_columns[4] = 2 * space_step + 4; // V_{n+1}
 
-        lh_values[0] = -.25 * X_step * V[space_step] - .25 * X_step * V[space_step - 1];
-        lh_values[1] = ;
-        lh_values[2] = ;
-        lh_values[3] = ;
-        lh_values[4] = ;
+        lh_values[0] = -.25 * grid->X_step * V[space_step] - .25 * grid->X_step * V[space_step - 1];
+        lh_values[1] = -grid->X_step;
+        lh_values[2] = grid->T_step;
+        lh_values[3] = .25 * grid->X_step * V[space_step] + .25 * X_step * V[space_step + 1];
+        lh_values[4] = grid->X_step;
 
         rh_value = ;
 
@@ -288,11 +288,14 @@ void fill_system (
         nonzero_columns[3] = 2 * space_step + 3; // G_{n+1}
         nonzero_columns[4] = 2 * space_step + 4; // V_{n+1}
 
-        lh_values[0] = ;
-        lh_values[1] = ;
-        lh_values[2] = ;
-        lh_values[3] = ;
-        lh_values[4] = ;
+        // attention: these values should be changed when (viscosity != 0)
+        lh_values[0] = -.5 * grid->X_step * parameters->p_ro;
+        lh_values[1] = -1. / 6 * grid->X_step * V[space_step] - 
+                        1. / 6 * grid->X_step * V[space_step - 1];
+        lh_values[2] = grid->T_step;
+        lh_values[3] = .5 * grid->X_step * parameters->p_ro;
+        lh_values[4] = 1. / 6 * grid->X_step * V[space_step] + 
+                       1. / 6 * grid->X_step * V[space_step + 1];
 
         rh_value = ;
 
@@ -310,10 +313,10 @@ void fill_system (
         nonzero_columns[2] = grid->X_nodes - 1; // G_{M}
         nonzero_columns[3] = grid->X_nodes;     // V_{M}
 
-        lh_values[0] = ;
-        lh_values[1] = ;
-        lh_values[2] = ;
-        lh_values[3] = ;
+        lh_values[0] = -.5 * grid->X_step * V[grid->X_nodes - 2];
+        lh_values[1] = -grid->X_step;
+        lh_values[2] = grid->T_step + .5 * grid->X_step * V[grid->X_nodes - 1];
+        lh_values[3] = grid->X_step;
 
         rh_value = ;
 
