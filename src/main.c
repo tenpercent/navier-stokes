@@ -67,12 +67,12 @@ int main (int argc, char ** argv) {
                                                                     grid.X_nodes, 
                                                                     space_coordinates, 
                                                                     parameters.time_upper_boundary, 
-                                                                    ro_exact);
+                                                                    log_ro);
       residual_norm_G_L2[global_iteration]        = residual_norm_L2 (G, 
                                                                      grid.X_nodes, 
                                                                      space_coordinates, 
                                                                      parameters.time_upper_boundary, 
-                                                                     ro_exact);
+                                                                     log_ro);
       scheme_elements_Destruct (G, V);
       mesh_elements_Destruct (node_statuses, space_coordinates);
       ++global_iteration;

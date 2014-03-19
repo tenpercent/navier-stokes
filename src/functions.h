@@ -9,6 +9,10 @@ double ro_exact (double x, double t) {
   return exp(t) * (cos (M_PI * x * .1) + 1.5);
 }
 
+double log_ro (double x, double t) {
+  return log (ro_exact (x, t));
+}
+
 double u_t (double x, double t) {
   return -2. * M_PI * sin(2 * M_PI * t) * sin(M_PI * x * x * .01);;
 }
