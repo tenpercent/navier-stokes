@@ -211,7 +211,7 @@ void set_qmatrix_entries (
     unsigned total_entries) {
   unsigned entry_number;
   for (entry_number = 0; entry_number < total_entries; ++ entry_number) {
-    Q_SetEntry (lh_side, equation_number, entry_number, nonzero_columns[entry_number], values[entry_number]);
+    Q_SetEntry (matrix, row, entry_number, nonzero_columns[entry_number], values[entry_number]);
   }
   return;
 }
@@ -225,10 +225,10 @@ void fill_system (
     double * G,
     double * V) {
   unsigned space_step = 0;
-  unsigned 1st_type_equation_coef_length = 5;
-  unsigned 2nd_type_equation_coef_length = 4;
-  unsigned 3rd_type_equation_coef_length = 4;
-  unsigned 4th_type_equation_coef_length = 5;
+  unsigned first_type_equation_coef_length = 5;
+  unsigned second_type_equation_coef_length = 4;
+  unsigned third_type_equation_coef_length = 4;
+  unsigned fourth_type_equation_coef_length = 5;
   unsigned equation_number = 0;
 
   unsigned nonzero_columns[5];
@@ -248,11 +248,11 @@ void fill_system (
         lh_values[2] = .5 * grid->X_step * V[1];
         lh_values[3] = grid->X_step;
 
-        rh_value = ;
+        rh_value = 0.;
 
-        Q_SetLen (lh_side, equation_number, 2nd_type_equation_coef_length);
+        Q_SetLen (lh_side, equation_number, second_type_equation_coef_length);
 
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 2nd_type_equation_coef_length);
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, second_type_equation_coef_length);
 
         V_SetCmp (rh_side, equation_number, rh_value);
         ++equation_number;
@@ -268,14 +268,14 @@ void fill_system (
         lh_values[0] = -.25 * grid->X_step * V[space_step] - .25 * grid->X_step * V[space_step - 1];
         lh_values[1] = -grid->X_step;
         lh_values[2] = grid->T_step;
-        lh_values[3] = .25 * grid->X_step * V[space_step] + .25 * X_step * V[space_step + 1];
+        lh_values[3] = .25 * grid->X_step * V[space_step] + .25 * grid->X_step * V[space_step + 1];
         lh_values[4] = grid->X_step;
 
-        rh_value = ;
+        rh_value = 0.;
 
-        Q_SetLen (lh_side, equation_number, 1st_type_equation_coef_length);
+        Q_SetLen (lh_side, equation_number, first_type_equation_coef_length);
 
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1st_type_equation_coef_length);
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, first_type_equation_coef_length);
 
         V_SetCmp (rh_side, equation_number, rh_value);
         ++equation_number;
@@ -297,11 +297,11 @@ void fill_system (
         lh_values[4] = 1. / 6 * grid->X_step * V[space_step] + 
                        1. / 6 * grid->X_step * V[space_step + 1];
 
-        rh_value = ;
+        rh_value = 0.;
 
-        Q_SetLen (lh_side, equation_number, 4th_type_equation_coef_length);
+        Q_SetLen (lh_side, equation_number, fourth_type_equation_coef_length);
 
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 4th_type_equation_coef_length);
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, fourth_type_equation_coef_length);
 
         V_SetCmp (rh_side, equation_number, rh_value);
         ++equation_number;
@@ -318,11 +318,11 @@ void fill_system (
         lh_values[2] = grid->T_step + .5 * grid->X_step * V[grid->X_nodes - 1];
         lh_values[3] = grid->X_step;
 
-        rh_value = ;
+        rh_value = 0.;
 
-        Q_SetLen (lh_side, equation_number, 3rd_type_equation_coef_length);
+        Q_SetLen (lh_side, equation_number, third_type_equation_coef_length);
 
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 3rd_type_equation_coef_length);
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, third_type_equation_coef_length);
 
         V_SetCmp (rh_side, equation_number, rh_value);
         ++equation_number;
