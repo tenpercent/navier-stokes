@@ -1,4 +1,5 @@
 #include "calculation.h"
+#include "functions.h"
 
 /* G and V values are packed as follows:
  *
@@ -23,7 +24,7 @@ void next_TimeLayer_Calculate (
     double * G, 
     double * V, 
     Node_status * node_status, 
-    double * space_coordinate, 
+    double * space_coordinates, 
     Gas_parameters * parameters,
     Grid * grid) {
   QMatrix lh_side; // left-hand side of the system
@@ -51,7 +52,7 @@ void next_TimeLayer_Calculate (
   SetRTCAccuracy (1e-8);
 
   // T == 0
-  // fill_mesh_at_initial_time (...); 
+  fill_mesh_at_initial_time (G, V, log_ro, u_exact, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     fill_system (&lh_side, &rh_side, grid, node_status, parameters, G, V);

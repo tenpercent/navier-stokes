@@ -19,7 +19,8 @@ ONAMES = calculation.o \
          initialize.o \
          main.o \
          norm.o \
-         export.o
+         export.o \
+         functions.o
 OFILES = $(foreach fname,$(ONAMES),$(BUILDDIR)/program/$(fname))
 
 %/create-stamp:
