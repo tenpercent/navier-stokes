@@ -1,6 +1,6 @@
 BUILDDIR = build
 CC = cc
-CFLAGS = -Wall -O2 -Ilib -Ilib/laspack -Ilib/xc
+CFLAGS = -Wall -g -Ilib -Ilib/laspack -Ilib/xc 
 LD = cc
 LFLAGS = -lm
 LASPACKONAMES = eigenval.o \

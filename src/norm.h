@@ -10,5 +10,5 @@ double residual_norm_L2 (double * approximation,
                         double time_upper_boundary,
                         double (*approximated) (double, double));
 
-inline double max (double x, double y);
-inline double square (double x);
+double max (double x, double y);
+double square (double x);

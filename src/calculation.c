@@ -232,11 +232,12 @@ void fill_approximation (double * G, double * V, Vector * unknown_vector) {
   unsigned space_step = 0;
   for (space_step = 0; space_step < total_values; ++space_step) {
       G[space_step] = V_GetCmp (unknown_vector, G_INDEX(space_step));
-    }
-    V[0] = 0.;
-    for (space_step = 1; space_step < total_values - 1; ++space_step) {
-      V[space_step] = V_GetCmp (unknown_vector, V_INDEX(space_step));
-    }
-    V[total_values - 1] = 0.;
-    return;
+  }
+
+  V[0] = 0.;
+  for (space_step = 1; space_step < total_values - 1; ++space_step) {
+    V[space_step] = V_GetCmp (unknown_vector, V_INDEX(space_step));
+  }
+  V[total_values - 1] = 0.;
+  return;
 }
