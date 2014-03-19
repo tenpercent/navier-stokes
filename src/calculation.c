@@ -5,7 +5,7 @@
  *
  * G[0] V[0] G[1] V[1] ... G[M] V[M]
  * 
- * I cannot into macroses, so working fix would be welcome
+ * I cannot into macros, so working fix would be welcome
  */
 
 #define G_INDEX(i) (2 * i + 1)
@@ -56,7 +56,7 @@ void next_TimeLayer_Calculate (
             JacobiPrecond, // preconditioner type
             1.2); // preconditioner relaxation constant; probably, should be changed
 
-    fill_approximation (G, V, &unknown_vector, grid->X_nodes);
+    fill_approximation (G, V, &unknown_vector);
   }
 
   Q_Destr (&lh_side);
@@ -227,7 +227,8 @@ void fill_mesh_at_initial_time (
   return;
 }
 
-void fill_approximation (double * G, double * V, Vector * unknown_vector, unsigned total_values) {
+void fill_approximation (double * G, double * V, Vector * unknown_vector) {
+  unsigned total_values = V_GetDim (unknown_vector) / 2;
   unsigned space_step = 0;
   for (space_step = 0; space_step < total_values; ++space_step) {
       G[space_step] = V_GetCmp (unknown_vector, G_INDEX(space_step));
