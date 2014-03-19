@@ -148,7 +148,7 @@ void sparse_matrix_initialize (
     this->values[i] = NEW(double, rows_default);
   }
 }
-
+/*
 void fill_system (
     QMatrix * lh_side,
     Vector * rh_side,
@@ -200,6 +200,135 @@ void fill_system (
   }
   sparse_matrix_write(&matrix, lh_side);
   sparse_matrix_clear(&matrix);
+}
+*/
+
+void set_qmatrix_entries (
+    QMatrix * matrix, 
+    unsigned row, 
+    unsigned * nonzero_columns, 
+    double * values, 
+    unsigned total_entries) {
+  unsigned entry_number;
+  for (entry_number = 0; entry_number < total_entries; ++ entry_number) {
+    Q_SetEntry (lh_side, equation_number, entry_number, nonzero_columns[entry_number], values[entry_number]);
+  }
+  return;
+}
+
+void fill_system (
+    QMatrix * lh_side,
+    Vector * rh_side,
+    Grid * grid,
+    Node_status * node_status,
+    Gas_parameters * parameters,
+    double * G,
+    double * V) {
+  unsigned space_step = 0;
+  unsigned 1st_type_equation_coef_length = 5;
+  unsigned 2nd_type_equation_coef_length = 4;
+  unsigned 3rd_type_equation_coef_length = 4;
+  unsigned 4th_type_equation_coef_length = 5;
+  unsigned equation_number = 0;
+
+  unsigned nonzero_columns[5];
+  double lh_values[5];
+  double rh_value;
+
+  for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
+    switch (node_status[space_step]) {
+      case LEFT:
+        nonzero_columns[0] = 1; // G_0
+        nonzero_columns[1] = 2; // V_0
+        nonzero_columns[2] = 3; // G_1
+        nonzero_columns[3] = 4; // V_1
+
+        lh_values[0] = grid->T_step + .5 * grid->X_step * V[0];
+        lh_values[1] = grid->X_step;
+        lh_values[2] = .5 * grid->X_step * V[1];
+        lh_values[3] = grid->X_step;
+
+        rh_value = ;
+
+        Q_SetLen (lh_side, equation_number, 2nd_type_equation_coef_length);
+
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 2nd_type_equation_coef_length);
+
+        V_SetCmp (rh_side, equation_number, rh_value);
+        ++equation_number;
+        break;
+
+      case MIDDLE:
+        nonzero_columns[0] = 2 * space_step - 1; // G_{n-1}
+        nonzero_columns[1] = 2 * space_step;     // V_{n-1}
+        nonzero_columns[2] = 2 * space_step + 1; // G_{n}
+        nonzero_columns[3] = 2 * space_step + 3; // G_{n+1}
+        nonzero_columns[4] = 2 * space_step + 4; // V_{n+1}
+
+        lh_values[0] = -.25 * X_step * V[space_step] - .25 * X_step * V[space_step - 1];
+        lh_values[1] = ;
+        lh_values[2] = ;
+        lh_values[3] = ;
+        lh_values[4] = ;
+
+        rh_value = ;
+
+        Q_SetLen (lh_side, equation_number, 1st_type_equation_coef_length);
+
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1st_type_equation_coef_length);
+
+        V_SetCmp (rh_side, equation_number, rh_value);
+        ++equation_number;
+
+        /* another equation */
+
+        nonzero_columns[0] = 2 * space_step - 1; // G_{n-1}
+        nonzero_columns[1] = 2 * space_step;     // V_{n-1}
+        nonzero_columns[2] = 2 * space_step + 2; // V_{n}
+        nonzero_columns[3] = 2 * space_step + 3; // G_{n+1}
+        nonzero_columns[4] = 2 * space_step + 4; // V_{n+1}
+
+        lh_values[0] = ;
+        lh_values[1] = ;
+        lh_values[2] = ;
+        lh_values[3] = ;
+        lh_values[4] = ;
+
+        rh_value = ;
+
+        Q_SetLen (lh_side, equation_number, 4th_type_equation_coef_length);
+
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 4th_type_equation_coef_length);
+
+        V_SetCmp (rh_side, equation_number, rh_value);
+        ++equation_number;
+        break;
+
+      case RIGHT:
+        nonzero_columns[0] = grid->X_nodes - 3; // G_{M-1}
+        nonzero_columns[1] = grid->X_nodes - 2; // V_{M-1}
+        nonzero_columns[2] = grid->X_nodes - 1; // G_{M}
+        nonzero_columns[3] = grid->X_nodes;     // V_{M}
+
+        lh_values[0] = ;
+        lh_values[1] = ;
+        lh_values[2] = ;
+        lh_values[3] = ;
+
+        rh_value = ;
+
+        Q_SetLen (lh_side, equation_number, 3rd_type_equation_coef_length);
+
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 3rd_type_equation_coef_length);
+
+        V_SetCmp (rh_side, equation_number, rh_value);
+        ++equation_number;
+        break;
+
+      default:
+        break;
+    }
+  }
 }
 
 void fill_mesh_at_initial_time (
