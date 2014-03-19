@@ -39,7 +39,7 @@ double u_xx (double x, double t) {
     );
 }
 
-double rhs_1st_eqation (double x, double t, Gas_parameters * parameters) {
+double rhs_1st_equation (double x, double t, Gas_parameters * parameters) {
   return ro_t (x, t) + 
     ro_x (x, t) * u_exact (x, t) + 
     ro_exact (x, t) * u_x (x, t);

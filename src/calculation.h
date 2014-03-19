@@ -7,14 +7,6 @@
 #include <rtc.h>
 #include <operats.h>
 
-typedef struct _SparseMatrix {
-  unsigned rows;
-  unsigned *cols;
-  unsigned *rows_numbers;
-  unsigned **cols_numbers;
-  double **values;
-} SparseMatrix;
-
 void next_TimeLayer_Calculate (
   double * G, 
   double * V, 
@@ -24,13 +16,15 @@ void next_TimeLayer_Calculate (
   Grid * grid);
 
 void fill_system (
-  QMatrix * lh_side,
-  Vector * rh_side,
-  Grid * grid,
-  Node_status * node_status,
-  Gas_parameters * parameters,
-  double * G,
-  double * V);
+    QMatrix * lh_side,
+    Vector * rh_side,
+    Grid * grid,
+    Node_status * node_status,
+    Gas_parameters * parameters,
+    double * space_coordinates,
+    unsigned time_step,
+    double * G,
+    double * V);
 
 void fill_mesh_at_initial_time (
   double * G,
