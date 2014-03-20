@@ -73,6 +73,8 @@ int main (int argc, char ** argv) {
                                                                      space_coordinates, 
                                                                      parameters.time_upper_boundary, 
                                                                      g_exact);
+      printf ("\rFinished iteration %d in %.1lf seconds.\n", global_iteration,
+              time_elapsed_at_iteration[global_iteration]);
       scheme_elements_Destruct (G, V);
       mesh_elements_Destruct (node_statuses, space_coordinates);
       ++global_iteration;
