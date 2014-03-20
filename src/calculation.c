@@ -7,8 +7,8 @@
  *  1 .. 2 .. 3 .. 4 ..... 2M-1  2M
  */
 
-#define G_INDEX(i) (2 * i + 1)
-#define V_INDEX(i) (2 * i + 2)
+#define G_INDEX(i) (2 * (i) + 1)
+#define V_INDEX(i) (2 * (i) + 2)
 
 void next_TimeLayer_Calculate (
     double * G, 
