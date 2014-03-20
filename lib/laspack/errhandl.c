@@ -69,6 +69,8 @@ void LASError(LASErrIdType ErrId, char *ProcName, char *Object1Name,
         strcpy(LASProcName, "(procedure unknown)");
     }
 
+    WriteLASErrDescr(stderr);
+
 }
 
 void LASBreak(void)
