@@ -154,10 +154,10 @@ void fill_system (
         nonzero_columns[4] = V_INDEX(space_step + 1); // V_{n+1}
 
         lh_values[0] = -_h_4 * V[space_step] - _h_4 * V[space_step - 1];
-        lh_values[1] = -_h;
+        lh_values[1] = -_h_2;
         lh_values[2] = _tau;
         lh_values[3] = _h_4 * V[space_step] + _h_4 * V[space_step + 1];
-        lh_values[4] = _h;
+        lh_values[4] = _h_2;
 
         rh_value = _tau * G[space_step] +
                    _h_2 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
@@ -212,8 +212,11 @@ void fill_system (
         rh_value = _tau * G[grid->X_nodes - 1] +
                    _h_2 * G[grid->X_nodes - 1] * (V[grid->X_nodes - 1] - V[grid->X_nodes - 2]) -
                    _h_4 * 
-                     (G[grid->X_nodes - 1] * V[grid->X_nodes - 1] - 2 * G[grid->X_nodes - 2] * V[grid->X_nodes - 2] + G[grid->X_nodes - 3] * V[grid->X_nodes - 3] +
-                        (2 - G[grid->X_nodes - 1]) * (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
+                     (G[grid->X_nodes - 1] * V[grid->X_nodes - 1] - 
+                      2 * G[grid->X_nodes - 2] * V[grid->X_nodes - 2] + 
+                      G[grid->X_nodes - 3] * V[grid->X_nodes - 3] +
+                        (2 - G[grid->X_nodes - 1]) * 
+                        (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
                    rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, parameters);
 
         Q_SetLen (lh_side, equation_number, third_type_equation_coef_length);
