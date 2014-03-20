@@ -7,8 +7,8 @@
  *  1 .. 2 .. 3 .. 4 ..... 2M-1  2M
  */
 
-#define G_INDEX(i) (2 * i + 1)
-#define V_INDEX(i) (2 * i + 2)
+#define G_INDEX(i) (2 * (i) + 1)
+#define V_INDEX(i) (2 * (i) + 2)
 
 void next_TimeLayer_Calculate (
     double * G, 
@@ -45,6 +45,8 @@ void next_TimeLayer_Calculate (
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
+    printf ("\rTime step is %d of %d.", time_step, grid->T_nodes - 1);
+    fflush (stdout);
     fill_system (&lh_side, &rh_side, grid, node_status, parameters, space_coordinates, time_step, G, V);
 
     // launch iteration algorithm
@@ -123,6 +125,14 @@ void fill_system (
 
         set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, second_type_equation_coef_length);
 
+        V_SetCmp (rh_side, equation_number, rh_value);
+        ++equation_number;
+
+        nonzero_columns[0] = V_INDEX(0);
+        lh_values[0] = 1;
+        rh_value = 0;
+        Q_SetLen (lh_side, equation_number, 1);
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1);
         V_SetCmp (rh_side, equation_number, rh_value);
         ++equation_number;
         break;
@@ -209,6 +219,14 @@ void fill_system (
         break;
     }
   }
+
+  nonzero_columns[0] = V_INDEX(grid->X_nodes - 1);
+  lh_values[0] = 1;
+  rh_value = 0;
+  Q_SetLen (lh_side, equation_number, 1);
+  set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1);
+  V_SetCmp (rh_side, equation_number, rh_value);
+
 }
 
 void fill_mesh_at_initial_time (
