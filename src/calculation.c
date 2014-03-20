@@ -101,6 +101,13 @@ void fill_system (
   double lh_values[5];
   double rh_value;
 
+  double _h = 1. / grid->X_step;
+  double _h_2 = .5 * _h;
+  double _h_4 = .25 * _h;
+  double _h_6 = _h / 6.;
+
+  double _tau = 1. / grid->T_step;
+
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
     switch (node_status[space_step]) {
       case LEFT:
@@ -109,14 +116,14 @@ void fill_system (
         nonzero_columns[2] = G_INDEX(1); // G_1
         nonzero_columns[3] = V_INDEX(1); // V_1
 
-        lh_values[0] = grid->T_step - .5 * grid->X_step * V[0];
-        lh_values[1] = -grid->X_step;
-        lh_values[2] = .5 * grid->X_step * V[1];
-        lh_values[3] = grid->X_step;
+        lh_values[0] = _tau - _h_2 * V[0];
+        lh_values[1] = -_h;
+        lh_values[2] = _h_2 * V[1];
+        lh_values[3] = _h;
 
-        rh_value = grid->T_step * G[0] +
-                   grid->X_step * G[0] * (V[1] - V[0]) +
-                   .25 * grid->X_step *
+        rh_value = _tau * G[0] +
+                   _h * G[0] * (V[1] - V[0]) +
+                   _h_4 *
                      (G[2] * V[2] - 2 * G[1] * V[1] + G[0] * V[0] +
                       (2 - G[0]) * (V[2] - 2 * V[1] + V[0])) +
                    rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
@@ -127,6 +134,8 @@ void fill_system (
 
         V_SetCmp (rh_side, equation_number, rh_value);
         ++equation_number;
+
+        /* dummy equation */
 
         nonzero_columns[0] = V_INDEX(0);
         lh_values[0] = 1;
@@ -144,14 +153,14 @@ void fill_system (
         nonzero_columns[3] = G_INDEX(space_step + 1); // G_{n+1}
         nonzero_columns[4] = V_INDEX(space_step + 1); // V_{n+1}
 
-        lh_values[0] = -.25 * grid->X_step * V[space_step] - .25 * grid->X_step * V[space_step - 1];
-        lh_values[1] = -grid->X_step;
-        lh_values[2] = grid->T_step;
-        lh_values[3] = .25 * grid->X_step * V[space_step] + .25 * grid->X_step * V[space_step + 1];
-        lh_values[4] = grid->X_step;
+        lh_values[0] = -_h_4 * V[space_step] - _h_4 * V[space_step - 1];
+        lh_values[1] = -_h;
+        lh_values[2] = _tau;
+        lh_values[3] = _h_4 * V[space_step] + _h_4 * V[space_step + 1];
+        lh_values[4] = _h;
 
-        rh_value = grid->T_step * G[space_step] +
-                   .5 * grid->X_step * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
+        rh_value = _tau * G[space_step] +
+                   _h_2 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
                    rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
 
         Q_SetLen (lh_side, equation_number, first_type_equation_coef_length);
@@ -170,15 +179,15 @@ void fill_system (
         nonzero_columns[4] = V_INDEX(space_step + 1); // V_{n+1}
 
         // attention: these values should be changed when (viscosity != 0)
-        lh_values[0] = -.5 * grid->X_step * parameters->p_ro;
-        lh_values[1] = -1. / 6 * grid->X_step * V[space_step] - 
-                        1. / 6 * grid->X_step * V[space_step - 1];
-        lh_values[2] = grid->T_step;
-        lh_values[3] = .5 * grid->X_step * parameters->p_ro;
-        lh_values[4] = 1. / 6 * grid->X_step * V[space_step] + 
-                       1. / 6 * grid->X_step * V[space_step + 1];
+        lh_values[0] = -_h_2 * parameters->p_ro;
+        lh_values[1] = -_h_6 * V[space_step] - 
+                        _h_6 * V[space_step - 1];
+        lh_values[2] = _tau;
+        lh_values[3] = _h_2 * parameters->p_ro;
+        lh_values[4] = _h_6 * V[space_step] + 
+                       _h_6 * V[space_step + 1];
         // and these
-        rh_value = grid->T_step * V[space_step] +
+        rh_value = _tau * V[space_step] +
                    rhs_2nd_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
 
         Q_SetLen (lh_side, equation_number, fourth_type_equation_coef_length);
@@ -195,14 +204,14 @@ void fill_system (
         nonzero_columns[2] = G_INDEX(grid->X_nodes - 1); // G_{M}
         nonzero_columns[3] = V_INDEX(grid->X_nodes - 1); // V_{M}
 
-        lh_values[0] = -.5 * grid->X_step * V[grid->X_nodes - 2];
-        lh_values[1] = -grid->X_step;
-        lh_values[2] = grid->T_step + .5 * grid->X_step * V[grid->X_nodes - 1];
-        lh_values[3] = grid->X_step;
+        lh_values[0] = -_h_2 * V[grid->X_nodes - 2];
+        lh_values[1] = -_h;
+        lh_values[2] = _tau + _h_2 * V[grid->X_nodes - 1];
+        lh_values[3] = _h;
 
-        rh_value = G[grid->X_nodes - 1] * grid->T_step +
-                   .5 * grid->T_step * G[grid->X_nodes - 1] * (V[grid->X_nodes - 1] - V[grid->X_nodes - 2]) +
-                   -.25 * grid->X_step * 
+        rh_value = _tau * G[grid->X_nodes - 1] +
+                   _h_2 * G[grid->X_nodes - 1] * (V[grid->X_nodes - 1] - V[grid->X_nodes - 2]) -
+                   _h_4 * 
                      (G[grid->X_nodes - 1] * V[grid->X_nodes - 1] - 2 * G[grid->X_nodes - 2] * V[grid->X_nodes - 2] + G[grid->X_nodes - 3] * V[grid->X_nodes - 3] +
                         (2 - G[grid->X_nodes - 1]) * (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
                    rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, parameters);
@@ -213,20 +222,23 @@ void fill_system (
 
         V_SetCmp (rh_side, equation_number, rh_value);
         ++equation_number;
+
+        /* dummy equation */ 
+         
+        nonzero_columns[0] = V_INDEX(grid->X_nodes - 1);
+        lh_values[0] = 1;
+        rh_value = 0;
+        Q_SetLen (lh_side, equation_number, 1);
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1);
+        V_SetCmp (rh_side, equation_number, rh_value);
+        ++equation_number;
         break;
 
       default:
         break;
     }
   }
-
-  nonzero_columns[0] = V_INDEX(grid->X_nodes - 1);
-  lh_values[0] = 1;
-  rh_value = 0;
-  Q_SetLen (lh_side, equation_number, 1);
-  set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1);
-  V_SetCmp (rh_side, equation_number, rh_value);
-
+  return;
 }
 
 void fill_mesh_at_initial_time (
