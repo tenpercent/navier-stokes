@@ -4,8 +4,7 @@
 /* G and V values are packed as follows:
  *
  * G[0] V[0] G[1] V[1] ... G[M] V[M]
- * 
- * I cannot into macros, so working fix would be welcome
+ *  1 .. 2 .. 3 .. 4 ..... 2M-1  2M
  */
 
 #define G_INDEX(i) (2 * i + 1)

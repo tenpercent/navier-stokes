@@ -28,7 +28,7 @@ int main (int argc, char ** argv) {
   unsigned global_iteration = 0;
   unsigned max_iteration_space = 3;
   unsigned max_iteration_time = 3;
-  unsigned max_global_iteration = (max_iteration_space + 1) * (max_iteration_time + 1);
+  unsigned max_global_iteration = (max_iteration_space) * (max_iteration_time);
 
   unsigned iteration_time, iteration_space;
 

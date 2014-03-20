@@ -16,7 +16,8 @@ void export_results (double ** results, unsigned total_experiments) {
     snprintf (
       current_experiment_to_string,
       MAX_BUFFER_SIZE,
-      ",%.3lf s,%.6lf,%.6lf,%.6lf,%.6lf\n", 
+      "%d,%.3lf s,%.6lf,%.6lf,%.6lf,%.6lf\n", 
+        experiments_step + 1,
         results[0][experiments_step], 
         results[1][experiments_step], 
         results[2][experiments_step], 
