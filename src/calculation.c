@@ -125,6 +125,14 @@ void fill_system (
 
         V_SetCmp (rh_side, equation_number, rh_value);
         ++equation_number;
+
+        nonzero_columns[0] = V_INDEX(0);
+        lh_values[0] = 1;
+        rh_value = 0;
+        Q_SetLen (lh_side, equation_number, 1);
+        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1);
+        V_SetCmp (rh_side, equation_number, rh_value);
+        ++equation_number;
         break;
 
       case MIDDLE:
@@ -209,6 +217,14 @@ void fill_system (
         break;
     }
   }
+
+  nonzero_columns[0] = V_INDEX(grid->X_nodes - 1);
+  lh_values[0] = 1;
+  rh_value = 0;
+  Q_SetLen (lh_side, equation_number, 1);
+  set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1);
+  V_SetCmp (rh_side, equation_number, rh_value);
+
 }
 
 void fill_mesh_at_initial_time (
