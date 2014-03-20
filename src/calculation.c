@@ -43,7 +43,7 @@ void next_TimeLayer_Calculate (
   SetRTCAccuracy (1e-8);
 
   // T == 0
-  fill_mesh_at_initial_time (G, V, log_ro, u_exact, space_coordinates, grid->X_nodes); 
+  fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     fill_system (&lh_side, &rh_side, grid, node_status, parameters, space_coordinates, time_step, G, V);
@@ -228,9 +228,9 @@ void fill_mesh_at_initial_time (
 }
 
 void fill_approximation (double * G, double * V, Vector * unknown_vector) {
-  size_t total_values = V_GetDim (unknown_vector) << 1;
+  size_t total_values = V_GetDim (unknown_vector) >> 1;
   unsigned space_step = 0;
-  
+
   for (space_step = 0; space_step < total_values; ++space_step) {
       G[space_step] = V_GetCmp (unknown_vector, G_INDEX(space_step));
   }

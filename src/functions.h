@@ -8,7 +8,7 @@ double u_exact (double x, double t);
 
 double ro_exact (double x, double t);
 
-double log_ro (double x, double t);
+double g_exact (double x, double t);
 
 double u_t (double x, double t);
 
