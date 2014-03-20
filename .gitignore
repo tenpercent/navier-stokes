@@ -1,2 +1,3 @@
 gas
-*.o
+build
+results.csv
