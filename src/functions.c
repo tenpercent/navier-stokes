@@ -1,6 +1,9 @@
 #ifndef FUNCTIONS
 #define FUNCTIONS
 
+#define _GNU_SOURCE
+#define _USE_MATH_DEFINES
+
 #include <math.h>
 #include "structures.h"
 
