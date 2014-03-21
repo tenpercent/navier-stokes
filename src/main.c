@@ -1,4 +1,7 @@
 #include <time.h>
+
+#include <xmmintrin.h>
+
 #include "initialize.h"
 #include "functions.h"
 #include "norm.h"
@@ -7,6 +10,9 @@
 #include "export.h"
 
 int main (int argc, char ** argv) {
+
+  _MM_SET_EXCEPTION_MASK(_MM_GET_EXCEPTION_MASK() & ~_MM_MASK_INVALID);
+
   Gas_parameters parameters;
   Grid grid;
 
