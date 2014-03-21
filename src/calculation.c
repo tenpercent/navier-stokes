@@ -44,8 +44,8 @@ void next_TimeLayer_Calculate (
 
   // initialize unknown vector (oh god why)
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
-    V_SetCmp (&unknown_vector, G_INDEX(space_step), g_exact(0., space_coordinates[space_step]));
-    V_SetCmp (&unknown_vector, V_INDEX(space_step), u_exact(0., space_coordinates[space_step]));
+    V_SetCmp (&unknown_vector, G_INDEX(space_step), g_exact(space_coordinates[space_step], 0.));
+    V_SetCmp (&unknown_vector, V_INDEX(space_step), u_exact(space_coordinates[space_step], 0.));
   }
 
   // iteration algorithm accuracy
@@ -63,9 +63,9 @@ void next_TimeLayer_Calculate (
     CGNIter (&lh_side, 
             &unknown_vector, 
             &rh_side, 
-            2000, // max iterations
+            10000, // max iterations
             JacobiPrecond, // preconditioner type
-            1.2); // preconditioner relaxation constant; probably, should be changed
+            2); // preconditioner relaxation constant; probably, should be changed
 
     fill_approximation (G, V, &unknown_vector);
   }
@@ -278,7 +278,7 @@ void fill_approximation (double * G, double * V, Vector * unknown_vector) {
   }
 
   V[0] = 0.;
-  for (space_step = 1; space_step + 1 < total_values; ++space_step) { // total_values == 0 wtf
+  for (space_step = 1; space_step + 1 < total_values; ++space_step) {
     V[space_step] = V_GetCmp (unknown_vector, V_INDEX(space_step));
   }
   V[total_values - 1] = 0.;

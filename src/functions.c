@@ -1,11 +1,12 @@
 #ifndef FUNCTIONS
 #define FUNCTIONS
 
-#define _GNU_SOURCE
-#define _USE_MATH_DEFINES
-
 #include <math.h>
 #include "structures.h"
+
+#ifndef M_PI
+  #define M_PI 3.14159265358979323846264338327950288
+#endif
 
 double u_exact (double x, double t) {
   return cos(2 * M_PI * t) * sin(M_PI * x * x * .01);
@@ -16,11 +17,11 @@ double ro_exact (double x, double t) {
 }
 
 double g_exact (double x, double t) {
-  return log (ro_exact (x, t));
+  return t + log (cos (M_PI * x * .1) + 1.5);
 }
 
 double g_x (double x, double t) {
-  return -.1 * M_PI * (sin (.1 * M_PI * x)) / (cos (.1 * M_PI * x) + 1.5);
+  return -.1 * M_PI * sin (.1 * M_PI * x) / (cos (.1 * M_PI * x) + 1.5);
 }
 
 double g_t (double x, double t) {
