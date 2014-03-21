@@ -160,7 +160,7 @@ void fill_system (
         lh_values[4] = _h_2;
 
         rh_value = _tau * G[space_step] +
-                   _h_2 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
+                   _h_4 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
                    rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
 
         Q_SetLen (lh_side, equation_number, first_type_equation_coef_length);
