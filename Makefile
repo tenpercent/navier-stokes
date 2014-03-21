@@ -1,6 +1,6 @@
 BUILDDIR = build
 CC = cc
-CFLAGS = -Wall -g -Ilib -Ilib/laspack -Ilib/xc 
+CFLAGS = -Wall -g -Ilib -Ilib/laspack -Ilib/xc
 LD = cc
 LFLAGS = -lm
 LASPACKONAMES = eigenval.o \
@@ -41,3 +41,5 @@ clean:
 
 distclean: clean
 	rm -f gas
+
+.SECONDARY: $(BUILDDIR)/laspack/create-stamp $(BUILDDIR)/program/create-stamp
