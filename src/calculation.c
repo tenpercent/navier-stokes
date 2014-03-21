@@ -55,7 +55,7 @@ void next_TimeLayer_Calculate (
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
-    printf ("\rTime step is %d of %d.", time_step, grid->T_nodes - 1);
+    printf ("\rTime step is %u of %u.", time_step, grid->T_nodes - 1);
     fflush (stdout);
     fill_system (&lh_side, &rh_side, grid, node_status, parameters, space_coordinates, time_step, G, V);
 
