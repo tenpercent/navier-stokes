@@ -20,7 +20,9 @@ void next_TimeLayer_Calculate (
   QMatrix lh_side; // left-hand side of the system
   Vector rh_side; // right-hand side of the system
   Vector unknown_vector; // which will be found when we solve the system
+
   unsigned time_step;
+  unsigned space_step;
 
   Q_Constr (&lh_side, 
             "Matrix", 
@@ -39,6 +41,14 @@ void next_TimeLayer_Calculate (
             2 * grid->X_nodes, 
             Normal, 
             True);
+
+  // initialize unknown vector (oh god why)
+  for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
+    V_SetCmp (&unknown_vector, G_INDEX(space_step), g_exact(0., space_coordinates[space_step]));
+    V_SetCmp (&unknown_vector, V_INDEX(space_step), u_exact(0., space_coordinates[space_step]));
+  }
+
+  // iteration algorithm accuracy
   SetRTCAccuracy (1e-8);
 
   // T == 0
