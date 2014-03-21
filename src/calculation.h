@@ -13,7 +13,8 @@ void next_TimeLayer_Calculate (
   Node_status * node_status, 
   double * space_coordinate, 
   Gas_parameters * parameters,
-  Grid * grid);
+  Grid * grid,
+  Iterative_method method);
 
 void fill_system (
     QMatrix * lh_side,

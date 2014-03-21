@@ -51,7 +51,7 @@ int main (int argc, char ** argv) {
       mesh_Initialize (node_statuses, space_coordinates, &grid);
 
       start_time = clock();
-      next_TimeLayer_Calculate (G, V, node_statuses, space_coordinates, &parameters, &grid);
+      next_TimeLayer_Calculate (G, V, node_statuses, space_coordinates, &parameters, &grid, BiCGStab);
       finish_time = clock();
 
       time_elapsed_at_iteration[global_iteration] = (finish_time - start_time) / (double) CLOCKS_PER_SEC;
@@ -75,7 +75,7 @@ int main (int argc, char ** argv) {
                                                                      space_coordinates, 
                                                                      parameters.time_upper_boundary, 
                                                                      g_exact);
-      printf ("\rFinished iteration %u in %.1lf seconds.\n", global_iteration,
+      printf ("\rFinished iteration %u in %.1lf seconds.\n", global_iteration + 1,
               time_elapsed_at_iteration[global_iteration]);
       scheme_elements_Destruct (G, V);
       mesh_elements_Destruct (node_statuses, space_coordinates);

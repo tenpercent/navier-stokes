@@ -16,13 +16,17 @@ void next_TimeLayer_Calculate (
     Node_status * node_status, 
     double * space_coordinates, 
     Gas_parameters * parameters,
-    Grid * grid) {
+    Grid * grid,
+    Iterative_method method) {
   QMatrix lh_side; // left-hand side of the system
   Vector rh_side; // right-hand side of the system
   Vector unknown_vector; // which will be found when we solve the system
 
   unsigned time_step;
   unsigned space_step;
+
+  unsigned max_iterations = 10000;
+  double relaxation_constant = 1.41;
 
   Q_Constr (&lh_side, 
             "Matrix", 
@@ -42,10 +46,12 @@ void next_TimeLayer_Calculate (
             Normal, 
             True);
 
-  // initialize unknown vector (oh god why)
+  // initialize unknown vector
+  // seems that random values are ok
+  // just as planned; this is UNKNOWN vector
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
-    V_SetCmp (&unknown_vector, G_INDEX(space_step), g_exact(space_coordinates[space_step], 0.));
-    V_SetCmp (&unknown_vector, V_INDEX(space_step), u_exact(space_coordinates[space_step], 0.));
+    V_SetCmp (&unknown_vector, G_INDEX(space_step), 0.);
+    V_SetCmp (&unknown_vector, V_INDEX(space_step), 0.);
   }
 
   // iteration algorithm accuracy
@@ -60,12 +66,27 @@ void next_TimeLayer_Calculate (
     fill_system (&lh_side, &rh_side, grid, node_status, parameters, space_coordinates, time_step, G, V);
 
     // launch iteration algorithm
-    CGNIter (&lh_side, 
-            &unknown_vector, 
-            &rh_side, 
-            10000, // max iterations
-            JacobiPrecond, // preconditioner type
-            2); // preconditioner relaxation constant; probably, should be changed
+    switch (method) {
+      case CGN:
+        CGNIter (&lh_side, 
+              &unknown_vector, 
+              &rh_side, 
+              max_iterations, // max iterations
+              JacobiPrecond, // preconditioner type
+              relaxation_constant); // preconditioner relaxation constant; probably, should be changed
+        break;
+      case BiCGStab:
+        BiCGIter (&lh_side, 
+              &unknown_vector, 
+              &rh_side, 
+              max_iterations,
+              JacobiPrecond, 
+              relaxation_constant);
+        break;
+      default:
+        break;
+    }
+    
 
     fill_approximation (G, V, &unknown_vector);
   }

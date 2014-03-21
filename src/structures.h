@@ -27,4 +27,12 @@ typedef enum {
   RIGHT = 2
 } Node_status;
 
+typedef enum {
+  CGN = 0,
+  BiCGStab = 1,
+  CGS = 2,
+  QMR = 3,
+  GMRES = 4
+} Iterative_method;
+
 #endif
