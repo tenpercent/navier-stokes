@@ -76,7 +76,31 @@ void next_TimeLayer_Calculate (
               relaxation_constant); // preconditioner relaxation constant; probably, should be changed
         break;
       case BiCGStab:
-        BiCGIter (&lh_side, 
+        BiCGSTABIter (&lh_side, 
+              &unknown_vector, 
+              &rh_side, 
+              max_iterations,
+              JacobiPrecond, 
+              relaxation_constant);
+        break;
+      case CGS:
+        CGSIter (&lh_side, 
+              &unknown_vector, 
+              &rh_side, 
+              max_iterations,
+              JacobiPrecond, 
+              relaxation_constant);
+        break;
+      case QMR:
+        QMRIter (&lh_side, 
+              &unknown_vector, 
+              &rh_side, 
+              max_iterations,
+              JacobiPrecond, 
+              relaxation_constant);
+        break;
+      case GMRES:
+        GMRESIter (&lh_side, 
               &unknown_vector, 
               &rh_side, 
               max_iterations,
@@ -156,7 +180,7 @@ void fill_system (
                    _h_2 * G[0] * (V[1] - V[0]) +
                    _h_4 *
                      (G[2] * V[2] - 2 * G[1] * V[1] + G[0] * V[0] +
-                      (2 - G[0]) * (V[2] - 2 * V[1] + V[0])) +
+                       (2 - G[0]) * (V[2] - 2 * V[1] + V[0])) +
                    rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
 
         Q_SetLen (lh_side, equation_number, second_type_equation_coef_length);
