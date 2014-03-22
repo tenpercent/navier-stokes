@@ -47,14 +47,15 @@ void next_TimeLayer_Calculate (
             True);
 
   // initialize unknown vector
-  // seems that random values are ok
-  // just as planned; this is UNKNOWN vector
+  // with the approximation of next time layer values
+  // which is this time layer values
+  // as the functions are continuous
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
-    V_SetCmp (&unknown_vector, G_INDEX(space_step), 0.);
-    V_SetCmp (&unknown_vector, V_INDEX(space_step), 0.);
+    V_SetCmp (&unknown_vector, G_INDEX(space_step), g_exact (space_coordinates[space_step], 0.));
+    V_SetCmp (&unknown_vector, V_INDEX(space_step), u_exact (space_coordinates[space_step], 0.));
   }
 
-  // iteration algorithm accuracy
+  // iterative algorithm accuracy
   SetRTCAccuracy (1e-8);
 
   // T == 0
