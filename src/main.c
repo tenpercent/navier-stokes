@@ -27,6 +27,11 @@ int main (int argc, char ** argv) {
   double * V = NULL;
   double * G = NULL;
 
+  Preconditioner_type preconditioner_type;
+  Iterative_method iterative_method;
+
+  initialize_iterative_algorithm_parameters (&preconditioner_type, &iterative_method, argc, argv);
+
   unsigned global_iteration = 0;
   unsigned max_iteration_space = 3;
   unsigned max_iteration_time = 3;
@@ -51,7 +56,14 @@ int main (int argc, char ** argv) {
       mesh_Initialize (node_statuses, space_coordinates, &grid);
 
       start_time = clock();
-      next_TimeLayer_Calculate (G, V, node_statuses, space_coordinates, &parameters, &grid, BiCGStab);
+      next_TimeLayer_Calculate (G, 
+                                V, 
+                                node_statuses, 
+                                space_coordinates, 
+                                &parameters, 
+                                &grid, 
+                                &preconditioner_type, 
+                                &iterative_method);
       finish_time = clock();
 
       time_elapsed_at_iteration[global_iteration] = (finish_time - start_time) / (double) CLOCKS_PER_SEC;

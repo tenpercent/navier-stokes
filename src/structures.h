@@ -35,4 +35,9 @@ typedef enum {
   GMRES = 4
 } Iterative_method;
 
+typedef enum {
+  Jacobi = 0,
+  SSOR = 1
+} Preconditioner_type;
+
 #endif

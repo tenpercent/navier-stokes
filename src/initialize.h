@@ -9,3 +9,5 @@ void grid_Initialize (
   unsigned space_steps_magnifier);
 
 void mesh_Initialize (Node_status * node_status, double * space_coordinate, Grid * grid); // no need... actually, it will be executed once.
+
+void initialize_iterative_algorithm_parameters (Preconditioner_type * type, Iterative_method * method, int argc, char ** argv);

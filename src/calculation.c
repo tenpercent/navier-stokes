@@ -17,9 +17,10 @@ void next_TimeLayer_Calculate (
     double * space_coordinates, 
     Gas_parameters * parameters,
     Grid * grid,
-    Iterative_method method) {
+    Preconditioner_type * preconditioner_type,
+    Iterative_method * iterative_method) {
   QMatrix lh_side; // left-hand side of the system
-  Vector rh_side; // right-hand side of the system
+  Vector rh_side;  // right-hand side of the system
   Vector unknown_vector; // which will be found when we solve the system
 
   unsigned time_step;
@@ -27,6 +28,11 @@ void next_TimeLayer_Calculate (
 
   unsigned max_iterations = 10000;
   double relaxation_constant = 1.41;
+
+  PrecondProcType actual_type;
+
+  typedef Vector* (*IterativeMethodType) (QMatrix *, Vector *, Vector *, int, PrecondProcType, double);
+  IterativeMethodType actual_method; 
 
   Q_Constr (&lh_side, 
             "Matrix", 
@@ -61,57 +67,52 @@ void next_TimeLayer_Calculate (
   // T == 0
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
+  switch (*preconditioner_type) {
+    case Jacobi:
+      actual_type = JacobiPrecond;
+      break;
+    case SSOR:
+      actual_type = SSORPrecond;
+      break;
+    default:
+      break;
+  }
+
+  switch (*iterative_method) {
+    case CGN:
+      actual_method = CGNIter;
+      break;
+    case BiCGStab:
+      actual_method = BiCGSTABIter;
+      break;
+    case CGS:
+      actual_method = CGSIter;
+      break;
+    case QMR:
+      actual_method = QMRIter;
+      break;
+    case GMRES:
+      actual_method = GMRESIter;
+      break;
+    default:
+      actual_method = CGNIter;
+      break;
+  }
+
+
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     printf ("\rTime step is %u of %u.", time_step, grid->T_nodes - 1);
     fflush (stdout);
     fill_system (&lh_side, &rh_side, grid, node_status, parameters, space_coordinates, time_step, G, V);
 
     // launch iteration algorithm
-    switch (method) {
-      case CGN:
-        CGNIter (&lh_side, 
+
+    actual_method (&lh_side, 
               &unknown_vector, 
               &rh_side, 
-              max_iterations, // max iterations
-              JacobiPrecond, // preconditioner type
+              max_iterations,       // max iterations
+              actual_type,          // preconditioner type
               relaxation_constant); // preconditioner relaxation constant; probably, should be changed
-        break;
-      case BiCGStab:
-        BiCGSTABIter (&lh_side, 
-              &unknown_vector, 
-              &rh_side, 
-              max_iterations,
-              JacobiPrecond, 
-              relaxation_constant);
-        break;
-      case CGS:
-        CGSIter (&lh_side, 
-              &unknown_vector, 
-              &rh_side, 
-              max_iterations,
-              JacobiPrecond, 
-              relaxation_constant);
-        break;
-      case QMR:
-        QMRIter (&lh_side, 
-              &unknown_vector, 
-              &rh_side, 
-              max_iterations,
-              JacobiPrecond, 
-              relaxation_constant);
-        break;
-      case GMRES:
-        GMRESIter (&lh_side, 
-              &unknown_vector, 
-              &rh_side, 
-              max_iterations,
-              JacobiPrecond, 
-              relaxation_constant);
-        break;
-      default:
-        break;
-    }
-    
 
     fill_approximation (G, V, &unknown_vector);
   }
