@@ -71,9 +71,9 @@ void next_TimeLayer_Calculate (
     iterative_method_parameters->method (&lh_side, 
               &unknown_vector, 
               &rh_side, 
-              max_iterations,       // max iterations
+              max_iterations,                                            // max iterations
               iterative_method_parameters->preconditioner_type,          // preconditioner type
-              relaxation_constant); // preconditioner relaxation constant; probably, should be changed
+              relaxation_constant);                                      // preconditioner relaxation constant
 
     fill_approximation (G, V, &unknown_vector);
   }

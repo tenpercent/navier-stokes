@@ -1,8 +1,8 @@
 BUILDDIR = build
 CC = cc
-CFLAGS = -Wall -g -Ilib -Ilib/laspack -Ilib/xc
+CFLAGS = -Wall -std=c99 -g -Ilib -Ilib/laspack -Ilib/xc
 LD = cc
-LFLAGS = -lm
+LFLAGS = -lm -std=c99
 LASPACKONAMES = eigenval.o \
                 errhandl.o \
                 factor.o \
@@ -20,7 +20,8 @@ ONAMES = calculation.o \
          main.o \
          norm.o \
          export.o \
-         functions.o
+         functions.o \
+         print.o
 OFILES = $(foreach fname,$(ONAMES),$(BUILDDIR)/program/$(fname))
 
 %/create-stamp:

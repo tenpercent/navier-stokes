@@ -1,5 +1,5 @@
 #include "initialize.h"
-#include <string.h>
+#include <strings.h>
 #include <itersolv.h>
 
 void gas_parameters_Initialize (Gas_parameters * parameters) {
@@ -46,25 +46,27 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
     parameters->method = CGNIter;
     return;
   } {
-    if (strncmp (argv[1], "Jacobi", 6) == 0) {
+    if (strncasecmp (argv[1], "Jacobi", 6) == 0) {
       parameters->preconditioner_type = JacobiPrecond;
-    } else if (strncmp (argv[1], "SSOR", 4) == 0) {
+    } else if (strncasecmp (argv[1], "SSOR", 4) == 0) {
       parameters->preconditioner_type = SSORPrecond;
     } else {
+      // default value
       parameters->preconditioner_type = JacobiPrecond;
     }
 
-    if (strncmp (argv[2], "CGN", 3) == 0) {
+    if (strncasecmp (argv[2], "CGN", 3) == 0) {
       parameters->method = CGNIter;
-    } else if (strncmp (argv[2], "BiCGStab", 8) == 0) {
+    } else if (strncasecmp (argv[2], "BiCGStab", 8) == 0) {
       parameters->method = BiCGSTABIter;
-    } else if (strncmp (argv[2], "CGS", 3) == 0) {
+    } else if (strncasecmp (argv[2], "CGS", 3) == 0) {
       parameters->method = CGSIter;
-    } else if (strncmp (argv[2], "QMR", 3) == 0) {
+    } else if (strncasecmp (argv[2], "QMR", 3) == 0) {
       parameters->method = QMRIter;
-    } else if (strncmp (argv[2], "GMRES", 5) == 0) {
+    } else if (strncasecmp (argv[2], "GMRES", 5) == 0) {
       parameters->method = GMRESIter;
     } else {
+      // default value
       parameters->method = CGNIter;
     }
 

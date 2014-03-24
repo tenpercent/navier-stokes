@@ -31,10 +31,12 @@ int main (int argc, char ** argv) {
 
   initialize_iterative_algorithm_parameters (&iterative_method_parameters, argc, argv);
 
+  print_iterative_algorithm_info (&iterative_method_parameters);
+
   unsigned global_iteration = 0;
-  unsigned max_iteration_space = 3;
-  unsigned max_iteration_time = 3;
-  unsigned max_global_iteration = (max_iteration_space) * (max_iteration_time);
+  unsigned const max_iteration_space = 3;
+  unsigned const max_iteration_time = 3;
+  unsigned const max_global_iteration = (max_iteration_space) * (max_iteration_time);
 
   unsigned iteration_time, iteration_space;
 
