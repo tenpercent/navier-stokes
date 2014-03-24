@@ -27,10 +27,9 @@ int main (int argc, char ** argv) {
   double * V = NULL;
   double * G = NULL;
 
-  Preconditioner_type preconditioner_type;
-  Iterative_method iterative_method;
+  Iterative_Method_parameters iterative_method_parameters;
 
-  initialize_iterative_algorithm_parameters (&preconditioner_type, &iterative_method, argc, argv);
+  initialize_iterative_algorithm_parameters (&iterative_method_parameters, argc, argv);
 
   unsigned global_iteration = 0;
   unsigned max_iteration_space = 3;
@@ -62,8 +61,7 @@ int main (int argc, char ** argv) {
                                 space_coordinates, 
                                 &parameters, 
                                 &grid, 
-                                &preconditioner_type, 
-                                &iterative_method);
+                                &iterative_method_parameters);
       finish_time = clock();
 
       time_elapsed_at_iteration[global_iteration] = (finish_time - start_time) / (double) CLOCKS_PER_SEC;

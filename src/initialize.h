@@ -10,4 +10,4 @@ void grid_Initialize (
 
 void mesh_Initialize (Node_status * node_status, double * space_coordinate, Grid * grid); // no need... actually, it will be executed once.
 
-void initialize_iterative_algorithm_parameters (Preconditioner_type * type, Iterative_method * method, int argc, char ** argv);
+void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * parameters, int argc, char ** argv);

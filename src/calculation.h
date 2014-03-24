@@ -14,8 +14,7 @@ void next_TimeLayer_Calculate (
   double * space_coordinate, 
   Gas_parameters * parameters,
   Grid * grid,
-  Preconditioner_type * preconditioner_type,
-  Iterative_method * iterative_method);
+  Iterative_Method_parameters * iterative_method_parameters);
 
 void fill_system (
     QMatrix * lh_side,

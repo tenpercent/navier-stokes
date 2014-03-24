@@ -1,5 +1,6 @@
 #include "initialize.h"
 #include <string.h>
+#include <itersolv.h>
 
 void gas_parameters_Initialize (Gas_parameters * parameters) {
   parameters->time_upper_boundary   = 1.;
@@ -39,32 +40,32 @@ void mesh_Initialize (Node_status * node_status, double * space_coordinate, Grid
   return;
 }
 
-void initialize_iterative_algorithm_parameters (Preconditioner_type * type, Iterative_method * method, int argc, char ** argv) {
+void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * parameters, int argc, char ** argv) {
   if (argc < 3) {
-    *type = Jacobi;
-    *method = CGN;
+    parameters->preconditioner_type = JacobiPrecond;
+    parameters->method = CGNIter;
     return;
-  } else {
+  } {
     if (strncmp (argv[1], "Jacobi", 6) == 0) {
-      *type = Jacobi;
+      parameters->preconditioner_type = JacobiPrecond;
     } else if (strncmp (argv[1], "SSOR", 4) == 0) {
-      *type = SSOR;
+      parameters->preconditioner_type = SSORPrecond;
     } else {
-      *type = Jacobi;
+      parameters->preconditioner_type = JacobiPrecond;
     }
 
     if (strncmp (argv[2], "CGN", 3) == 0) {
-      *method = CGN;
+      parameters->method = CGNIter;
     } else if (strncmp (argv[2], "BiCGStab", 8) == 0) {
-      *method = BiCGStab;
+      parameters->method = BiCGSTABIter;
     } else if (strncmp (argv[2], "CGS", 3) == 0) {
-      *method = CGS;
+      parameters->method = CGSIter;
     } else if (strncmp (argv[2], "QMR", 3) == 0) {
-      *method = QMR;
-    } else if (strncmp (argv[2], "GMRES", 3) == 0) {
-      *method = GMRES;
+      parameters->method = QMRIter;
+    } else if (strncmp (argv[2], "GMRES", 5) == 0) {
+      parameters->method = GMRESIter;
     } else {
-      *method = CGN;
+      parameters->method = CGNIter;
     }
 
     return;

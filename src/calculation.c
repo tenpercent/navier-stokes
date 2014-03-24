@@ -17,8 +17,7 @@ void next_TimeLayer_Calculate (
     double * space_coordinates, 
     Gas_parameters * parameters,
     Grid * grid,
-    Preconditioner_type * preconditioner_type,
-    Iterative_method * iterative_method) {
+    Iterative_Method_parameters * iterative_method_parameters) {
   QMatrix lh_side; // left-hand side of the system
   Vector rh_side;  // right-hand side of the system
   Vector unknown_vector; // which will be found when we solve the system
@@ -28,11 +27,6 @@ void next_TimeLayer_Calculate (
 
   unsigned max_iterations = 10000;
   double relaxation_constant = 1.41;
-
-  PrecondProcType actual_type;
-
-  typedef Vector* (*IterativeMethodType) (QMatrix *, Vector *, Vector *, int, PrecondProcType, double);
-  IterativeMethodType actual_method; 
 
   Q_Constr (&lh_side, 
             "Matrix", 
@@ -67,39 +61,6 @@ void next_TimeLayer_Calculate (
   // T == 0
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
-  switch (*preconditioner_type) {
-    case Jacobi:
-      actual_type = JacobiPrecond;
-      break;
-    case SSOR:
-      actual_type = SSORPrecond;
-      break;
-    default:
-      break;
-  }
-
-  switch (*iterative_method) {
-    case CGN:
-      actual_method = CGNIter;
-      break;
-    case BiCGStab:
-      actual_method = BiCGSTABIter;
-      break;
-    case CGS:
-      actual_method = CGSIter;
-      break;
-    case QMR:
-      actual_method = QMRIter;
-      break;
-    case GMRES:
-      actual_method = GMRESIter;
-      break;
-    default:
-      actual_method = CGNIter;
-      break;
-  }
-
-
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     printf ("\rTime step is %u of %u.", time_step, grid->T_nodes - 1);
     fflush (stdout);
@@ -107,11 +68,11 @@ void next_TimeLayer_Calculate (
 
     // launch iteration algorithm
 
-    actual_method (&lh_side, 
+    iterative_method_parameters->method (&lh_side, 
               &unknown_vector, 
               &rh_side, 
               max_iterations,       // max iterations
-              actual_type,          // preconditioner type
+              iterative_method_parameters->preconditioner_type,          // preconditioner type
               relaxation_constant); // preconditioner relaxation constant; probably, should be changed
 
     fill_approximation (G, V, &unknown_vector);

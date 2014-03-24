@@ -1,6 +1,9 @@
 #ifndef STRUCTURES
 #define STRUCTURES
 
+#include <itersolv.h>
+#include <precond.h>
+
 typedef struct {
   double time_upper_boundary;     // time boundaries: [0, T]
   double space_upper_boundary;    // space boundaries: [0, X]
@@ -27,17 +30,9 @@ typedef enum {
   RIGHT = 2
 } Node_status;
 
-typedef enum {
-  CGN = 0,
-  BiCGStab = 1,
-  CGS = 2,
-  QMR = 3,
-  GMRES = 4
-} Iterative_method;
-
-typedef enum {
-  Jacobi = 0,
-  SSOR = 1
-} Preconditioner_type;
+typedef struct {
+  PrecondProcType preconditioner_type;
+  IterProcType method;
+} Iterative_Method_parameters;
 
 #endif
