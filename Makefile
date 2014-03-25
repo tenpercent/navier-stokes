@@ -31,7 +31,7 @@ OFILES = $(foreach fname,$(ONAMES),$(BUILDDIR)/program/$(fname))
 	touch $@
 
 gas: $(OFILES) $(LASPACKOFILES)
-	$(LD) $(LFLAGS) -o gas $(OFILES) $(LASPACKOFILES)
+	$(LD) -o gas $(OFILES) $(LASPACKOFILES) $(LFLAGS)
 
 $(BUILDDIR)/laspack/%.o: $(BUILDDIR)/laspack/create-stamp lib/laspack/%.c
 	$(CC) $(CFLAGS) -o $@ -c lib/laspack/$*.c
