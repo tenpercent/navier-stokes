@@ -26,7 +26,8 @@ void export_results (double ** results, unsigned total_experiments) {
         results[4][experiments_step]
     );
     // |^ looks ugly, should fix later
-    strncat (result_to_string, current_experiment_to_string, MAX_BUFFER_SIZE);
+    strncat (result_to_string, current_experiment_to_string,
+             MAX_BUFFER_SIZE - strlen(result_to_string) - 1);
   }
 
   csv_data = fopen ("results.csv", "w");
