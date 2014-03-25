@@ -29,3 +29,10 @@ void Sparse_matrix_Apply_to_vector (
     Sparse_matrix * this,
     double * vector,
     double * newVector);
+
+#ifndef NO_LASPACK
+#include <qmatrix.h>
+void Sparse_matrix_to_QMatrix (
+    Sparse_matrix * this,
+    QMatrix * qmatrix);
+#endif /* NO_LASPACK */

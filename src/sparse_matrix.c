@@ -69,3 +69,20 @@ void Sparse_matrix_Apply_to_vector (
     }
   }
 }
+
+#ifndef NO_LASPACK
+void Sparse_matrix_to_QMatrix (
+    Sparse_matrix * this,
+    QMatrix * qmatrix) {
+
+  unsigned row, index, row_length, position;
+  for (row = 0; row < this->size; ++row) {
+    row_length = this->indices[row + 1] - this->indices[row];
+    Q_SetLen (qmatrix, row, row_length);
+    for (index = 0; index < row_length; ++index) {
+      position = this->indices[row] + index;
+      Q_SetEntry (qmatrix, row, index, this->indices[position], this->elements[position]);
+    }
+  }
+}
+#endif /* NO_LASPACK */
