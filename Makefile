@@ -20,6 +20,8 @@ ONAMES = calculation.o \
          main.o \
          norm.o \
          export.o \
+         sparse_matrix.o \
+         iterative_method.o \
          functions.o
 OFILES = $(foreach fname,$(ONAMES),$(BUILDDIR)/program/$(fname))
 
