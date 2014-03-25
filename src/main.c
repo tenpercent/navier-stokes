@@ -6,6 +6,7 @@
 #include "calculation.h"
 #include "construction.h"
 #include "export.h"
+#include "print.h"
 
 int main (int argc, char ** argv) {
 
