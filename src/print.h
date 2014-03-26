@@ -1,4 +1,4 @@
-#include "structures.h" 
+#include "iterative_method.h"
 
 // print the information about used iterative method
 // and precontitioner type

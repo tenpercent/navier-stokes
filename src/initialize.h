@@ -1,4 +1,8 @@
+#ifndef _INITIALIZE_H
+#define _INITIALIZE_H
+
 #include "structures.h"
+#include "iterative_method.h"
 
 // fill (parameters) with information
 // hard code inside
@@ -18,3 +22,5 @@ void mesh_Initialize (Node_status * node_statuses, double * space_coordinates, G
 
 // fill (parameters) with information from command line
 void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * parameters, int argc, char ** argv);
+
+#endif /* _INITIALIZE_H */

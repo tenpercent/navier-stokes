@@ -7,6 +7,7 @@
 
 
 void print_iterative_algorithm_info (Iterative_Method_parameters * iterative_method_parameters) {
+/*
   unsigned const BUFFER_SIZE = 128;
   char method_to_string[BUFFER_SIZE];
   char preconditioner_to_string[BUFFER_SIZE];
@@ -36,5 +37,7 @@ void print_iterative_algorithm_info (Iterative_Method_parameters * iterative_met
   }
 
   printf ("Using %s iterative method with %s preconditioner\n", method_to_string, preconditioner_to_string);
+*/
+
   return;
 }

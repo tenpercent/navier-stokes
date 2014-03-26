@@ -1,8 +1,8 @@
 #include "structures.h"
+#include "initialize.h"
 
 #include <vector.h>
 #include <errhandl.h>
-#include <qmatrix.h>
 #include <itersolv.h>
 #include <rtc.h>
 #include <operats.h>
@@ -27,8 +27,8 @@ void find_approximate_solution (
 // which purpose is to find the values of sought functions
 // in the mesh nodes of next time layer
 void fill_system (
-    QMatrix * lh_side,
-    Vector * rh_side,
+    Sparse_matrix * lh_side,
+    double * rh_side,
     Grid * grid,
     Node_status * node_status,
     Gas_parameters * parameters,
@@ -54,16 +54,4 @@ void fill_mesh_at_initial_time (
 // with the values obtained
 // after solving the system of linear equations
 // from (solutions)
-void fill_approximation (double * G, double * V, Vector * solutions);
-
-// fill (row)th row of (matrix) 
-// which contains (row_length) non-zero elements;
-// (nonzero_columns[]) is the array of columns 
-// containing non-zero elements;
-// (values[]) is the array of non-zero values in this row.
-void set_qmatrix_entries (
-    QMatrix * matrix, 
-    unsigned row, 
-    unsigned * nonzero_columns, 
-    double * values, 
-    unsigned row_length);
+void fill_approximation (double * G, double * V, double * solutions, unsigned total_values);

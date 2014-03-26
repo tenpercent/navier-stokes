@@ -1,3 +1,6 @@
+#ifndef _SPARSE_MATRIX_H
+#define _SPARSE_MATRIX_H
+
 typedef struct {
   /* public stuff */
   unsigned size;
@@ -36,3 +39,5 @@ void Sparse_matrix_to_QMatrix (
     Sparse_matrix * this,
     QMatrix * qmatrix);
 #endif /* NO_LASPACK */
+
+#endif /* _SPARSE_MATRIX_H */

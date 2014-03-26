@@ -35,12 +35,4 @@ typedef enum {
   RIGHT = 2
 } Node_status;
 
-// structure to store the information
-// about used preconditioner type
-// and iterative method
-typedef struct {
-  PrecondProcType preconditioner_type;
-  IterProcType method;
-} Iterative_Method_parameters;
-
 #endif

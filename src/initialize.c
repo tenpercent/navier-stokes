@@ -41,6 +41,9 @@ void mesh_Initialize (Node_status * node_status, double * space_coordinate, Grid
 }
 
 void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * parameters, int argc, char ** argv) {
+   parameters->preconditioner_type = &Precond_Jacobi;
+   parameters->method = &Iterative_method_BiCGSTAB;
+/*
   if (argc < 3) {
     parameters->preconditioner_type = JacobiPrecond;
     parameters->method = CGNIter;
@@ -72,4 +75,5 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
 
     return;
   }
+*/
 }
