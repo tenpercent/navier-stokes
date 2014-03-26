@@ -12,7 +12,7 @@ double u_exact (double x, double t) {
   return cos(2 * M_PI * t) * sin(M_PI * x * x * .01);
 }
 
-double ro_exact (double x, double t) {
+double rho_exact (double x, double t) {
   return exp(t) * (cos (M_PI * x * .1) + 1.5);
 }
 
@@ -36,11 +36,11 @@ double u_x (double x, double t) {
   return .02 * M_PI * x * cos(2 * M_PI * t) * cos(M_PI * x * x * .01);
 }
 
-double ro_t (double x, double t) {
+double rho_t (double x, double t) {
   return ro_exact (x, t);
 }
 
-double ro_x (double x, double t) {
+double rho_x (double x, double t) {
   return -.1 * M_PI * exp(t) * sin (M_PI * x * .1);
 }
 

@@ -58,13 +58,13 @@ int main (int argc, char ** argv) {
       mesh_Initialize (node_statuses, space_coordinates, &grid);
 
       start_time = clock();
-      next_TimeLayer_Calculate (G, 
-                                V, 
-                                node_statuses, 
-                                space_coordinates, 
-                                &parameters, 
-                                &grid, 
-                                &iterative_method_parameters);
+      find_approximate_solution (G, 
+                                 V, 
+                                 node_statuses, 
+                                 space_coordinates, 
+                                 &parameters, 
+                                 &grid, 
+                                 &iterative_method_parameters);
       finish_time = clock();
 
       time_elapsed_at_iteration[global_iteration] = (finish_time - start_time) / (double) CLOCKS_PER_SEC;

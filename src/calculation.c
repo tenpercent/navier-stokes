@@ -10,7 +10,7 @@
 #define G_INDEX(i) (2 * (i) + 1)
 #define V_INDEX(i) (2 * (i) + 2)
 
-void next_TimeLayer_Calculate (
+void find_approximate_solution (
     double * G, 
     double * V, 
     Node_status * node_status, 
@@ -277,17 +277,17 @@ void fill_mesh_at_initial_time (
   return;
 }
 
-void fill_approximation (double * G, double * V, Vector * unknown_vector) {
-  size_t total_values = V_GetDim (unknown_vector) >> 1;
+void fill_approximation (double * G, double * V, Vector * solutions) {
+  size_t total_values = V_GetDim (solutions) >> 1;
   unsigned space_step = 0;
 
   for (space_step = 0; space_step < total_values; ++space_step) {
-      G[space_step] = V_GetCmp (unknown_vector, G_INDEX(space_step));
+      G[space_step] = V_GetCmp (solutions, G_INDEX(space_step));
   }
 
   V[0] = 0.;
   for (space_step = 1; space_step + 1 < total_values; ++space_step) {
-    V[space_step] = V_GetCmp (unknown_vector, V_INDEX(space_step));
+    V[space_step] = V_GetCmp (solutions, V_INDEX(space_step));
   }
   V[total_values - 1] = 0.;
   return;
