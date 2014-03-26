@@ -18,6 +18,7 @@ void find_approximate_solution (
     Gas_parameters * gas_parameters,
     Grid * grid,
     Iterative_Method_parameters * iterative_method_parameters) {
+
   QMatrix lh_side; // left-hand side of the system
   Vector rh_side;  // right-hand side of the system
   Vector unknown_vector; // which will be found when we solve the system
@@ -107,23 +108,29 @@ void fill_system (
     unsigned time_step,
     double * G,
     double * V) {
-  unsigned space_step = 0;
-  unsigned first_type_equation_coef_length = 5;
-  unsigned second_type_equation_coef_length = 4;
-  unsigned third_type_equation_coef_length = 4;
-  unsigned fourth_type_equation_coef_length = 5;
-  unsigned equation_number = 1;
 
+  unsigned space_step = 0,
+  // lengths of rows in sparse matrix
+  // corresponding to different types of equations
+           first_type_equation_coef_length = 5,
+           second_type_equation_coef_length = 4,
+           third_type_equation_coef_length = 4,
+           fourth_type_equation_coef_length = 5,
+  // iterator through rows
+           row_number = 1;
+
+  // sparse matrix information
   unsigned nonzero_columns[5];
-  double lh_values[5];
-  double rh_value;
+  double lh_values[5],
+         rh_value;
 
-  double _h = 1. / grid->X_step;
-  double _h_2 = .5 * _h;
-  double _h_4 = .25 * _h;
-  double _h_6 = _h / 6.;
+  // auxiliary constants
+  double _h   = 1. / grid->X_step,
+         _h_2 = .5 * _h,
+         _h_4 = .25 * _h,
+         _h_6 = _h / 6.,
 
-  double _tau = 1. / grid->T_step;
+         _tau = 1. / grid->T_step;
 
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
     switch (node_status[space_step]) {
@@ -145,22 +152,22 @@ void fill_system (
                        (2 - G[0]) * (V[2] - 2 * V[1] + V[0])) +
                    rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
 
-        Q_SetLen (lh_side, equation_number, second_type_equation_coef_length);
+        Q_SetLen (lh_side, row_number, second_type_equation_coef_length);
 
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, second_type_equation_coef_length);
+        set_qmatrix_entries (lh_side, row_number, nonzero_columns, lh_values, second_type_equation_coef_length);
 
-        V_SetCmp (rh_side, equation_number, rh_value);
-        ++equation_number;
+        V_SetCmp (rh_side, row_number, rh_value);
+        ++row_number;
 
         /* dummy equation */
 
         nonzero_columns[0] = V_INDEX(0);
         lh_values[0] = 1;
         rh_value = 0;
-        Q_SetLen (lh_side, equation_number, 1);
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1);
-        V_SetCmp (rh_side, equation_number, rh_value);
-        ++equation_number;
+        Q_SetLen (lh_side, row_number, 1);
+        set_qmatrix_entries (lh_side, row_number, nonzero_columns, lh_values, 1);
+        V_SetCmp (rh_side, row_number, rh_value);
+        ++row_number;
         break;
 
       case MIDDLE:
@@ -180,12 +187,12 @@ void fill_system (
                    _h_4 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
                    rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
 
-        Q_SetLen (lh_side, equation_number, first_type_equation_coef_length);
+        Q_SetLen (lh_side, row_number, first_type_equation_coef_length);
 
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, first_type_equation_coef_length);
+        set_qmatrix_entries (lh_side, row_number, nonzero_columns, lh_values, first_type_equation_coef_length);
 
-        V_SetCmp (rh_side, equation_number, rh_value);
-        ++equation_number;
+        V_SetCmp (rh_side, row_number, rh_value);
+        ++row_number;
 
         /* another equation */
 
@@ -207,12 +214,12 @@ void fill_system (
         rh_value = _tau * V[space_step] +
                    rhs_2nd_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
 
-        Q_SetLen (lh_side, equation_number, fourth_type_equation_coef_length);
+        Q_SetLen (lh_side, row_number, fourth_type_equation_coef_length);
 
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, fourth_type_equation_coef_length);
+        set_qmatrix_entries (lh_side, row_number, nonzero_columns, lh_values, fourth_type_equation_coef_length);
 
-        V_SetCmp (rh_side, equation_number, rh_value);
-        ++equation_number;
+        V_SetCmp (rh_side, row_number, rh_value);
+        ++row_number;
         break;
 
       case RIGHT:
@@ -236,22 +243,22 @@ void fill_system (
                         (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
                    rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, parameters);
 
-        Q_SetLen (lh_side, equation_number, third_type_equation_coef_length);
+        Q_SetLen (lh_side, row_number, third_type_equation_coef_length);
 
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, third_type_equation_coef_length);
+        set_qmatrix_entries (lh_side, row_number, nonzero_columns, lh_values, third_type_equation_coef_length);
 
-        V_SetCmp (rh_side, equation_number, rh_value);
-        ++equation_number;
+        V_SetCmp (rh_side, row_number, rh_value);
+        ++row_number;
 
         /* dummy equation */ 
          
         nonzero_columns[0] = V_INDEX(grid->X_nodes - 1);
         lh_values[0] = 1;
         rh_value = 0;
-        Q_SetLen (lh_side, equation_number, 1);
-        set_qmatrix_entries (lh_side, equation_number, nonzero_columns, lh_values, 1);
-        V_SetCmp (rh_side, equation_number, rh_value);
-        ++equation_number;
+        Q_SetLen (lh_side, row_number, 1);
+        set_qmatrix_entries (lh_side, row_number, nonzero_columns, lh_values, 1);
+        V_SetCmp (rh_side, row_number, rh_value);
+        ++row_number;
         break;
 
       default:
@@ -282,12 +289,9 @@ void fill_approximation (double * G, double * V, Vector * solutions) {
 
   for (space_step = 0; space_step < total_values; ++space_step) {
       G[space_step] = V_GetCmp (solutions, G_INDEX(space_step));
+      V[space_step] = V_GetCmp (solutions, V_INDEX(space_step));
   }
+  V[0] = V[total_values - 1] = 0.;
 
-  V[0] = 0.;
-  for (space_step = 1; space_step + 1 < total_values; ++space_step) {
-    V[space_step] = V_GetCmp (solutions, V_INDEX(space_step));
-  }
-  V[total_values - 1] = 0.;
   return;
 }
