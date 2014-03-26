@@ -16,5 +16,8 @@ double residual_norm_L2 (double * approximation,
                         double time_upper_boundary,
                         double (*approximated) (double, double));
 
+// maximum value of (x) and (y)
 double max (double x, double y);
+
+// (x) squared
 double square (double x);

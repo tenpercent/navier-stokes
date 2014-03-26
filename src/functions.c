@@ -37,7 +37,7 @@ double u_x (double x, double t) {
 }
 
 double rho_t (double x, double t) {
-  return ro_exact (x, t);
+  return rho_exact (x, t);
 }
 
 double rho_x (double x, double t) {

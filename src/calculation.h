@@ -10,7 +10,7 @@
 // find the values of sought functions
 // in mesh nodes with coordinates (space_coordinates)
 // with the information of node positions stored in (node_status)
-// with the information about parameters of system of PDEs stored in (parameters)
+// with the information about parameters of system of PDEs stored in (gas_parameters)
 // with the information about grid stored in (grid)
 // using the iterative method and preconditioner specified in (iterative_method_parameters)
 // and write it to arrays (V) and (G)
@@ -19,7 +19,7 @@ void find_approximate_solution (
   double * V, 
   Node_status * node_status, 
   double * space_coordinate, 
-  Gas_parameters * parameters,
+  Gas_parameters * gas_parameters,
   Grid * grid,
   Iterative_Method_parameters * iterative_method_parameters);
 

@@ -10,7 +10,7 @@ double u_exact (double x, double t);
 // rho (x, t) from the pdf with problem description
 double rho_exact (double x, double t);
 
-// g (x, t)
+// g (x, t) from the pdf with problem description
 double g_exact (double x, double t);
 
 // (du / dt) (x, t)

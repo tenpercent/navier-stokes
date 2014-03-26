@@ -15,7 +15,7 @@ void find_approximate_solution (
     double * V, 
     Node_status * node_status, 
     double * space_coordinates, 
-    Gas_parameters * parameters,
+    Gas_parameters * gas_parameters,
     Grid * grid,
     Iterative_Method_parameters * iterative_method_parameters) {
   QMatrix lh_side; // left-hand side of the system
@@ -58,13 +58,12 @@ void find_approximate_solution (
   // iterative algorithm accuracy
   SetRTCAccuracy (1e-8);
 
-  // T == 0
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     printf ("\rTime step is %u of %u.", time_step, grid->T_nodes - 1);
     fflush (stdout);
-    fill_system (&lh_side, &rh_side, grid, node_status, parameters, space_coordinates, time_step, G, V);
+    fill_system (&lh_side, &rh_side, grid, node_status, gas_parameters, space_coordinates, time_step, G, V);
 
     // launch iteration algorithm
 
