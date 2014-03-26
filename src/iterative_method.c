@@ -22,7 +22,10 @@ void Precond_Jacobi (
     double        * y,
     double          omega) {
 
-  /* TODO: implement: y = omega Diag(A)^(-1) c */
+  unsigned i;
+  for (i = 0; i < matrix->size; ++i) {
+    y[i] = omega * c[i] / matrix->elements[i];
+  }
 
 }
 
