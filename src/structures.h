@@ -4,6 +4,7 @@
 #include <itersolv.h>
 #include <precond.h>
 
+// sctructure to store the problem parameters
 typedef struct {
   double time_upper_boundary;     // time boundaries: [0, T]
   double space_upper_boundary;    // space boundaries: [0, X]
@@ -13,6 +14,7 @@ typedef struct {
   double viscosity;               // viscosity; also look into the problem statement. MUUUUU
 } Gas_parameters;
 
+// structure to store grid parameters
 typedef struct {
   unsigned X_nodes; // total space nodes; should be >= 3.
   unsigned T_nodes; // total time nodes
@@ -30,6 +32,9 @@ typedef enum {
   RIGHT = 2
 } Node_status;
 
+// structure to store the information
+// about used preconditioner type
+// and iterative method
 typedef struct {
   PrecondProcType preconditioner_type;
   IterProcType method;
