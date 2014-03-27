@@ -16,6 +16,58 @@
 /* Useful for Sparse_matrix filling */
 #define MATRIX_APPEND(col, value) Sparse_matrix_Append_element (lh_side, row_number, col, value)
 
+#ifndef NO_LASPACK
+void call_laspack_method (
+    IterProcType    method,
+    Sparse_matrix * lh_side,
+    double        * unknown_vector,
+    double        * rh_side,
+    double          max_iterations,
+    PrecondProcType preconditioner,
+    double          relaxation_constant) {
+
+  QMatrix lh_side_laspack;
+  Vector rh_side_laspack;
+  Vector unknown_vector_laspack;
+
+  Q_Constr (&lh_side_laspack,
+            "Matrix",
+            lh_side->size, /* side */
+            False, /* non-symmetric */
+            Rowws, /* row-wise storage */
+            Normal,
+            True);
+  V_Constr (&rh_side_laspack,
+            "Right-hand side of equation",
+            lh_side->size,
+            Normal,
+            False); /* we pass our own data */
+  V_Constr (&unknown_vector_laspack,
+            "Unknown vector",
+            lh_side->size,
+            Normal,
+            False); /* the same here */
+
+  Sparse_matrix_to_QMatrix (lh_side, &lh_side_laspack);
+
+  /* Laspack Vector indices start with 1 */
+  rh_side_laspack.Cmp = rh_side - 1;
+  unknown_vector_laspack.Cmp = unknown_vector - 1;
+
+  (*method) (&lh_side_laspack,
+             &unknown_vector_laspack,
+             &rh_side_laspack,
+             max_iterations,
+             preconditioner,
+             relaxation_constant);
+
+  Q_Destr (&lh_side_laspack);
+  V_Destr (&rh_side_laspack);
+  V_Destr (&unknown_vector_laspack);
+
+}
+#endif /* NO_LASPACK */
+
 void find_approximate_solution (
     double * G, 
     double * V, 
@@ -60,7 +112,8 @@ void find_approximate_solution (
 
     // launch iteration algorithm
 
-    iterative_method_parameters->method (&lh_side,
+    if (iterative_method_parameters->implementation == Implementation_Native) {
+      iterative_method_parameters->method (&lh_side,
               unknown_vector,
               rh_side,
               max_iterations,
@@ -68,6 +121,19 @@ void find_approximate_solution (
               relaxation_constant,
               accuracy,
               buffer);
+    }
+#ifndef NO_LASPACK
+    else {
+      call_laspack_method (
+              iterative_method_parameters->method_laspack,
+              &lh_side,
+              unknown_vector,
+              rh_side,
+              max_iterations,
+              iterative_method_parameters->preconditioner_type_laspack,
+              relaxation_constant);
+    }
+#endif /* NO_LASPACK */
 
     fill_approximation (G, V, unknown_vector, grid->X_nodes);
   }
