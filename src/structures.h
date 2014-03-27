@@ -1,9 +1,6 @@
 #ifndef STRUCTURES
 #define STRUCTURES
 
-#include <itersolv.h>
-#include <precond.h>
-
 // sctructure to store the problem parameters
 typedef struct {
   double time_upper_boundary;     // time boundaries: [0, T]

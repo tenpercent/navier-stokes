@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifndef NO_LASPACK
 #include "itersolv.h"
 #include "precond.h"
+#endif /* NO_LASPACK */
 
 
 void print_iterative_algorithm_info (Iterative_Method_parameters * parameters) {

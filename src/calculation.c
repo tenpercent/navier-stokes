@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "calculation.h"
 #include "functions.h"
 
@@ -17,6 +20,7 @@
 #define MATRIX_APPEND(col, value) Sparse_matrix_Append_element (lh_side, row_number, col, value)
 
 #ifndef NO_LASPACK
+#include <rtc.h>
 void call_laspack_method (
     IterProcType    method,
     Sparse_matrix * lh_side,
@@ -100,8 +104,10 @@ void find_approximate_solution (
     unknown_vector[V_INDEX(space_step)] = u_exact (space_coordinates[space_step], 0.);
   }
 
+#ifndef NO_LASPACK
   // iterative algorithm accuracy
   SetRTCAccuracy (1e-8);
+#endif /* NO_LASPACK */
 
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 

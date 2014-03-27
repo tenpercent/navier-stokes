@@ -1,6 +1,9 @@
 #include "initialize.h"
 #include <strings.h>
+
+#ifndef NO_LASPACK
 #include <itersolv.h>
+#endif /* NO_LASPACK */
 
 void gas_parameters_Initialize (Gas_parameters * parameters) {
   parameters->time_upper_boundary   = 1.;
@@ -72,8 +75,6 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
       // default value
       parameters->method_laspack = CGNIter;
     }
-#endif /* NO_LASPACK */
-
-    return;
   }
+#endif /* NO_LASPACK */
 }

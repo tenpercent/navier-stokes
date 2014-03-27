@@ -1,12 +1,6 @@
 #include "structures.h"
 #include "initialize.h"
 
-#include <vector.h>
-#include <errhandl.h>
-#include <itersolv.h>
-#include <rtc.h>
-#include <operats.h>
-
 // find the values of sought functions
 // in mesh nodes with coordinates (space_coordinates)
 // with the information of node positions stored in (node_status)
