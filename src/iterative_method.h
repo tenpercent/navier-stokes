@@ -42,6 +42,8 @@ typedef struct {
     PrecondProcType preconditioner_type_laspack;
     IterProcType method_laspack;
 #endif /* NO_LASPACK */
+    double relaxation_constant;
+    double accuracy;
 } Iterative_Method_parameters;
 
 void Precond_Jacobi (

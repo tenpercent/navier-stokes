@@ -48,6 +48,8 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
   parameters->implementation = Implementation_Native;
   parameters->preconditioner_type = Precond_Jacobi;
   parameters->method = Iterative_method_BiCGSTAB;
+  parameters->relaxation_constant = 1.41;
+  parameters->accuracy = 1e-8;
 
 #ifndef NO_LASPACK
   if (argc > 2) {

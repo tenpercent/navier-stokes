@@ -90,9 +90,6 @@ void find_approximate_solution (
   unsigned space_step;
 
   unsigned max_iterations = 10000;
-  double relaxation_constant = 1.41;
-  double accuracy = .0001;
-
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
   // initialize unknown vector
@@ -106,7 +103,7 @@ void find_approximate_solution (
 
 #ifndef NO_LASPACK
   // iterative algorithm accuracy
-  SetRTCAccuracy (1e-8);
+  SetRTCAccuracy (iterative_method_parameters->accuracy);
 #endif /* NO_LASPACK */
 
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
@@ -128,8 +125,8 @@ void find_approximate_solution (
               rh_side,
               max_iterations,
               iterative_method_parameters->preconditioner_type,
-              relaxation_constant,
-              accuracy,
+              iterative_method_parameters->relaxation_constant,
+              iterative_method_parameters->accuracy,
               buffer);
     }
 #ifndef NO_LASPACK
@@ -141,7 +138,7 @@ void find_approximate_solution (
               rh_side,
               max_iterations,
               iterative_method_parameters->preconditioner_type_laspack,
-              relaxation_constant);
+              iterative_method_parameters->relaxation_constant);
     }
 #endif /* NO_LASPACK */
 
