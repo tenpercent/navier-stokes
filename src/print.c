@@ -6,38 +6,56 @@
 #include "precond.h"
 
 
-void print_iterative_algorithm_info (Iterative_Method_parameters * iterative_method_parameters) {
-/*
+void print_iterative_algorithm_info (Iterative_Method_parameters * parameters) {
   unsigned const BUFFER_SIZE = 128;
   char method_to_string[BUFFER_SIZE];
   char preconditioner_to_string[BUFFER_SIZE];
 
-  if (iterative_method_parameters->method == CGNIter) {
-    strncpy (method_to_string, "CGN", BUFFER_SIZE);
-  } else if (iterative_method_parameters->method == CGSIter) {
-    strncpy (method_to_string, "CGS", BUFFER_SIZE);
-  } else if (iterative_method_parameters->method == BiCGSTABIter) {
-    strncpy (method_to_string, "BiCGStab", BUFFER_SIZE);
-  } else if (iterative_method_parameters->method == QMRIter) {
-    strncpy (method_to_string, "QMR", BUFFER_SIZE);
-  } else if (iterative_method_parameters->method == GMRESIter) {
-    strncpy (method_to_string, "GMRES", BUFFER_SIZE);
-  } else {
-    // nothing to do here
-    strncpy (method_to_string, "nothing to do here", BUFFER_SIZE);
+  if (parameters->implementation == Implementation_Native) {
+    if (parameters->method == Iterative_method_BiCGSTAB) {
+      sprintf (method_to_string, "BiCGSTAB");
+    } else {
+      /* nothing to do here */
+      sprintf (method_to_string, "UNKNOWN");
+    }
+
+    if (parameters->preconditioner_type == Precond_Jacobi) {
+      sprintf (preconditioner_to_string, "Jacobi");
+    } else {
+      /* nothing to do here */
+      sprintf (preconditioner_to_string, "UNKNOWN");
+    }
   }
 
-  if (iterative_method_parameters->preconditioner_type == JacobiPrecond) {
-    strncpy (preconditioner_to_string, "Jacobi", BUFFER_SIZE);
-  } else if (iterative_method_parameters->preconditioner_type == SSORPrecond) {
-    strncpy (preconditioner_to_string, "SSOR", BUFFER_SIZE);
-  } else {
-    // nothing to do here
-    strncpy (preconditioner_to_string, "nothing to do here", BUFFER_SIZE);
+#ifndef NO_LASPACK
+  if (parameters->implementation == Implementation_Laspack) {
+    if (parameters->method_laspack == CGNIter) {
+      sprintf (method_to_string, "CGN (Laspack)");
+    } else if (parameters->method_laspack == CGSIter) {
+      sprintf (method_to_string, "CGS (Laspack)");
+    } else if (parameters->method_laspack == BiCGSTABIter) {
+      sprintf (method_to_string, "BiCGStab (Laspack)");
+    } else if (parameters->method_laspack == QMRIter) {
+      sprintf (method_to_string, "QMR (Laspack)");
+    } else if (parameters->method_laspack == GMRESIter) {
+      sprintf (method_to_string, "GMRES (Laspack)");
+    } else {
+      /* nothing to do here */
+      sprintf (method_to_string, "UNKNOWN (Laspack)");
+    }
+
+    if (parameters->preconditioner_type_laspack == JacobiPrecond) {
+      sprintf (preconditioner_to_string, "Jacobi");
+    } else if (parameters->preconditioner_type_laspack == SSORPrecond) {
+      sprintf (preconditioner_to_string, "SSOR");
+    } else {
+      /* nothing to do here */
+      sprintf (preconditioner_to_string, "UNKNOWN");
+    }
   }
+#endif /* NO_LASPACK */
 
   printf ("Using %s iterative method with %s preconditioner\n", method_to_string, preconditioner_to_string);
-*/
 
   return;
 }

@@ -1,6 +1,10 @@
 #ifndef _ITERATIVE_METHOD_H
 #define _ITERATIVE_METHOD_H
 
+#ifndef NO_LASPACK
+#include <itersolv.h>
+#endif /* NO_LASPACK */
+
 #include "sparse_matrix.h"
 
 /* Some typedefs forked from Laspack */
@@ -23,11 +27,21 @@ typedef void (*Iterative_Method_type) (
     double *           /* buffer (10 * size) */
 );
 
+typedef enum {
+    Implementation_Native,
+    Implementation_Laspack
+} Implementation_type;
+
 /* structure to store the information about used
  * preconditioner type and iterative method */
 typedef struct {
+    Implementation_type implementation;
     Precond_type preconditioner_type;
     Iterative_Method_type method;
+#ifndef NO_LASPACK
+    PrecondProcType preconditioner_type_laspack;
+    IterProcType method_laspack;
+#endif /* NO_LASPACK */
 } Iterative_Method_parameters;
 
 void Precond_Jacobi (

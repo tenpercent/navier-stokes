@@ -41,39 +41,39 @@ void mesh_Initialize (Node_status * node_status, double * space_coordinate, Grid
 }
 
 void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * parameters, int argc, char ** argv) {
-   parameters->preconditioner_type = &Precond_Jacobi;
-   parameters->method = &Iterative_method_BiCGSTAB;
-/*
-  if (argc < 3) {
-    parameters->preconditioner_type = JacobiPrecond;
-    parameters->method = CGNIter;
-    return;
-  } {
+
+  parameters->implementation = Implementation_Native;
+  parameters->preconditioner_type = Precond_Jacobi;
+  parameters->method = Iterative_method_BiCGSTAB;
+
+#ifndef NO_LASPACK
+  if (argc > 2) {
+    parameters->implementation = Implementation_Laspack;
     if (strncasecmp (argv[1], "Jacobi", 6) == 0) {
-      parameters->preconditioner_type = JacobiPrecond;
+      parameters->preconditioner_type_laspack = JacobiPrecond;
     } else if (strncasecmp (argv[1], "SSOR", 4) == 0) {
-      parameters->preconditioner_type = SSORPrecond;
+      parameters->preconditioner_type_laspack = SSORPrecond;
     } else {
       // default value
-      parameters->preconditioner_type = JacobiPrecond;
+      parameters->preconditioner_type_laspack = JacobiPrecond;
     }
 
     if (strncasecmp (argv[2], "CGN", 3) == 0) {
-      parameters->method = CGNIter;
+      parameters->method_laspack = CGNIter;
     } else if (strncasecmp (argv[2], "BiCGStab", 8) == 0) {
-      parameters->method = BiCGSTABIter;
+      parameters->method_laspack = BiCGSTABIter;
     } else if (strncasecmp (argv[2], "CGS", 3) == 0) {
-      parameters->method = CGSIter;
+      parameters->method_laspack = CGSIter;
     } else if (strncasecmp (argv[2], "QMR", 3) == 0) {
-      parameters->method = QMRIter;
+      parameters->method_laspack = QMRIter;
     } else if (strncasecmp (argv[2], "GMRES", 5) == 0) {
-      parameters->method = GMRESIter;
+      parameters->method_laspack = GMRESIter;
     } else {
       // default value
-      parameters->method = CGNIter;
+      parameters->method_laspack = CGNIter;
     }
+#endif /* NO_LASPACK */
 
     return;
   }
-*/
 }
