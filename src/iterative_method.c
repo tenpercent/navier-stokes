@@ -14,9 +14,6 @@ double scalar_product (
   return result;
 }
 
-/* Preconditioned BiCGSTAB method, described in: */
-/* http://en.wikipedia.org/wiki/Biconjugate_gradient_stabilized_method */
-
 void Precond_Jacobi (
     Sparse_matrix * matrix,
     double        * c,
@@ -29,6 +26,9 @@ void Precond_Jacobi (
   }
 
 }
+
+/* Preconditioned BiCGSTAB method, described in: */
+/* http://en.wikipedia.org/wiki/Biconjugate_gradient_stabilized_method */
 
 void Iterative_method_BiCGSTAB (
     Sparse_matrix * matrix,
@@ -90,7 +90,7 @@ void Iterative_method_BiCGSTAB (
     omega = scalar_product (t, s, size) /
             scalar_product (t, t, size);
     for (i = 0; i < size; ++i) {
-      x[i] += (alpha * p[i] + alpha * y[i] + omega * z[i]);
+      x[i] += (alpha * y[i] + omega * z[i]);
     }
     Sparse_matrix_Apply_to_vector (matrix, x, diff);
     for (i = 0; i < size; ++i) {
