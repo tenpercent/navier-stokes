@@ -95,9 +95,14 @@ int main (int argc, char ** argv) {
                                                                      g_exact);
       space_step_at_iteration[global_iteration] = grid.X_step;
       time_step_at_iteration[global_iteration] = grid.T_step;
-      
+
+#ifdef ALTERNATIVE_OUTPUT
+      printf ("\r[ \x1b[32;01mok\x1b[00m ] Iteration %u finished in %.1lf seconds.\n", global_iteration + 1,
+              time_elapsed_at_iteration[global_iteration]);
+#else
       printf ("\rFinished iteration %u in %.1lf seconds.\n", global_iteration + 1,
               time_elapsed_at_iteration[global_iteration]);
+#endif /* ALTERNATIVE_OUTPUT */
       scheme_elements_Destruct (G, V);
       mesh_elements_Destruct (node_statuses, space_coordinates);
       ++global_iteration;

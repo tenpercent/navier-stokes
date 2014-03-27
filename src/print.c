@@ -57,7 +57,12 @@ void print_iterative_algorithm_info (Iterative_Method_parameters * parameters) {
   }
 #endif /* NO_LASPACK */
 
+#ifdef ALTERNATIVE_OUTPUT
+  printf ("Using method: %s.\n", method_to_string);
+  printf ("Using preconditioner: %s.\n", preconditioner_to_string);
+#else
   printf ("Using %s iterative method with %s preconditioner\n", method_to_string, preconditioner_to_string);
+#endif /* ALTERNATIVE_OUTPUT */
 
   return;
 }

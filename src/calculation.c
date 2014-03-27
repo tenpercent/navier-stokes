@@ -112,7 +112,11 @@ void find_approximate_solution (
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
+#ifdef ALTERNATIVE_OUTPUT
+    printf ("\r[....] Time step is %u of %u.", time_step + 1, grid->T_nodes);
+#else
     printf ("\rTime step is %u of %u.", time_step, grid->T_nodes - 1);
+#endif /* ALTERNATIVE_OUTPUT */
     fflush (stdout);
     fill_system (&lh_side, rh_side, grid, node_status, gas_parameters, space_coordinates, time_step, G, V);
 
