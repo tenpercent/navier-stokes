@@ -13,9 +13,15 @@ void Sparse_matrix_Construct (
   this->indices = NEW(unsigned, size + nzcount + 1);
   this->elements = NEW(double, size + nzcount + 1);
 
+  Sparse_matrix_Clear (this);
+}
+
+void Sparse_matrix_Clear (
+    Sparse_matrix * this) {
+
   this->current_row = 0;
-  this->indices[0] = size + 1;
-  this->filled_element = size;
+  this->indices[0] = this->size + 1;
+  this->filled_element = this->size;
 }
 
 /* We store elements in Modified Compressed Sparse Row

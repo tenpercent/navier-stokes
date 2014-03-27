@@ -16,6 +16,9 @@ void Sparse_matrix_Construct (
     unsigned size,
     unsigned nzcount);
 
+void Sparse_matrix_Clear (
+    Sparse_matrix * this);
+
 void Sparse_matrix_Append_element (
     Sparse_matrix * this,
     unsigned row,

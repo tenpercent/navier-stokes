@@ -37,7 +37,7 @@ void find_approximate_solution (
   double relaxation_constant = 1.41;
   double accuracy = .0001;
 
-  Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
+  Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes /*- 10*/);
 
   // initialize unknown vector
   // with the approximation of next time layer values
@@ -102,6 +102,8 @@ void fill_system (
          _h_6 = _h / 6.,
 
          _tau = 1. / grid->T_step;
+
+  Sparse_matrix_Clear (lh_side);
 
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
     switch (node_status[space_step]) {
