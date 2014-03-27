@@ -19,9 +19,11 @@ int main (int argc, char ** argv) {
   double * residual_norm_G_L2;
   double * time_elapsed_at_iteration;
   double * results[RESULTS_SIZE];
+  double * time_step_at_iteration;
+  double * space_step_at_iteration;
 
-  clock_t start_time;
-  clock_t finish_time;
+  clock_t start_time,
+          finish_time;
 
   double * space_coordinates = NULL;
   Node_status * node_statuses = NULL;
@@ -49,6 +51,8 @@ int main (int argc, char ** argv) {
   residual_norm_V_L2 = results[2];
   residual_norm_G_C = results[3];
   residual_norm_G_L2 = results[4];
+  time_step_at_iteration = results[5];
+  space_step_at_iteration = results[6];
 
   for (iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
     for (iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {
@@ -88,6 +92,9 @@ int main (int argc, char ** argv) {
                                                                      space_coordinates, 
                                                                      parameters.time_upper_boundary, 
                                                                      g_exact);
+      space_step_at_iteration[global_iteration] = grid.X_step;
+      time_step_at_iteration[global_iteration] = grid.T_step;
+      
       printf ("\rFinished iteration %u in %.1lf seconds.\n", global_iteration + 1,
               time_elapsed_at_iteration[global_iteration]);
       scheme_elements_Destruct (G, V);

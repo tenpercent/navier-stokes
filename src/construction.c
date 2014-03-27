@@ -6,6 +6,7 @@ void results_Construct (double ** results, unsigned max_global_iteration) {
   for (i = 0; i < RESULTS_SIZE; ++i) {
     results[i] = (double *) malloc (max_global_iteration * sizeof (double));
   }
+
   return;
 }
 

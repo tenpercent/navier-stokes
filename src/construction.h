@@ -1,5 +1,5 @@
 #include "structures.h"
-#define RESULTS_SIZE 5
+#define RESULTS_SIZE 7
 
 // allocate memory for results
 void results_Construct (double ** results, unsigned max_global_iteration);

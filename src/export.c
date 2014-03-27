@@ -10,16 +10,18 @@ void export_results (double ** results, unsigned total_experiments) {
   // dangerous shit begins
   char result_to_string[MAX_BUFFER_SIZE];
   strncpy (result_to_string, 
-    ",Time elapsed,V residual in C,V residual in L2,G residual in C,G residual in L2\n",
+    ",Time elapsed,tau,h,V residual in C,V residual in L2,G residual in C,G residual in L2\n",
     MAX_BUFFER_SIZE);
   char current_experiment_to_string[MAX_BUFFER_SIZE];
   for (experiments_step = 0; experiments_step < total_experiments; ++experiments_step) {
     snprintf (
       current_experiment_to_string,
       MAX_BUFFER_SIZE,
-      "%d,%.3lf s,%.6lf,%.6lf,%.6lf,%.6lf\n",
+      "%d,%.3lf s,%le,%le,%le,%le,%le,%le\n",
         experiments_step + 1,
         results[0][experiments_step],
+        results[5][experiments_step],
+        results[6][experiments_step],
         results[1][experiments_step],
         results[2][experiments_step],
         results[3][experiments_step],
