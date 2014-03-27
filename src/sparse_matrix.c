@@ -13,8 +13,9 @@ void Sparse_matrix_Construct (
   this->indices = NEW(unsigned, size + nzcount + 1);
   this->elements = NEW(double, size + nzcount + 1);
 
-  this->filled_row = -1;
-  this->filled_element = size + 1;
+  this->current_row = 0;
+  this->indices[0] = size + 1;
+  this->filled_element = size;
 }
 
 /* We store elements in Modified Compressed Sparse Row
@@ -31,10 +32,10 @@ void Sparse_matrix_Append_element (
     return;
   }
 
-  ++this->filled_element;
-  while (this->filled_row < row) {
-    ++(this->filled_row);
-    this->indices[this->filled_row] = this->filled_element;
+  ++(this->filled_element);
+  while (this->current_row < row) {
+    ++(this->current_row);
+    this->indices[this->current_row] = this->filled_element;
   }
   this->indices[this->filled_element] = col;
   this->elements[this->filled_element] = value;
@@ -43,9 +44,9 @@ void Sparse_matrix_Append_element (
 void Sparse_matrix_Finish_filling (
     Sparse_matrix * this) {
 
-  while (this->filled_row < this->size - 1) {
-    ++(this->filled_row);
-    this->indices[this->filled_row] = this->filled_element;
+  while (this->current_row < this->size) {
+    ++(this->current_row);
+    this->indices[this->current_row] = this->filled_element;
   }
 }
 

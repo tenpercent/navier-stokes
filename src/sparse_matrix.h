@@ -7,7 +7,7 @@ typedef struct {
   unsigned *indices;
   double *elements;
   /* for private use */
-  unsigned filled_row;
+  unsigned current_row;
   unsigned filled_element;
 } Sparse_matrix;
 

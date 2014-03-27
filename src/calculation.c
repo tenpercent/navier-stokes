@@ -7,8 +7,8 @@
  *  1 .. 2 .. 3 .. 4 ..... 2M-1  2M
  */
 
-#define G_INDEX(i) (2 * (i) + 1)
-#define V_INDEX(i) (2 * (i) + 2)
+#define G_INDEX(i) (2 * (i))
+#define V_INDEX(i) (2 * (i) + 1)
 
 /* Useful for arrays construction */
 #define NEW(type, len) ((type*)malloc((len)*sizeof(type)))
@@ -178,6 +178,8 @@ void fill_system (
         break;
     }
   }
+
+  Sparse_matrix_Finish_filling (lh_side);
   return;
 }
 

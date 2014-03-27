@@ -1,4 +1,5 @@
 #include "iterative_method.h"
+#include <string.h>
 
 double scalar_product (
     double * v1,
@@ -59,11 +60,11 @@ void Iterative_method_BiCGSTAB (
   double beta, rhoold, residual2;
 
   Sparse_matrix_Apply_to_vector (matrix, x, r);
+  memset (v, 0, size * sizeof(double));
+  memset (p, 0, size * sizeof(double));
   for (i = 0; i < size; ++i) {
     r[i] = b[i] - r[i];
     rcap[i] = r[i];
-    v[i] = 0;
-    p[i] = 0;
   }
 
   for (iter = 1; iter < max_iter; ++iter) {
