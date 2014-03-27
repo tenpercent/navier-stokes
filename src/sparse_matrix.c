@@ -85,10 +85,11 @@ void Sparse_matrix_to_QMatrix (
   unsigned row, index, row_length, position;
   for (row = 0; row < this->size; ++row) {
     row_length = this->indices[row + 1] - this->indices[row];
-    Q_SetLen (qmatrix, row, row_length);
+    Q_SetLen (qmatrix, row + 1, row_length + 1);
+    Q_SetEntry (qmatrix, row + 1, 0, row + 1, this->elements[row]);
     for (index = 0; index < row_length; ++index) {
       position = this->indices[row] + index;
-      Q_SetEntry (qmatrix, row, index, this->indices[position], this->elements[position]);
+      Q_SetEntry (qmatrix, row + 1, index + 1, this->indices[position] + 1, this->elements[position]);
     }
   }
 }
