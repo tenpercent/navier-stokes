@@ -1,6 +1,8 @@
 BUILDDIR = build
+DEFINES =
 CC = cc
 CFLAGS = -Wall -g -O2 -Ilib -Ilib/laspack
+CPPFLAGS = $(foreach define,$(DEFINES),-D$(define))
 LD = cc
 LFLAGS = -lm -O2
 LASPACKONAMES = eigenval.o \
@@ -37,7 +39,7 @@ $(BUILDDIR)/laspack/%.o: $(BUILDDIR)/laspack/create-stamp lib/laspack/%.c
 	$(CC) $(CFLAGS) -o $@ -c lib/laspack/$*.c
 
 $(BUILDDIR)/program/%.o: $(BUILDDIR)/program/create-stamp src/%.c
-	$(CC) $(CFLAGS) -o $@ -c src/$*.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c src/$*.c
 
 clean:
 	rm -rf $(BUILDDIR)
