@@ -93,7 +93,7 @@ void find_approximate_solution (
   double relaxation_constant = 1.41;
   double accuracy = .0001;
 
-  Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes /*- 10*/);
+  Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
   // initialize unknown vector
   // with the approximation of next time layer values
