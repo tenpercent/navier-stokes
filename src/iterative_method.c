@@ -36,7 +36,7 @@ void Iterative_method_BiCGSTAB (
     double        * b,
     unsigned        max_iter,
     Precond_type    precond,
-    double          omega, /* default = 1 */
+    double          omega_precond, /* default = 1 */
     double          accuracy,
     double        * buffer /* we need 8 * size */
   ) {
@@ -44,6 +44,7 @@ void Iterative_method_BiCGSTAB (
   unsigned size   = matrix->size;
   double alpha    = 1;
   double rho      = 1;
+  double omega    = 1;
   double *r       = buffer;
   double *rcap    = buffer + size;
   double *v       = buffer + size * 2;
@@ -74,13 +75,13 @@ void Iterative_method_BiCGSTAB (
     for (i = 0; i < size; ++i) {
       p[i] = r[i] + beta * (p[i] - omega * v[i]);
     }
-    (*precond)(matrix, p, y, omega);
+    (*precond)(matrix, p, y, omega_precond);
     Sparse_matrix_Apply_to_vector (matrix, y, v);
     alpha = rho / scalar_product (rcap, v, size);
     for (i = 0; i < size; ++i) {
       s[i] = r[i] - alpha * v[i];
     }
-    (*precond)(matrix, s, z, omega);
+    (*precond)(matrix, s, z, omega_precond);
     Sparse_matrix_Apply_to_vector (matrix, z, t);
  /* Sparse_matrix_Apply_to_vector (K1_rev, t, K1rev_t);
     Sparse_matrix_Apply_to_vector (K1_rev, s, K1rev_s);
