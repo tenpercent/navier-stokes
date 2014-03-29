@@ -50,6 +50,7 @@ void Sparse_matrix_Append_element (
 void Sparse_matrix_Finish_filling (
     Sparse_matrix * this) {
 
+  ++this->filled_element;
   while (this->current_row < this->size) {
     ++(this->current_row);
     this->indices[this->current_row] = this->filled_element;
