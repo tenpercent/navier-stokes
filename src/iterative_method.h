@@ -10,10 +10,10 @@
 /* Some typedefs forked from Laspack */
 
 typedef void (*Precond_type) (
-    Sparse_matrix *,   /* preconditioner matrix */
-    double *,          /* c (FIXME: describe it) */
-    double *,          /* y (FIXME: describe it) */
-    double             /* omega (relaxation constant) */
+    Sparse_matrix const *,   /* preconditioner matrix */
+    double const *,          /* c (FIXME: describe it) */
+    double       *,          /* y (FIXME: describe it) */
+    double                   /* omega (relaxation constant) */
 );
 
 typedef void (*Iterative_Method_type) (
@@ -47,10 +47,10 @@ typedef struct {
 } Iterative_Method_parameters;
 
 void Precond_Jacobi (
-    Sparse_matrix * matrix,
-    double        * c,
-    double        * y,
-    double          omega);
+    Sparse_matrix const * matrix,
+    double const        * c,
+    double              * y,
+    double                omega);
 
 void Iterative_method_BiCGSTAB (
     Sparse_matrix * matrix,

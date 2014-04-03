@@ -2,8 +2,8 @@
 #include <string.h>
 
 double scalar_product (
-    double * v1,
-    double * v2,
+    double const * v1,
+    double const * v2,
     unsigned size) {
 
   double result = 0;
@@ -15,10 +15,10 @@ double scalar_product (
 }
 
 void Precond_Jacobi (
-    Sparse_matrix * matrix,
-    double        * c,
-    double        * y,
-    double          omega) {
+    Sparse_matrix const * matrix,
+    double const        * c,
+    double              * y,
+    double                omega) {
 
   unsigned i;
   for (i = 0; i < matrix->size; ++i) {

@@ -39,7 +39,7 @@ void Sparse_matrix_Apply_to_vector (
 #ifndef NO_LASPACK
 #include <qmatrix.h>
 void Sparse_matrix_to_QMatrix (
-    Sparse_matrix * this,
+    Sparse_matrix const * this,
     QMatrix * qmatrix);
 #endif /* NO_LASPACK */
 
