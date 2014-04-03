@@ -19,8 +19,8 @@ void grid_Initialize (
     Gas_parameters * parameters,
     unsigned time_steps_magnifier, 
     unsigned space_steps_magnifier) {
-  grid->X_nodes = 400 << space_steps_magnifier;
-  grid->T_nodes = 400 << time_steps_magnifier;
+  grid->X_nodes = 1000 << space_steps_magnifier;
+  grid->T_nodes = 1000 << time_steps_magnifier;
 
   grid->X_step = parameters->space_upper_boundary / (grid->X_nodes - 1);
   grid->T_step = parameters->time_upper_boundary / (grid->T_nodes - 1);
