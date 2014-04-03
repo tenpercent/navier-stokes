@@ -54,7 +54,7 @@ void write_current_results (
   return;
 }
 
-void export_results (double ** results, unsigned total_experiments) {
+void export_results (double *const * results, unsigned total_experiments) {
   FILE * csv_data; 
   unsigned experiments_step = 0;
   // should be careful with c-strings

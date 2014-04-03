@@ -17,4 +17,4 @@ void write_current_results (
     double const * G);
 // export the results of calculation
 // to csv file "./results.csv"
-void export_results (double ** results, unsigned total_experiments);
+void export_results (double *const * results, unsigned total_experiments);

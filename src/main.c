@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <time.h>
 
 #include "initialize.h"
@@ -8,8 +7,6 @@
 #include "construction.h"
 #include "export.h"
 #include "print.h"
-
-
 
 int main (int argc, char ** argv) {
 // local variables declaration
@@ -86,7 +83,7 @@ int main (int argc, char ** argv) {
                                V,
                                G);
 
-        print_info_about_current_iteration (results, global_iteration);
+        print_results_at_current_iteration (results, global_iteration);
 
         ++global_iteration;
       }

@@ -8,7 +8,7 @@
 #endif /* NO_LASPACK */
 
 
-void print_iterative_algorithm_info (Iterative_Method_parameters * parameters) {
+void print_iterative_algorithm_info (Iterative_Method_parameters const * parameters) {
   unsigned const BUFFER_SIZE = 128;
   char method_to_string[BUFFER_SIZE];
   char preconditioner_to_string[BUFFER_SIZE];
@@ -69,11 +69,11 @@ void print_iterative_algorithm_info (Iterative_Method_parameters * parameters) {
   return;
 }
 
-void print_info_about_current_iteration (
+void print_results_at_current_iteration (
     double *const *results, 
     unsigned global_iteration) {
 
-  double const * const time_elapsed_at_iteration = results[0];
+  double const *const time_elapsed_at_iteration = results[0];
 // mitya's magic work  
 #ifdef ALTERNATIVE_OUTPUT
   printf ("\r[ \x1b[32;01mok\x1b[00m ] Iteration %u finished in %.1lf seconds.\n", 
@@ -88,3 +88,12 @@ void print_info_about_current_iteration (
   return;
 }
   
+void print_info_about_current_iteration (unsigned time_step, Grid const * grid) {
+#ifdef ALTERNATIVE_OUTPUT
+  printf ("\r[....] Time step is %u of %u.", time_step + 1, grid->T_nodes);
+#else
+  printf ("\rTime step is %u of %u.", time_step, grid->T_nodes - 1);
+#endif /* ALTERNATIVE_OUTPUT */
+  fflush (stdout);
+  return;
+}
