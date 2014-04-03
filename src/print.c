@@ -61,8 +61,30 @@ void print_iterative_algorithm_info (Iterative_Method_parameters * parameters) {
   printf ("Using method: %s.\n", method_to_string);
   printf ("Using preconditioner: %s.\n", preconditioner_to_string);
 #else
-  printf ("Using %s iterative method with %s preconditioner\n", method_to_string, preconditioner_to_string);
+  printf ("Using %s iterative method with %s preconditioner\n", 
+          method_to_string, 
+          preconditioner_to_string);
 #endif /* ALTERNATIVE_OUTPUT */
 
   return;
 }
+
+void print_info_about_current_iteration (
+    double *const *results, 
+    unsigned global_iteration) {
+
+  double const * const time_elapsed_at_iteration = results[0];
+// mitya's magic work  
+#ifdef ALTERNATIVE_OUTPUT
+  printf ("\r[ \x1b[32;01mok\x1b[00m ] Iteration %u finished in %.1lf seconds.\n", 
+          global_iteration + 1,
+          time_elapsed_at_iteration[global_iteration]);
+#else
+  printf ("\rFinished iteration %u in %.1lf seconds.\n", 
+          global_iteration + 1,
+          time_elapsed_at_iteration[global_iteration]);
+#endif /* ALTERNATIVE_OUTPUT */
+
+  return;
+}
+  
