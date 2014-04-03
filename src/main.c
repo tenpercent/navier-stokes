@@ -1,8 +1,6 @@
 #include <time.h>
 
 #include "initialize.h"
-#include "functions.h"
-#include "norm.h"
 #include "calculation.h"
 #include "construction.h"
 #include "export.h"
@@ -11,12 +9,12 @@
 int main (int argc, char ** argv) {
 // local variables declaration
 // let's begin with user defined constants
-  unsigned const RELAXATION_CONSTANT_STEPS = 2;
-  double const RELAXATION_CONSTANT_MIN = 1.,
+  unsigned const RELAXATION_CONSTANT_STEPS = 10; // something that is greater than 1
+  double const RELAXATION_CONSTANT_MIN = .1,
                RELAXATION_CONSTANT_MAX = 3.,
                RELAXATION_CONSTANT_INCREMENT = 
-  (RELAXATION_CONSTANT_MAX - RELAXATION_CONSTANT_MIN) / 
-  (RELAXATION_CONSTANT_STEPS - 1);
+                (RELAXATION_CONSTANT_MAX - RELAXATION_CONSTANT_MIN) / 
+                (RELAXATION_CONSTANT_STEPS - 1);
   unsigned long const max_iteration_space  = 3,
                       max_iteration_time   = 3,
                       max_global_iteration = (max_iteration_space) * (max_iteration_time) * RELAXATION_CONSTANT_STEPS;
@@ -52,13 +50,16 @@ int main (int argc, char ** argv) {
 
   for (iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
     for (iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {
+
       grid_Initialize (&grid, &gas_parameters, iteration_space, iteration_time);
       scheme_elements_Construct (&G, &V, grid.X_nodes);
       mesh_elements_Construct (&node_statuses, &space_coordinates, grid.X_nodes);
       mesh_Initialize (node_statuses, space_coordinates, &grid);
+
       for (iteration_relaxation_constant = 0;
            iteration_relaxation_constant < RELAXATION_CONSTANT_STEPS;
            ++iteration_relaxation_constant) {
+
         iterative_method_parameters.relaxation_constant = 
           RELAXATION_CONSTANT_MIN + iteration_relaxation_constant * RELAXATION_CONSTANT_INCREMENT;
 
@@ -82,12 +83,9 @@ int main (int argc, char ** argv) {
                                space_coordinates,
                                V,
                                G);
-
         print_results_at_current_iteration (results, global_iteration);
-
         ++global_iteration;
-      }
-      
+      }     
       scheme_elements_Destruct (G, V);
       mesh_elements_Destruct (node_statuses, space_coordinates);
     }

@@ -89,7 +89,7 @@ void find_approximate_solution (
   unsigned time_step;
   unsigned space_step;
 
-  unsigned max_iterations = 10000;
+  unsigned max_iterations = 10;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
   // initialize unknown vector
@@ -114,7 +114,6 @@ void find_approximate_solution (
     fill_system (&lh_side, rh_side, grid, node_status, gas_parameters, space_coordinates, time_step, G, V);
 
     // launch iteration algorithm
-
     if (iterative_method_parameters->implementation == Implementation_Native) {
       iterative_method_parameters->method (&lh_side,
               unknown_vector,
