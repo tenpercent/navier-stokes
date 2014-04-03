@@ -22,7 +22,7 @@ void Precond_Jacobi (
 
   unsigned i;
   for (i = 0; i < matrix->size; ++i) {
-    y[i] = omega * c[i] / matrix->elements[i];
+    y[i] = omega * c[i] / matrix->elements[i & 1];
   }
 
 }

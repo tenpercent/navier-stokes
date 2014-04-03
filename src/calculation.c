@@ -196,7 +196,7 @@ void fill_system (
 
         /* dummy equation */
 
-        MATRIX_APPEND (V_INDEX(0), 1);
+        MATRIX_APPEND (V_INDEX(0), _tau);
         rh_side[row_number] = 0;
         ++row_number;
         break;
@@ -244,7 +244,7 @@ void fill_system (
 
         /* dummy equation */ 
 
-        MATRIX_APPEND (V_INDEX(grid->X_nodes - 1), 1);
+        MATRIX_APPEND (V_INDEX(grid->X_nodes - 1), _tau);
         rh_side[row_number] = 0;
         ++row_number;
         break;
