@@ -4,7 +4,7 @@
 #include "functions.h"
 #include "norm.h"
 
-#define MAX_BUFFER_SIZE (1 << 20)
+#define MAX_BUFFER_SIZE (1 << 17)
 
 void write_current_results (
     double ** results,
@@ -67,7 +67,15 @@ void export_results (double *const * results, unsigned total_experiments) {
     snprintf (
       current_experiment_to_string,
       MAX_BUFFER_SIZE,
-      "%d,%.3lf s,%le,%le,%.3lf,%le,%le,%le,%le\n",
+      "%d,\
+      %.3lf s,\
+      %.3lf,\
+      %le,\
+      %le,\
+      %le,\
+      %le,\
+      %le,\
+      %le\n",
         experiments_step + 1,
         results[0][experiments_step],
         results[7][experiments_step],
