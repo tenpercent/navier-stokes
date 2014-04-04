@@ -4,7 +4,7 @@
 #include "functions.h"
 #include "norm.h"
 
-#define MAX_BUFFER_SIZE (1 << 17)
+#define MAX_BUFFER_SIZE (1U << 17)
 
 void write_current_results (
     double ** results,

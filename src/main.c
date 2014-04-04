@@ -9,12 +9,12 @@
 int main (int argc, char ** argv) {
 // local variables declaration
 // let's begin with user defined constants
-  unsigned const RELAXATION_CONSTANT_STEPS = 10; // something that is greater than 1
+  unsigned const RELAXATION_CONSTANT_STEPS = 100; // something that is greater than 1
   double const RELAXATION_CONSTANT_MIN = .1,
-               RELAXATION_CONSTANT_MAX = 3.,
+               RELAXATION_CONSTANT_MAX = 100,
                RELAXATION_CONSTANT_INCREMENT = 
-                (RELAXATION_CONSTANT_MAX - RELAXATION_CONSTANT_MIN) / 
-                (RELAXATION_CONSTANT_STEPS - 1);
+                (RELAXATION_CONSTANT_STEPS > 1) ?
+                  (RELAXATION_CONSTANT_MAX - RELAXATION_CONSTANT_MIN) / (RELAXATION_CONSTANT_STEPS - 1) : 0
   unsigned long const max_iteration_space  = 3,
                       max_iteration_time   = 3,
                       max_global_iteration = (max_iteration_space) * (max_iteration_time) * RELAXATION_CONSTANT_STEPS;
