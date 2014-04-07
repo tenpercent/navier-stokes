@@ -81,9 +81,13 @@ void find_approximate_solution (
     Grid * grid,
     Iterative_Method_parameters * iterative_method_parameters) {
 
-  Sparse_matrix lh_side; // left-hand side of the system
-  double * rh_side = NEW(double, 2 * grid->X_nodes); // right-hand side of the system
-  double * unknown_vector = NEW(double, 2 * grid->X_nodes); // will be found when we solve the system
+  // left-hand side of the system
+  Sparse_matrix lh_side; 
+  // right-hand side of the system
+  double * rh_side = NEW(double, 2 * grid->X_nodes); 
+  // will be found when we solve the system
+  double * unknown_vector = NEW(double, 2 * grid->X_nodes);
+  // buffer used by iterative method
   double * buffer = NEW(double, 20 * grid->X_nodes);
 
   register unsigned time_step,
@@ -109,6 +113,7 @@ void find_approximate_solution (
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
+    // this may slow things up
     print_info_about_current_iteration (time_step, grid);
 
     fill_system (&lh_side, rh_side, grid, node_status, gas_parameters, space_coordinates, time_step, G, V);
@@ -260,7 +265,7 @@ void fill_mesh_at_initial_time (
     double (*v) (double, double), // u_0
     double * space_coordinates,
     unsigned space_nodes) {
-  unsigned space_step = 0;
+  register unsigned space_step = 0;
   for (space_step = 0; space_step < space_nodes; ++space_step) {
     G[space_step] = g(space_coordinates[space_step], 0);
     V[space_step] = v(space_coordinates[space_step], 0);
@@ -269,7 +274,7 @@ void fill_mesh_at_initial_time (
 }
 
 void fill_approximation (double * G, double * V, double * solutions, unsigned total_values) {
-  unsigned space_step = 0;
+  register unsigned space_step = 0;
 
   for (space_step = 0; space_step < total_values; ++space_step) {
     G[space_step] = solutions[G_INDEX(space_step)];

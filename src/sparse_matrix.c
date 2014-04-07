@@ -69,7 +69,8 @@ void Sparse_matrix_Apply_to_vector (
     double * vector,
     double * newVector) {
 
-  unsigned i, ind;
+  register unsigned i, ind;
+  
   for (i = 0; i < this->size; ++i) {
     newVector[i] = this->elements[i] * vector[i];
     for (ind = this->indices[i]; ind < this->indices[i+1]; ++ind) {
@@ -83,7 +84,8 @@ void Sparse_matrix_to_QMatrix (
     Sparse_matrix const * this,
     QMatrix * qmatrix) {
 
-  unsigned row, index, row_length, position;
+  register unsigned row, index, row_length, position;
+
   for (row = 0; row < this->size; ++row) {
     row_length = this->indices[row + 1] - this->indices[row];
     Q_SetLen (qmatrix, row + 1, row_length + 1);
