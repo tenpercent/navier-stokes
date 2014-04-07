@@ -3,12 +3,18 @@ DEFINES =
 CC = cc
 ICC = icc
 CFLAGS = -Wall -g -Ofast -Ilib -Ilib/laspack -std=c99
-ICFLAGS = -Wall -g -Ofast -Ilib -Ilib/laspack -std=c99 -msse3
+ICFLAGS = -Wall -g -O3 -scalar-rep -Ilib -Ilib/laspack -std=c99 -mssse3
 CPPFLAGS = $(foreach define,$(DEFINES),-D$(define))
 LD = cc
 ILD = xild
 LFLAGS = -lm -O2
-ILFLAGS = -lm -lirc -limf -lsvml -macosx_version_min 10.8 -L /opt/intel/composerxe-2011.0.085/compiler/lib
+ILFLAGS = -lm -lirc -limf -lsvml -macosx_version_min 10.9 -L /opt/intel/composer_xe_2013_sp1/lib
+
+# CC = $(ICC)
+# CFLAGS = $(ICFLAGS)
+# LD = $(ILD)
+# LFLAGS = $(ILFLAGS)
+
 LASPACKONAMES = eigenval.o \
                 errhandl.o \
                 factor.o \

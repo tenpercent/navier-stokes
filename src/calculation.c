@@ -1,8 +1,8 @@
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "calculation.h"
 #include "functions.h"
+#include "print.h"
 
 /* G and V values are packed as follows:
  *
@@ -81,15 +81,19 @@ void find_approximate_solution (
     Grid * grid,
     Iterative_Method_parameters * iterative_method_parameters) {
 
-  Sparse_matrix lh_side; // left-hand side of the system
-  double * rh_side = NEW(double, 2 * grid->X_nodes); // right-hand side of the system
-  double * unknown_vector = NEW(double, 2 * grid->X_nodes); // will be found when we solve the system
+  // left-hand side of the system
+  Sparse_matrix lh_side; 
+  // right-hand side of the system
+  double * rh_side = NEW(double, 2 * grid->X_nodes); 
+  // will be found when we solve the system
+  double * unknown_vector = NEW(double, 2 * grid->X_nodes);
+  // buffer used by iterative method
   double * buffer = NEW(double, 20 * grid->X_nodes);
 
-  unsigned time_step;
-  unsigned space_step;
+  register unsigned time_step,
+                    space_step;
 
-  unsigned max_iterations = 10000;
+  unsigned max_iterations = 10;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
   // initialize unknown vector
@@ -109,16 +113,12 @@ void find_approximate_solution (
   fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
-#ifdef ALTERNATIVE_OUTPUT
-    printf ("\r[....] Time step is %u of %u.", time_step + 1, grid->T_nodes);
-#else
-    printf ("\rTime step is %u of %u.", time_step, grid->T_nodes - 1);
-#endif /* ALTERNATIVE_OUTPUT */
-    fflush (stdout);
+    // this may slow things up
+    print_info_about_current_iteration (time_step, grid);
+
     fill_system (&lh_side, rh_side, grid, node_status, gas_parameters, space_coordinates, time_step, G, V);
 
     // launch iteration algorithm
-
     if (iterative_method_parameters->implementation == Implementation_Native) {
       iterative_method_parameters->method (&lh_side,
               unknown_vector,
@@ -164,12 +164,12 @@ void fill_system (
     double * G,
     double * V) {
 
-  unsigned space_step = 0,
+  register unsigned space_step = 0,
   // iterator through rows
            row_number = 0;
 
   // auxiliary constants
-  double _h   = 1. / grid->X_step,
+  register double _h   = 1. / grid->X_step,
          _h_2 = .5 * _h,
          _h_4 = .25 * _h,
          _h_6 = _h / 6.,
@@ -265,7 +265,7 @@ void fill_mesh_at_initial_time (
     double (*v) (double, double), // u_0
     double * space_coordinates,
     unsigned space_nodes) {
-  unsigned space_step = 0;
+  register unsigned space_step = 0;
   for (space_step = 0; space_step < space_nodes; ++space_step) {
     G[space_step] = g(space_coordinates[space_step], 0);
     V[space_step] = v(space_coordinates[space_step], 0);
@@ -274,7 +274,7 @@ void fill_mesh_at_initial_time (
 }
 
 void fill_approximation (double * G, double * V, double * solutions, unsigned total_values) {
-  unsigned space_step = 0;
+  register unsigned space_step = 0;
 
   for (space_step = 0; space_step < total_values; ++space_step) {
     G[space_step] = solutions[G_INDEX(space_step)];

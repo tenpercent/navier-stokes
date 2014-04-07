@@ -2,12 +2,12 @@
 #include <string.h>
 
 double scalar_product (
-    double * v1,
-    double * v2,
+    double const * v1,
+    double const * v2,
     unsigned size) {
 
-  double result = 0;
-  unsigned i;
+  register double result = 0;
+  register unsigned i;
   for (i = 0; i < size; ++i) {
     result += v1[i] * v2[i];
   }
@@ -15,12 +15,12 @@ double scalar_product (
 }
 
 void Precond_Jacobi (
-    Sparse_matrix * matrix,
-    double        * c,
-    double        * y,
-    double          omega) {
+    Sparse_matrix const * matrix,
+    double const        * c,
+    double              * y,
+    double                omega) {
 
-  unsigned i;
+  register unsigned i;
   for (i = 0; i < matrix->size; ++i) {
     y[i] = omega * c[i] / matrix->elements[i & 1];
   }
@@ -41,10 +41,10 @@ void Iterative_method_BiCGSTAB (
     double        * buffer /* we need 8 * size */
   ) {
 
-  unsigned size   = matrix->size;
-  double alpha    = 1;
-  double rho      = 1;
-  double omega    = 1;
+  register unsigned size   = matrix->size;
+  register double alpha    = 1;
+  register double rho      = 1;
+  register double omega    = 1;
   double *r       = buffer;
   double *rcap    = buffer + size;
   double *v       = buffer + size * 2;
@@ -55,8 +55,8 @@ void Iterative_method_BiCGSTAB (
   double *t       = buffer + size * 7;
   double *diff    = y;
 
-  unsigned i, iter;
-  double beta, rhoold, residual2;
+  register unsigned i, iter;
+  register double beta, rhoold, residual2;
 
   Sparse_matrix_Apply_to_vector (matrix, x, r);
   memset (v, 0, size * sizeof(double));
@@ -69,7 +69,9 @@ void Iterative_method_BiCGSTAB (
   for (iter = 1; iter < max_iter; ++iter) {
     rhoold = rho;
     rho = scalar_product (rcap, r, size);
-    beta = (rho / rhoold) * (alpha / omega);
+    // beta = (rho / rhoold) * (alpha / omega);
+    // should be faster:
+    beta = (rho * alpha) / (rhoold * omega);
     for (i = 0; i < size; ++i) {
       p[i] = r[i] + beta * (p[i] - omega * v[i]);
     }
