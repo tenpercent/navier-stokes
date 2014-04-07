@@ -86,8 +86,8 @@ void find_approximate_solution (
   double * unknown_vector = NEW(double, 2 * grid->X_nodes); // will be found when we solve the system
   double * buffer = NEW(double, 20 * grid->X_nodes);
 
-  unsigned time_step;
-  unsigned space_step;
+  register unsigned time_step,
+                    space_step;
 
   unsigned max_iterations = 10;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
@@ -159,12 +159,12 @@ void fill_system (
     double * G,
     double * V) {
 
-  unsigned space_step = 0,
+  register unsigned space_step = 0,
   // iterator through rows
            row_number = 0;
 
   // auxiliary constants
-  double _h   = 1. / grid->X_step,
+  register double _h   = 1. / grid->X_step,
          _h_2 = .5 * _h,
          _h_4 = .25 * _h,
          _h_6 = _h / 6.,
