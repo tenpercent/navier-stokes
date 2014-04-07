@@ -58,8 +58,9 @@ void print_iterative_algorithm_info (Iterative_Method_parameters const * paramet
 #endif /* NO_LASPACK */
 
 #ifdef ALTERNATIVE_OUTPUT
-  printf ("Using method: %s.\n", method_to_string);
-  printf ("Using preconditioner: %s.\n", preconditioner_to_string);
+  printf ("[info] Method: %s.\n", method_to_string);
+  printf ("[info] Preconditioner: %s.\n", preconditioner_to_string);
+  printf ("[info] Relaxation constant: %lg.\n", parameters->relaxation_constant);
 #else
   printf ("Using %s iterative method with %s preconditioner\n", 
           method_to_string, 
