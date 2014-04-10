@@ -1,17 +1,7 @@
-#include "ndiagonal_mathix.h"
+#include "ndiagonal_matrix.h"
 #include <stdlib.h>
 
 #define INDEX(i,j) ()
-
-typedef struct {
-  double * p_to_begin;
-  unsigned side;
-  unsigned max_diagonal;
-  unsigned min_diagonal;
-
-  (void *) (*allocate) (unsigned);
-  void (*deallocate) (void *);
-} Almost_diagonal_matrix;
 
 void Almost_diagonal_matrix_Construct (Almost_diagonal_matrix * matrix,
     unsigned side,
@@ -52,4 +42,4 @@ void Almost_diagonal_matrix_Apply_to_vector (
   }
 }
 
-#undef INDEX(i,j)
+#undef INDEX

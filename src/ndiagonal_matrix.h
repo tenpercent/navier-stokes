@@ -4,6 +4,6 @@ typedef struct {
   unsigned max_diagonal;
   unsigned min_diagonal;
 
-  (void *) (*allocate) (unsigned);
+  void * (*allocate) (unsigned);
   void (*deallocate) (void *);
-}
+} Almost_diagonal_matrix;
