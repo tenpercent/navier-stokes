@@ -1,4 +1,5 @@
 #include "iterative_method.h"
+#include <stdio.h>
 #include <string.h>
 
 double scalar_product (
@@ -94,10 +95,11 @@ void Iterative_method_BiCGSTAB (
     }
     residual2 = scalar_product (diff, diff, size);
     if (residual2 < accuracy * accuracy) {
-      break;
+      return;
     }
     for (i = 0; i < size; ++i) {
       r[i] = s[i] - omega * t[i];
     }
   }
+  printf ("\nWarning: maximum number of iterations reached: %u.\n", max_iter);
 }
