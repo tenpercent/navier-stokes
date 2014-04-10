@@ -23,13 +23,13 @@ void find_approximate_solution (
 void fill_system (
     Sparse_matrix * lh_side,
     double * rh_side,
-    Grid * grid,
-    Node_status * node_status,
+    Grid const * grid,
+    Node_status const * node_status,
     Gas_parameters * parameters,
-    double * space_coordinates,
-    unsigned time_step,
-    double * G,
-    double * V);
+    double const * space_coordinates,
+    unsigned const time_step,
+    double const * G,
+    double const * V);
 
 // fill the arrays (V[]) and (G[])
 // with the values of sought functions
