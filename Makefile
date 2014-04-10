@@ -2,7 +2,7 @@ BUILDDIR = build
 DEFINES =
 CC = cc
 ICC = icc
-CFLAGS = -Wall -g -Ofast -Ilib -Ilib/laspack -std=c99
+CFLAGS = -Wall -g -O2 -Ilib -Ilib/laspack -std=c99
 ICFLAGS = -Wall -g -O3 -scalar-rep -Ilib -Ilib/laspack -std=c99 -mssse3
 CPPFLAGS = $(foreach define,$(DEFINES),-D$(define))
 LD = cc

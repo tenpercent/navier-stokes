@@ -1,8 +1,10 @@
 #include <stdlib.h>
+#include <math.h>
 
 #include "calculation.h"
 #include "functions.h"
 #include "print.h"
+#include "norm.h"
 
 /* G and V values are packed as follows:
  *
@@ -93,7 +95,7 @@ void find_approximate_solution (
   register unsigned time_step,
                     space_step;
 
-  unsigned max_iterations = 10;
+  unsigned max_iterations = 100;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
   // initialize unknown vector
@@ -158,7 +160,7 @@ void fill_system (
     double * rh_side,
     Grid * grid,
     Node_status * node_status,
-    Gas_parameters * parameters,
+    Gas_parameters * gas_parameters,
     double * space_coordinates,
     unsigned time_step,
     double * G,
@@ -169,12 +171,20 @@ void fill_system (
            row_number = 0;
 
   // auxiliary constants
-  register double _h   = 1. / grid->X_step,
+  double const _h   = 1. / grid->X_step,
          _h_2 = .5 * _h,
          _h_4 = .25 * _h,
          _h_6 = _h / 6.,
+         _hh_4_3 = 4. / (3 * grid->X_step * grid->X_step),
 
          _tau = 1. / grid->T_step;
+
+  double _mu_tilda_hh_4_3;
+
+  gas_parameters->viscosity_norm = 
+    gas_parameters->viscosity * function_norm_C (G, grid->X_nodes, exp_1);
+
+  _mu_tilda_hh_4_3 = gas_parameters->viscosity_norm * _hh_4_3; 
 
   Sparse_matrix_Clear (lh_side);
 
@@ -191,7 +201,7 @@ void fill_system (
                    _h_4 *
                      (G[2] * V[2] - 2 * G[1] * V[1] + G[0] * V[0] +
                        (2 - G[0]) * (V[2] - 2 * V[1] + V[0])) +
-                   rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
+                   rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
 
         /* dummy equation */
@@ -210,18 +220,24 @@ void fill_system (
 
         rh_side[row_number] = _tau * G[space_step] +
                    _h_4 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
-                   rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
+                   rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
 
         /* another equation */
         /* attention: these values should be changed when (viscosity != 0) */
-        MATRIX_APPEND (G_INDEX(space_step - 1), -_h_2 * parameters->p_ro);
-        MATRIX_APPEND (V_INDEX(space_step - 1), -_h_6 * V[space_step] - _h_6 * V[space_step - 1]);
-        MATRIX_APPEND (V_INDEX(space_step), _tau);
-        MATRIX_APPEND (G_INDEX(space_step + 1), _h_2 * parameters->p_ro);
-        MATRIX_APPEND (V_INDEX(space_step + 1), _h_6 * V[space_step] + _h_6 * V[space_step + 1]);
-        rh_side[row_number] = _tau * V[space_step] +
-                   rhs_2nd_equation (space_coordinates[space_step], time_step * grid->T_step, parameters);
+        MATRIX_APPEND (G_INDEX(space_step - 1), -_h_2 * gas_parameters->p_ro);
+        MATRIX_APPEND (V_INDEX(space_step - 1), -_h_6 * V[space_step] - _h_6 * V[space_step - 1] -
+                       _mu_tilda_hh_4_3);
+        MATRIX_APPEND (V_INDEX(space_step), _tau + 
+                       2 * _mu_tilda_hh_4_3);
+        MATRIX_APPEND (G_INDEX(space_step + 1), _h_2 * gas_parameters->p_ro);
+        MATRIX_APPEND (V_INDEX(space_step + 1), _h_6 * V[space_step] + _h_6 * V[space_step + 1] - 
+                       _mu_tilda_hh_4_3);
+        rh_side[row_number] = _tau * V[space_step] -
+                                _hh_4_3 * 
+                                (gas_parameters->viscosity_norm - gas_parameters->viscosity * exp_1 (G[space_step])) *
+                                (V[space_step - 1] - 2 * V[space_step] + V[space_step + 1]) + 
+                   rhs_2nd_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
         break;
 
@@ -239,7 +255,7 @@ void fill_system (
                       G[grid->X_nodes - 3] * V[grid->X_nodes - 3] +
                         (2 - G[grid->X_nodes - 1]) * 
                         (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
-                   rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, parameters);
+                   rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
 
         /* dummy equation */ 

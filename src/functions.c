@@ -8,6 +8,10 @@
   #define M_PI 3.14159265358979323846264338327950288
 #endif
 
+double exp_1 (double x) {
+  return exp (-x);
+}
+
 double u_exact (double x, double t) {
   return cos(2 * M_PI * t) * sin(M_PI * x * x * .01);
 }
@@ -63,7 +67,7 @@ double rhs_2nd_equation (double x, double t, Gas_parameters * parameters) {
   return u_t (x, t) + 
           u_exact (x, t) * u_x (x, t) + 
           parameters->p_ro * g_x (x, t) -
-          parameters->viscosity * exp (-g_exact (x, t)) * u_xx (x, t);
+          parameters->viscosity * exp_1 (g_exact (x, t)) * u_xx (x, t);
 }
 
 #endif
