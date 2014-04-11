@@ -44,17 +44,17 @@ OFILES = $(foreach fname,$(ONAMES),$(BUILDDIR)/program/$(fname))
 
 ifeq (,$(filter NO_LASPACK,$(DEFINES)))
 gas: $(OFILES) $(LASPACKOFILES)
-	$(LD) -o gas $(OFILES) $(LASPACKOFILES) $(LFLAGS)
+	$(LD) -o $@ $(OFILES) $(LASPACKOFILES) $(LFLAGS)
 else
 gas: $(OFILES)
-	$(LD) -o gas $(OFILES) $(LFLAGS)
+	$(LD) -o $@ $(OFILES) $(LFLAGS)
 endif
 
-$(BUILDDIR)/laspack/%.o: $(BUILDDIR)/laspack/create-stamp lib/laspack/%.c
-	$(CC) $(CFLAGS)  -o $@ -c lib/laspack/$*.c
+$(BUILDDIR)/laspack/%.o: lib/laspack/%.c $(BUILDDIR)/laspack/create-stamp
+	$(CC) $(CFLAGS)  -o $@ -c $<
 
-$(BUILDDIR)/program/%.o: $(BUILDDIR)/program/create-stamp src/%.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c src/$*.c
+$(BUILDDIR)/program/%.o: src/%.c $(BUILDDIR)/program/create-stamp
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
 clean:
 	rm -rf $(BUILDDIR)
