@@ -1,3 +1,6 @@
+#ifndef CALCULATION
+#define CALCULATION
+
 #include "structures.h"
 #include "initialize.h"
 
@@ -49,3 +52,5 @@ void fill_mesh_at_initial_time (
 // after solving the system of linear equations
 // from (solutions)
 void fill_approximation (double * G, double * V, double * solutions, unsigned total_values);
+
+#endif

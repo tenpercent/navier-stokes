@@ -1,3 +1,6 @@
+#ifndef EXPORT 
+#define EXPORT
+
 #include <time.h>
 #include "structures.h"
 #include "iterative_method.h"
@@ -18,3 +21,5 @@ void write_current_results (
 // export the results of calculation
 // to csv file "./results.csv"
 void export_results (double *const * results, unsigned total_experiments);
+
+#endif

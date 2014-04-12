@@ -1,3 +1,6 @@
+#ifndef NORM 
+#define NORM
+
 // C[0, space_upper_boundary] norm of residual
 // on time layer corresponding to
 // time_upper_boundary
@@ -29,3 +32,5 @@ double max (double x, double y);
 
 // (x) squared
 double square (double x);
+
+#endif

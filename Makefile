@@ -2,12 +2,12 @@ BUILDDIR = build
 DEFINES =
 CC = cc
 ICC = icc
-CFLAGS = -Wall -g -O2 -Ilib -Ilib/laspack -std=c99
+CFLAGS = -Wall -g -Ilib -Ilib/laspack -std=c99
 ICFLAGS = -Wall -g -O3 -scalar-rep -Ilib -Ilib/laspack -std=c99 -mssse3
 CPPFLAGS = $(foreach define,$(DEFINES),-D$(define))
 LD = cc
 ILD = xild
-LFLAGS = -lm -O2
+LFLAGS = -lm -g -O2
 ILFLAGS = -lm -lirc -limf -lsvml -macosx_version_min 10.9 -L /opt/intel/composer_xe_2013_sp1/lib
 
 # CC = $(ICC)
@@ -51,9 +51,9 @@ gas: $(OFILES)
 endif
 
 $(BUILDDIR)/laspack/%.o: $(BUILDDIR)/laspack/create-stamp lib/laspack/%.c
-	$(CC) $(CFLAGS)  -o $@ -c lib/laspack/$*.c
+	$(CC) $(CFLAGS) -o $@ -c lib/laspack/$*.c
 
-$(BUILDDIR)/program/%.o: $(BUILDDIR)/program/create-stamp src/%.c
+$(BUILDDIR)/program/%.o: $(BUILDDIR)/program/create-stamp src/%.c Makefile
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c src/$*.c
 
 clean:

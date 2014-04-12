@@ -8,8 +8,7 @@ typedef struct {
   double p_ro;                    // p(ro) is the function from the problem statement
                                   // we consider it is linear
                                   // i.e. p(ro) = p_ro * ro
-  double viscosity;               // viscosity; also look into the problem statement. MUUUUU
-  double viscosity_norm;
+  double viscosity;               // viscosity; also look into the problem statement. MU
 } Gas_parameters;
 
 // structure to store grid parameters: 

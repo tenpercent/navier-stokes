@@ -1,3 +1,6 @@
+#ifndef PRINT 
+#define PRINT
+
 #include "iterative_method.h"
 #include "structures.h"
 
@@ -17,3 +20,5 @@ void print_results_at_current_iteration (
 // print information about something during {time_step}
 // of iterative algorithm
 void print_info_about_current_iteration (unsigned time_step, Grid const * grid);
+
+#endif

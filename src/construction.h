@@ -1,3 +1,6 @@
+#ifndef CONSTRUCTION
+#define CONSTRUCTION
+
 #include "structures.h"
 #define RESULTS_SIZE 8
 
@@ -22,3 +25,5 @@ void mesh_elements_Construct (Node_status ** node_statuses, double ** space_coor
 // free memory of the information of node positions in the mesh
 // and the coordinates of the mesh nodes
 void mesh_elements_Destruct (Node_status * node_statuses, double * space_coordinates);
+
+#endif
