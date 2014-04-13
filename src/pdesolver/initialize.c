@@ -9,7 +9,7 @@ void gas_parameters_Initialize (Gas_parameters * parameters) {
   parameters->time_upper_boundary   = 1.;
   parameters->space_upper_boundary  = 10.;
   parameters->p_ro                  = 10.;
-  parameters->viscosity             = .5;
+  parameters->viscosity             = 2.;
   return;
 }
 
@@ -18,8 +18,8 @@ void grid_Initialize (
     Gas_parameters * parameters,
     unsigned time_steps_magnifier, 
     unsigned space_steps_magnifier) {
-  grid->X_nodes = 400 << space_steps_magnifier;
-  grid->T_nodes = 400 << time_steps_magnifier;
+  grid->X_nodes = 100 << space_steps_magnifier;
+  grid->T_nodes = 100 << time_steps_magnifier;
 
   grid->X_step = parameters->space_upper_boundary / (grid->X_nodes - 1);
   grid->T_step = parameters->time_upper_boundary / (grid->T_nodes - 1);

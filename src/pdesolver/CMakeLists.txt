@@ -17,4 +17,4 @@ set (PDESolver_sources
 
 add_executable (PDESolver ${PDESolver_sources})
 
-target_link_libraries (PDESolver LASPack)
+target_link_libraries (PDESolver LASPack m)

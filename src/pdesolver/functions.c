@@ -1,6 +1,3 @@
-#ifndef FUNCTIONS
-#define FUNCTIONS
-
 #include <math.h>
 #include "structures.h"
 
@@ -9,7 +6,7 @@
 #endif
 
 double exp_1 (double x) {
-  return exp (-1. * x);
+  return exp (-x);
 }
 
 double u_exact (double x, double t) {
@@ -69,5 +66,3 @@ double rhs_2nd_equation (double x, double t, Gas_parameters * parameters) {
           parameters->p_ro * g_x (x, t) -
           parameters->viscosity * exp_1 (g_exact (x, t)) * u_xx (x, t);
 }
-
-#endif
