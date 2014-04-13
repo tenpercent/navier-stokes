@@ -35,3 +35,14 @@ double residual_norm_L2 (double const * approximation,
   norm = sqrt (norm / dimension);
   return norm;
 }
+
+double function_norm_C (double const * node_values,
+                        unsigned dimension,
+                        double (*function) (double)) {
+  double norm = fabs (function (node_values[0]));
+  unsigned space_step;
+  for (space_step = 1; space_step < dimension; ++space_step) {
+    norm = max (fabs (function (node_values[space_step])), norm);
+  }
+  return norm;
+}

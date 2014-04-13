@@ -4,6 +4,9 @@
 #include <math.h>
 #include "structures.h"
 
+// exp (-x)
+double exp_1 (double x);
+
 // u (x, t) from the pdf with problem description
 double u_exact (double x, double t);
 
