@@ -93,10 +93,10 @@ void find_approximate_solution (
   // buffer used by iterative method
   double * buffer = NEW(double, 20 * grid->X_nodes);
 
-  unsigned time_step = 0,
+  register unsigned time_step = 0,
            space_step = 0;
 
-  unsigned max_iterations = 50;
+  unsigned max_iterations = 500;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
   // initialize unknown vector
@@ -167,7 +167,7 @@ void fill_system (
     double const * G,
     double const * V) {
 
-  unsigned space_step = 0,
+  register unsigned space_step = 0,
   // iterator through rows
            row_number = 0;
 
@@ -184,9 +184,6 @@ void fill_system (
     gas_parameters->viscosity * function_norm_C (G, grid->X_nodes, exp_1);
 
   double const mu_tilda_hh_4_3 = viscosity_norm * hh_4_3; 
-
-  // printf ("scaled norm of mutilda is %lf", mu_tilda_hh_4_3);
-  // printf ("hh43 is %lf", hh_4_3);
 
   Sparse_matrix_Clear (lh_side);
 

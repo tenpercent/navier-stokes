@@ -3,7 +3,7 @@ In order to build you need CMake (>=2.6.0) and GNU Make
 How to build:
 
 1. $> cd build
-2. $> cmake ..
+2. $> cmake .. -DCMAKE_BUILD_TYPE=<DEBUG | RELEASE>
 3. $> make
 
 How to run:
