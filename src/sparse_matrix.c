@@ -11,7 +11,7 @@ void Sparse_matrix_Construct (
 
   this->size = size;
   this->indices = NEW(unsigned, size + nzcount + 1);
-  this->elements = NEW(double, nzcount + 2);
+  this->elements = NEW(double, size + nzcount + 1);
 
   Sparse_matrix_Clear (this);
 }
@@ -20,12 +20,12 @@ void Sparse_matrix_Clear (
     Sparse_matrix * this) {
 
   this->current_row = 0;
-  this->indices[0] = 2;
-  this->filled_element = 1;
+  this->indices[0] = this->size + 1;
+  this->filled_element = this->size;
 }
 
-/* Pseudo-MSR format: like MSR, but there are only two different
-   diagonal elements, so we store only them */
+/* We store elements in Modified Compressed Sparse Row
+ * (MSR) format */
 
 void Sparse_matrix_Append_element (
     Sparse_matrix * this,
@@ -34,7 +34,7 @@ void Sparse_matrix_Append_element (
     double value) {
 
   if (row == col) {
-    this->elements[row & 1] = value;
+    this->elements[row] = value;
     return;
   }
 
@@ -43,7 +43,7 @@ void Sparse_matrix_Append_element (
     ++(this->current_row);
     this->indices[this->current_row] = this->filled_element;
   }
-  this->indices[this->filled_element + this->size - 1] = col;
+  this->indices[this->filled_element] = col;
   this->elements[this->filled_element] = value;
 }
 
@@ -72,9 +72,9 @@ void Sparse_matrix_Apply_to_vector (
   register unsigned i, ind;
   
   for (i = 0; i < this->size; ++i) {
-    newVector[i] = this->elements[i & 1] * vector[i];
+    newVector[i] = this->elements[i] * vector[i];
     for (ind = this->indices[i]; ind < this->indices[i+1]; ++ind) {
-      newVector[i] += this->elements[ind] * vector[this->indices[ind + this->size - 1]];
+      newVector[i] += this->elements[ind] * vector[this->indices[ind]];
     }
   }
 }
@@ -89,10 +89,10 @@ void Sparse_matrix_to_QMatrix (
   for (row = 0; row < this->size; ++row) {
     row_length = this->indices[row + 1] - this->indices[row];
     Q_SetLen (qmatrix, row + 1, row_length + 1);
-    Q_SetEntry (qmatrix, row + 1, 0, row + 1, this->elements[row & 1]);
+    Q_SetEntry (qmatrix, row + 1, 0, row + 1, this->elements[row]);
     for (index = 0; index < row_length; ++index) {
       position = this->indices[row] + index;
-      Q_SetEntry (qmatrix, row + 1, index + 1, this->indices[position + this->size - 1] + 1, this->elements[position]);
+      Q_SetEntry (qmatrix, row + 1, index + 1, this->indices[position] + 1, this->elements[position]);
     }
   }
 }
