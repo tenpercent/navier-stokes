@@ -1,3 +1,5 @@
+In order to build you need CMake (>=2.6.0) and GNU Make
+
 How to build:
 
 1. $> cd build
@@ -8,5 +10,5 @@ How to run:
 
 1. $> ./build/bin/PDESolver
 
-Results of current run are stored in ./build/bin/results.csv. Might want to collect them in separate directory, some time.
+Results of current run are stored in file "results.csv" in directory where the program is run. Might want to collect them in separate directory, some time.
 
