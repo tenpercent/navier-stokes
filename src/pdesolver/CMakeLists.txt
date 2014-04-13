@@ -18,7 +18,3 @@ set (PDESolver_sources
 add_executable (PDESolver ${PDESolver_sources})
 
 target_link_libraries (PDESolver LASPack)
-
-set (EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-
-set (LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
