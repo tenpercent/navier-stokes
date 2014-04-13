@@ -185,7 +185,7 @@ void fill_system (
 
   double const mu_tilda_hh_4_3 = viscosity_norm * hh_4_3; 
 
-  printf ("scaled norm of mutilda is %lf", mu_tilda_hh_4_3);
+  // printf ("scaled norm of mutilda is %lf", mu_tilda_hh_4_3);
   // printf ("hh43 is %lf", hh_4_3);
 
   Sparse_matrix_Clear (lh_side);
