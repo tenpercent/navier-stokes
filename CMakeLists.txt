@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 
-set (CMAKE_C_FLAGS_RELEASE "-Wall -std=c99 -O2")
-set (CMAKE_C_FLAGS_DEBUG "-g -pg -Wall -std=c99 -O0")
+set (CMAKE_C_FLAGS_RELEASE "-Wall -Wextra -pedantic -std=c99 -O2")
+set (CMAKE_C_FLAGS_DEBUG "-g -pg -Wall -Wextra -pedantic -std=c99 -O0")
 
 project (PDESolver)
 

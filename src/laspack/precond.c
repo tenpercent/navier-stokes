@@ -75,6 +75,8 @@ Vector *SSORPrecond(QMatrix *A, Vector *y, Vector *c, double Omega)
 Vector *ILUPrecond(QMatrix *A, Vector *y, Vector *c, double Omega)
 /* incomplete factorization preconditioner */
 {
+    (void) Omega;
+    
     Q_Lock(A);
     V_Lock(y);
     V_Lock(c);

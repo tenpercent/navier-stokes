@@ -22,10 +22,12 @@ double g_exact (double x, double t) {
 }
 
 double g_x (double x, double t) {
+  (void) t;
   return -.1 * M_PI * sin (.1 * M_PI * x) / (cos (.1 * M_PI * x) + 1.5);
 }
 
 double g_t (double x, double t) {
+  (void) x, (void) t;
   return 1.;
 }
 
@@ -53,6 +55,7 @@ double u_xx (double x, double t) {
 }
 
 double rhs_1st_equation (double x, double t, Gas_parameters * parameters) {
+  (void) parameters;
   return g_t (x, t) + 
           .5 * (
               2 * u_exact (x, t) * g_x (x, t) + 
