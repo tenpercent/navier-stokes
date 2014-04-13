@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
+#include <sys/stat.h>
+
 #include "export.h"
 #include "functions.h"
 #include "norm.h"
 
 #define MAX_BUFFER_SIZE (1U << 17)
+#define MAX_FILENAME_SIZE (1U << 6)
 
 void write_current_results (
     double ** results,
@@ -59,10 +63,12 @@ void export_results (double *const * results, unsigned total_experiments) {
   unsigned experiments_step = 0;
   // should be careful with c-strings
   char result_to_string[MAX_BUFFER_SIZE];
+  char filename[MAX_FILENAME_SIZE];
   strncpy (result_to_string, 
     ",Time elapsed,omega,tau,h,V residual in C,V residual in L2,G residual in C,G residual in L2\n",
     MAX_BUFFER_SIZE);
   char current_experiment_to_string[MAX_BUFFER_SIZE];
+  time_t current_time = time(NULL);
   for (experiments_step = 0; experiments_step < total_experiments; ++experiments_step) {
     snprintf (
       current_experiment_to_string,
@@ -91,7 +97,11 @@ void export_results (double *const * results, unsigned total_experiments) {
              MAX_BUFFER_SIZE - strlen(result_to_string) - 1);
   }
 
-  csv_data = fopen ("results.csv", "w");
+  // might be cross-platform issues
+  mkdir ("results", S_IRWXU);
+  snprintf (filename, MAX_FILENAME_SIZE, "results/%s !! results.csv", ctime(&current_time));
+
+  csv_data = fopen (filename, "w");
 
   if (!csv_data) {
     printf ("Could not open file to write results\n");
