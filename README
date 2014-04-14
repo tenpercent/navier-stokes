@@ -1,10 +1,16 @@
 In order to build you need CMake (>=2.6.0) and GNU Make
 
-How to build:
+How to build (simple):
 
 1. $> cd build
 2. $> cmake .. -DCMAKE_BUILD_TYPE=<DEBUG | RELEASE>
 3. $> make
+
+How to build (advanced):
+1. $> cd build
+2. $> ccmake ..
+3. set different options
+4. $> make
 
 How to run:
 
