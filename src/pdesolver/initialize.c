@@ -77,5 +77,8 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
       parameters->method_laspack = CGNIter;
     }
   }
+#else
+  (void) argc;
+  (void) argv;
 #endif /* NO_LASPACK */
 }
