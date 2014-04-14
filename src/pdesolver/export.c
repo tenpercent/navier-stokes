@@ -63,12 +63,19 @@ void export_results (double *const * results, unsigned total_experiments) {
   unsigned experiments_step = 0;
   // should be careful with c-strings
   char result_to_string[MAX_BUFFER_SIZE];
+  char current_experiment_to_string[MAX_BUFFER_SIZE];
+
   char filename[MAX_FILENAME_SIZE];
+  char time_representation[MAX_FILENAME_SIZE];
+
+  struct tm * time_info;
+  time_t timer = time(NULL);
+  time_info = localtime (&timer);
+  strftime (time_representation, MAX_FILENAME_SIZE, "%G_%b_%d_%H-%M-%S", time_info);
+
   strncpy (result_to_string, 
     ",Time elapsed,omega,tau,h,V residual in C,V residual in L2,G residual in C,G residual in L2\n",
     MAX_BUFFER_SIZE);
-  char current_experiment_to_string[MAX_BUFFER_SIZE];
-  time_t current_time = time(NULL);
   for (experiments_step = 0; experiments_step < total_experiments; ++experiments_step) {
     snprintf (
       current_experiment_to_string,
@@ -99,7 +106,7 @@ void export_results (double *const * results, unsigned total_experiments) {
 
   // might be cross-platform issues
   mkdir ("results", S_IRWXU);
-  snprintf (filename, MAX_FILENAME_SIZE, "results/%s !! results.csv", ctime(&current_time));
+  snprintf (filename, MAX_FILENAME_SIZE, "results/%s%s", time_representation, " !! results.csv");
 
   csv_data = fopen (filename, "w");
 
