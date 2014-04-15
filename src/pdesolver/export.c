@@ -106,7 +106,7 @@ void export_results (double *const * results, unsigned total_experiments) {
 
   // might be cross-platform issues
   mkdir ("results", S_IRWXU);
-  snprintf (filename, MAX_FILENAME_SIZE, "results/%s%s", time_representation, " !! results.csv");
+  snprintf (filename, MAX_FILENAME_SIZE, "results/%s%s", time_representation, "_results.csv");
 
   csv_data = fopen (filename, "w");
 
