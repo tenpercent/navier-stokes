@@ -1,0 +1,27 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+
+\title{Вычислительный практикум: Численное моделирование нестационарного течения вязкого газа
+с использованием неявной разностной схемы}
+
+\begin{document}
+\maketitle
+\section{Задание 1}
+\subsection{Постановка задачи}
+Рассмотрим систему уравнений, описывающую одномерное нестационарное движение вязкого баротропного газа:
+
+$
+\begin{cases}
+	\frac{\partial\rho}{\partial t} + \frac{\partial\rho u}{\partial t} = 0{,}\\
+	\rho\frac{\partial u}{\partial t} + \rho u \frac{\partial u}{\partial x} + \frac{dp}{dx} = \mu \frac{\partial^2 u}{\partial x^2}{.}
+\end{cases}
+$
+
+$\rho (x{,} t)$ ~--- плотность газа, $(x{,} t) \in \Omega$
+
+ $u (x{,} t)$ ~--- скорость газа, $(x{,} t) \in \Omega$
+ 
+ $p(\rho)$ ~--- давление газа, эта функция считается известной. 
+\end{document}
