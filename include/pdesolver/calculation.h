@@ -14,11 +14,11 @@
 void find_approximate_solution (
   double * G, 
   double * V, 
-  Node_status * node_status, 
-  double * space_coordinate, 
-  Gas_parameters * gas_parameters,
-  Grid * grid,
-  Iterative_Method_parameters * iterative_method_parameters);
+  Node_status const * node_status, 
+  double const * space_coordinate, 
+  Gas_parameters const * gas_parameters,
+  Grid const * grid,
+  Iterative_Method_parameters const * iterative_method_parameters);
 
 // fill the system of linear equations
 // which purpose is to find the values of sought functions
@@ -28,7 +28,7 @@ void fill_system (
     double * rh_side,
     Grid const * grid,
     Node_status const * node_status,
-    Gas_parameters * parameters,
+    Gas_parameters const * parameters,
     double const * space_coordinates,
     unsigned const time_step,
     double const * G,
@@ -44,13 +44,13 @@ void fill_mesh_at_initial_time (
   double * V,
   double (*g) (double, double),
   double (*v) (double, double),
-  double * space_coordinates,
+  double const * space_coordinates,
   unsigned space_nodes);
 
 // fill the arrays (V[]) and (G[])
 // with the values obtained
 // after solving the system of linear equations
 // from (solutions)
-void fill_approximation (double * G, double * V, double * solutions, unsigned total_values);
+void fill_approximation (double * G, double * V, double const * solutions, unsigned total_values);
 
 #endif

@@ -78,11 +78,11 @@ void call_laspack_method (
 void find_approximate_solution (
     double * G, 
     double * V, 
-    Node_status * node_status, 
-    double * space_coordinates, 
-    Gas_parameters * gas_parameters,
-    Grid * grid,
-    Iterative_Method_parameters * iterative_method_parameters) {
+    Node_status const * node_status, 
+    double const * space_coordinates, 
+    Gas_parameters const * gas_parameters,
+    Grid const * grid,
+    Iterative_Method_parameters const * iterative_method_parameters) {
 
   // left-hand side of the system
   Sparse_matrix lh_side; 
@@ -161,7 +161,7 @@ void fill_system (
     double * rh_side,
     Grid const * grid,
     Node_status const * node_status,
-    Gas_parameters * gas_parameters,
+    Gas_parameters const * gas_parameters,
     double const * space_coordinates,
     unsigned const time_step,
     double const * G,
@@ -225,7 +225,7 @@ void fill_system (
         /* attention: these values should be changed when (viscosity != 0) */
         MATRIX_APPEND (G_INDEX(space_step - 1), -h_2 * gas_parameters->p_ro);
         // change me!
-        MATRIX_APPEND (V_INDEX(space_step - 1), -h_6 * V[space_step] - h_6 * V[space_step - 1] - mu_tilda_hh_4_3);
+        MATRIX_APPEND (V_INDEX(space_step - 1), -h_6 * V[space_step] - h_6 * V[space_step - 1] -  mu_tilda_hh_4_3);
         // change me!
         MATRIX_APPEND (V_INDEX(space_step), tau + 2 * mu_tilda_hh_4_3);
         MATRIX_APPEND (G_INDEX(space_step + 1), h_2 * gas_parameters->p_ro);
@@ -278,7 +278,7 @@ void fill_mesh_at_initial_time (
     double * V,
     double (*g) (double, double), // log (ro_0)
     double (*v) (double, double), // u_0
-    double * space_coordinates,
+    double const * space_coordinates,
     unsigned space_nodes) {
   register unsigned space_step = 0;
   for (space_step = 0; space_step < space_nodes; ++space_step) {
@@ -288,7 +288,7 @@ void fill_mesh_at_initial_time (
   return;
 }
 
-void fill_approximation (double * G, double * V, double * solutions, unsigned total_values) {
+void fill_approximation (double * G, double * V, double const * solutions, unsigned total_values) {
   register unsigned space_step = 0;
 
   for (space_step = 0; space_step < total_values; ++space_step) {
