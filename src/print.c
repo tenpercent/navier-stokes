@@ -7,7 +7,11 @@
 #include "precond.h"
 #endif /* NO_LASPACK */
 
+#if defined (_WIN32) || defined (WIN32)
+#define FANCY(color, text) text
+#else
 #define FANCY(color, text) "\x1b[3" #color ";01m" text "\x1b[00m"
+#endif
 
 void print_iterative_algorithm_info (Iterative_Method_parameters const * parameters) {
   unsigned const BUFFER_SIZE = 128;
