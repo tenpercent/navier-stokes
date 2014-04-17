@@ -16,8 +16,8 @@ void Almost_diagonal_matrix_Construct (Almost_diagonal_matrix * matrix,
   matrix->min_diagonal = min_diagonal;
 
   matrix->p_to_begin = (double *) matrix->allocate(
-    (max_diagonal * side - 
-    (max_diagonal - min_diagonal) * (max_diagonal - min_diagonal + 1)) 
+    (max_diagonal * side -
+    (max_diagonal - min_diagonal) * (max_diagonal - min_diagonal + 1))
       * sizeof (double));
   return;
 }

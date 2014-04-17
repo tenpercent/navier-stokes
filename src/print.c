@@ -58,42 +58,27 @@ void print_iterative_algorithm_info (Iterative_Method_parameters const * paramet
   }
 #endif /* NO_LASPACK */
 
-#ifdef ALTERNATIVE_OUTPUT
   printf ("["FANCY(5, "info")"] Method: %s.\n", method_to_string);
   printf ("["FANCY(5, "info")"] Preconditioner: %s.\n", preconditioner_to_string);
   printf ("["FANCY(5, "info")"] Relaxation constant: %lg.\n", parameters->relaxation_constant);
-#else
-  printf ("Using %s iterative method with %s preconditioner\n", 
-          method_to_string, 
-          preconditioner_to_string);
-#endif /* ALTERNATIVE_OUTPUT */
 
   return;
 }
 
 void print_results_at_current_iteration (
-    double *const *results, 
+    double *const *results,
     unsigned global_iteration) {
 
   double const *const time_elapsed_at_iteration = results[0];
-// mitya's magic work  
-#ifdef ALTERNATIVE_OUTPUT
   printf ("\r[ "FANCY(2, "ok")" ] Iteration %u finished in %.1lf seconds.\n",
-#else
-  printf ("\rFinished iteration %u in %.1lf seconds.\n",
-#endif /* ALTERNATIVE_OUTPUT */
           global_iteration + 1,
           time_elapsed_at_iteration[global_iteration]);
 
   return;
 }
-  
+
 void print_info_about_current_iteration (unsigned time_step, Grid const * grid) {
-#ifdef ALTERNATIVE_OUTPUT
   printf ("\r[....] Time step is %u of %u.", time_step + 1, grid->T_nodes);
-#else
-  printf ("\rTime step is %u of %u.", time_step, grid->T_nodes - 1);
-#endif /* ALTERNATIVE_OUTPUT */
   fflush (stdout);
   return;
 }

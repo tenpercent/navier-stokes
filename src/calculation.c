@@ -76,18 +76,18 @@ void call_laspack_method (
 #endif /* NO_LASPACK */
 
 void find_approximate_solution (
-    double * G, 
-    double * V, 
-    Node_status * node_status, 
-    double * space_coordinates, 
+    double * G,
+    double * V,
+    Node_status * node_status,
+    double * space_coordinates,
     Gas_parameters * gas_parameters,
     Grid * grid,
     Iterative_Method_parameters * iterative_method_parameters) {
 
   // left-hand side of the system
-  Sparse_matrix lh_side; 
+  Sparse_matrix lh_side;
   // right-hand side of the system
-  double * rh_side = NEW(double, 2 * grid->X_nodes); 
+  double * rh_side = NEW(double, 2 * grid->X_nodes);
   // will be found when we solve the system
   double * unknown_vector = NEW(double, 2 * grid->X_nodes);
   // buffer used by iterative method
@@ -113,7 +113,7 @@ void find_approximate_solution (
   SetRTCAccuracy (iterative_method_parameters->accuracy);
 #endif /* NO_LASPACK */
 
-  fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
+  fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes);
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     // this may slow things up
@@ -180,10 +180,10 @@ void fill_system (
 
          tau = 1. / grid->T_step;
 
-  double const viscosity_norm = 
+  double const viscosity_norm =
     gas_parameters->viscosity * function_norm_C (G, grid->X_nodes, exp_1);
 
-  double const mu_tilda_hh_4_3 = viscosity_norm * hh_4_3; 
+  double const mu_tilda_hh_4_3 = viscosity_norm * hh_4_3;
 
   // printf ("scaled norm of mutilda is %lf", mu_tilda_hh_4_3);
   // printf ("hh43 is %lf", hh_4_3);
@@ -236,9 +236,9 @@ void fill_system (
         MATRIX_APPEND (V_INDEX(space_step + 1), h_6 * V[space_step] + h_6 * V[space_step + 1] - mu_tilda_hh_4_3);
         // change me!
         rh_side[row_number] = tau * V[space_step] -
-                  hh_4_3 * 
+                  hh_4_3 *
                     (viscosity_norm - gas_parameters->viscosity * exp_1 (G[space_step])) *
-                    (V[space_step - 1] - 2 * V[space_step] + V[space_step + 1]) + 
+                    (V[space_step - 1] - 2 * V[space_step] + V[space_step + 1]) +
                   rhs_2nd_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
         break;
@@ -251,16 +251,16 @@ void fill_system (
 
         rh_side[row_number] = tau * G[grid->X_nodes - 1] +
                    h_2 * G[grid->X_nodes - 1] * (V[grid->X_nodes - 1] - V[grid->X_nodes - 2]) -
-                   h_4 * 
-                     (G[grid->X_nodes - 1] * V[grid->X_nodes - 1] - 
-                      2 * G[grid->X_nodes - 2] * V[grid->X_nodes - 2] + 
+                   h_4 *
+                     (G[grid->X_nodes - 1] * V[grid->X_nodes - 1] -
+                      2 * G[grid->X_nodes - 2] * V[grid->X_nodes - 2] +
                       G[grid->X_nodes - 3] * V[grid->X_nodes - 3] +
-                        (2 - G[grid->X_nodes - 1]) * 
+                        (2 - G[grid->X_nodes - 1]) *
                         (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
                    rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
 
-        /* dummy equation */ 
+        /* dummy equation */
 
         MATRIX_APPEND (V_INDEX(grid->X_nodes - 1), 1);
         rh_side[row_number] = 0;

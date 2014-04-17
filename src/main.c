@@ -13,7 +13,7 @@ int main (int argc, char ** argv) {
                       max_iteration_time   = 3,
                       max_global_iteration = max_iteration_space * max_iteration_time;
 // user defined problem parameters and grid parameters
-// iterative method parameters may also fall in this cathegory                      
+// iterative method parameters may also fall in this cathegory
   Gas_parameters gas_parameters;
   Grid grid;
   Iterative_Method_parameters iterative_method_parameters;
@@ -30,7 +30,7 @@ int main (int argc, char ** argv) {
           finish_time;
 // counters
   unsigned global_iteration              = 0,
-           iteration_time                = 0, 
+           iteration_time                = 0,
            iteration_space               = 0;
   /**********************************/
   /*** program evaluation starts! ***/
@@ -39,7 +39,7 @@ int main (int argc, char ** argv) {
   print_iterative_algorithm_info (&iterative_method_parameters);
 
   gas_parameters_Initialize (&gas_parameters);
-  results_Construct (results, max_global_iteration);  
+  results_Construct (results, max_global_iteration);
 
   for (iteration_time = 0; iteration_time < max_iteration_time; ++iteration_time) {
     for (iteration_space = 0; iteration_space < max_iteration_space; ++iteration_space) {

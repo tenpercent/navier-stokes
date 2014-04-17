@@ -70,7 +70,7 @@ void Sparse_matrix_Apply_to_vector (
     double * newVector) {
 
   register unsigned i, ind;
-  
+
   for (i = 0; i < this->size; ++i) {
     newVector[i] = this->elements[i] * vector[i];
     for (ind = this->indices[i]; ind < this->indices[i+1]; ++ind) {

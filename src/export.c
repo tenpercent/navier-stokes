@@ -8,7 +8,7 @@
 
 void write_current_results (
     double ** results,
-    unsigned global_iteration, 
+    unsigned global_iteration,
     clock_t start_time,
     clock_t finish_time,
     Gas_parameters const * gas_parameters,
@@ -28,25 +28,25 @@ void write_current_results (
          * relaxation_constant_at_iteration = results[7];
 
   time_elapsed_at_iteration[global_iteration] = (finish_time - start_time) / (double) CLOCKS_PER_SEC;
-  residual_norm_V_C[global_iteration]         = residual_norm_C (V, 
-                                                                 grid->X_nodes, 
-                                                                 space_coordinates, 
-                                                                 gas_parameters->time_upper_boundary, 
+  residual_norm_V_C[global_iteration]         = residual_norm_C (V,
+                                                                 grid->X_nodes,
+                                                                 space_coordinates,
+                                                                 gas_parameters->time_upper_boundary,
                                                                  u_exact);
   residual_norm_V_L2[global_iteration]        = residual_norm_L2 (V,
-                                                                  grid->X_nodes, 
-                                                                  space_coordinates, 
-                                                                  gas_parameters->time_upper_boundary, 
+                                                                  grid->X_nodes,
+                                                                  space_coordinates,
+                                                                  gas_parameters->time_upper_boundary,
                                                                   u_exact);
-  residual_norm_G_C[global_iteration]         = residual_norm_C (G, 
-                                                                 grid->X_nodes, 
-                                                                 space_coordinates, 
-                                                                 gas_parameters->time_upper_boundary, 
+  residual_norm_G_C[global_iteration]         = residual_norm_C (G,
+                                                                 grid->X_nodes,
+                                                                 space_coordinates,
+                                                                 gas_parameters->time_upper_boundary,
                                                                  g_exact);
-  residual_norm_G_L2[global_iteration]        = residual_norm_L2 (G, 
-                                                                  grid->X_nodes, 
-                                                                  space_coordinates, 
-                                                                  gas_parameters->time_upper_boundary, 
+  residual_norm_G_L2[global_iteration]        = residual_norm_L2 (G,
+                                                                  grid->X_nodes,
+                                                                  space_coordinates,
+                                                                  gas_parameters->time_upper_boundary,
                                                                   g_exact);
   space_step_at_iteration[global_iteration] = grid->X_step;
   time_step_at_iteration[global_iteration] = grid->T_step;
@@ -55,11 +55,11 @@ void write_current_results (
 }
 
 void export_results (double *const * results, unsigned total_experiments) {
-  FILE * csv_data; 
+  FILE * csv_data;
   unsigned experiments_step = 0;
   // should be careful with c-strings
   char result_to_string[MAX_BUFFER_SIZE];
-  strncpy (result_to_string, 
+  strncpy (result_to_string,
     ",Time elapsed,omega,tau,h,V residual in C,V residual in L2,G residual in C,G residual in L2\n",
     MAX_BUFFER_SIZE);
   char current_experiment_to_string[MAX_BUFFER_SIZE];

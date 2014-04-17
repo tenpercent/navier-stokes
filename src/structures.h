@@ -11,8 +11,8 @@ typedef struct {
   double viscosity;               // viscosity; also look into the problem statement. MU
 } Gas_parameters;
 
-// structure to store grid parameters: 
-// nodes count and 
+// structure to store grid parameters:
+// nodes count and
 // distance between neighbor nodes
 // in time and space directions
 typedef struct {

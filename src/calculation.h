@@ -12,10 +12,10 @@
 // using the iterative method and preconditioner specified in (iterative_method_parameters)
 // and write it to arrays (V) and (G)
 void find_approximate_solution (
-  double * G, 
-  double * V, 
-  Node_status * node_status, 
-  double * space_coordinate, 
+  double * G,
+  double * V,
+  Node_status * node_status,
+  double * space_coordinate,
   Gas_parameters * gas_parameters,
   Grid * grid,
   Iterative_Method_parameters * iterative_method_parameters);

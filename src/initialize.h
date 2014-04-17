@@ -11,9 +11,9 @@ void gas_parameters_Initialize (Gas_parameters * parameters);
 // fill (grid) with information
 // hard code inside
 void grid_Initialize (
-  Grid * grid, 
+  Grid * grid,
   Gas_parameters * parameters,
-  unsigned time_steps_magnifier, 
+  unsigned time_steps_magnifier,
   unsigned space_steps_magnifier);
 
 // fill (node_status[]) and (space_coordinates[]) with information
