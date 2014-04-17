@@ -2,18 +2,10 @@ BUILDDIR = build
 DEFINES =
 CC = cc
 ICC = icc
-CFLAGS = -Wall -g -Ilib -Ilib/laspack -std=c99
-ICFLAGS = -Wall -g -O3 -scalar-rep -Ilib -Ilib/laspack -std=c99 -mssse3
+CFLAGS = -Wall -g -O2 -Ilib -Ilib/laspack
 CPPFLAGS = $(foreach define,$(DEFINES),-D$(define))
 LD = cc
-ILD = xild
 LFLAGS = -lm -g -O2
-ILFLAGS = -lm -lirc -limf -lsvml -macosx_version_min 10.9 -L /opt/intel/composer_xe_2013_sp1/lib
-
-# CC = $(ICC)
-# CFLAGS = $(ICFLAGS)
-# LD = $(ILD)
-# LFLAGS = $(ILFLAGS)
 
 LASPACKONAMES = eigenval.o \
                 errhandl.o \
