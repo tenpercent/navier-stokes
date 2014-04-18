@@ -9,8 +9,8 @@
 int main (int argc, char ** argv) {
 // local variables declaration
 // let's begin with user defined constants
-  unsigned long const max_iteration_space  = 3,
-                      max_iteration_time   = 3,
+  unsigned long const max_iteration_space  = 4,
+                      max_iteration_time   = 4,
                       max_global_iteration = max_iteration_space * max_iteration_time;
 // user defined problem parameters and grid parameters
 // iterative method parameters may also fall in this cathegory                      
