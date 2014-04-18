@@ -172,35 +172,27 @@ void fill_system (
            row_number = 0;
 
   // auxiliary constants
-  double const h   = 1. / grid->X_step,
-         h_2 = .5 * h,
-         h_4 = .25 * h,
-         h_6 = h / 6.,
-         hh_4_3 = h * h * 4. / 3.,
+  double const h2_tau = 2. * grid->X_step / grid->T_step,
+                        _h8 = 8. / grid->X_step;
 
-         tau = 1. / grid->T_step;
-
-  double const viscosity_norm = 
+  double const mu_tilda = 
     gas_parameters->viscosity * function_norm_C (G, grid->X_nodes, exp_1);
-
-  double const mu_tilda_hh_4_3 = viscosity_norm * hh_4_3; 
 
   Sparse_matrix_Clear (lh_side);
 
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
     switch (node_status[space_step]) {
       case LEFT:
-        MATRIX_APPEND (G_INDEX(0), tau - h_2 * V[0]);
-        MATRIX_APPEND (V_INDEX(0), -h);
-        MATRIX_APPEND (G_INDEX(1), h_2 * V[1]);
-        MATRIX_APPEND (V_INDEX(1), h);
 
-        rh_side[row_number] = tau * G[0] +
-                   h_2 * G[0] * (V[1] - V[0]) +
-                   h_4 *
-                     (G[2] * V[2] - 2 * G[1] * V[1] + G[0] * V[0] +
-                       (2 - G[0]) * (V[2] - 2 * V[1] + V[0])) +
-                   rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
+        MATRIX_APPEND (G_INDEX(0), h2_tau - V[0]);
+        MATRIX_APPEND (V_INDEX(0), -2);
+        MATRIX_APPEND (G_INDEX(1), V[1]);
+        MATRIX_APPEND (V_INDEX(1), 2);
+
+        rh_side[row_number] = h2_tau * G[0] + G[0] * (V[1] - V[0]) + .5 *
+            (G[2] * V[2] - 2 * G[1] * V[1] + G[0] * V[0] +
+            (2 - G[0]) * (V[2] - 2 * V[1] + V[0])) +
+            2. * grid->X_step * rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
 
         /* dummy equation */
@@ -211,50 +203,54 @@ void fill_system (
         break;
 
       case MIDDLE:
-        MATRIX_APPEND (G_INDEX(space_step - 1), -h_4 * V[space_step] - h_4 * V[space_step - 1]);
-        MATRIX_APPEND (V_INDEX(space_step - 1), -h_2);
-        MATRIX_APPEND (G_INDEX(space_step), tau);
-        MATRIX_APPEND (G_INDEX(space_step + 1), h_4 * V[space_step] + h_4 * V[space_step + 1]);
-        MATRIX_APPEND (V_INDEX(space_step + 1), h_2);
 
-        rh_side[row_number] = tau * G[space_step] +
-                   h_4 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
-                   rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
+        MATRIX_APPEND (G_INDEX(space_step - 1), -.5 * (V[space_step] + V[space_step - 1]));
+        MATRIX_APPEND (V_INDEX(space_step - 1), -1.);
+        MATRIX_APPEND (G_INDEX(space_step)    , h2_tau);
+        MATRIX_APPEND (G_INDEX(space_step + 1), .5 * (V[space_step] + V[space_step + 1]));
+        MATRIX_APPEND (V_INDEX(space_step + 1), 1.);
+
+        rh_side[row_number] = h2_tau * G[space_step] +
+            .5 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
+            2. * grid->X_step * rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
+
         /* another equation */
         /* attention: these values should be changed when (viscosity != 0) */
-        MATRIX_APPEND (G_INDEX(space_step - 1), -h_2 * gas_parameters->p_ro);
+        MATRIX_APPEND (G_INDEX(space_step - 1), -3. * gas_parameters->p_ro);
         // change me!
-        MATRIX_APPEND (V_INDEX(space_step - 1), -h_6 * V[space_step] - h_6 * V[space_step - 1] -  mu_tilda_hh_4_3);
+        MATRIX_APPEND (V_INDEX(space_step - 1), -1. * (V[space_step] + V[space_step - 1]) - _h8 * mu_tilda);
         // change me!
-        MATRIX_APPEND (V_INDEX(space_step), tau + 2 * mu_tilda_hh_4_3);
-        MATRIX_APPEND (G_INDEX(space_step + 1), h_2 * gas_parameters->p_ro);
+        MATRIX_APPEND (V_INDEX(space_step), 3 * h2_tau + 2. * _h8 * mu_tilda);
+        MATRIX_APPEND (G_INDEX(space_step + 1), 3. * gas_parameters->p_ro);
         // change me!
-        MATRIX_APPEND (V_INDEX(space_step + 1), h_6 * V[space_step] + h_6 * V[space_step + 1] - mu_tilda_hh_4_3);
+        MATRIX_APPEND (V_INDEX(space_step + 1), (V[space_step] + V[space_step + 1]) - _h8 * mu_tilda);
         // change me!
-        rh_side[row_number] = tau * V[space_step] -
-                  hh_4_3 * 
-                    (viscosity_norm - gas_parameters->viscosity * exp_1 (G[space_step])) *
-                    (V[space_step - 1] - 2 * V[space_step] + V[space_step + 1]) + 
-                  rhs_2nd_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
+        rh_side[row_number] = 3. * h2_tau * V[space_step] -
+            _h8 * 
+              (mu_tilda - gas_parameters->viscosity * exp_1 (G[space_step])) *
+              (V[space_step - 1] - 2 * V[space_step] + V[space_step + 1]) + 
+            6. * grid->X_step * rhs_2nd_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
         break;
 
       case RIGHT:
-        MATRIX_APPEND (G_INDEX(grid->X_nodes - 2), -h_2 * V[grid->X_nodes - 2]);
-        MATRIX_APPEND (V_INDEX(grid->X_nodes - 2), -h);
-        MATRIX_APPEND (G_INDEX(grid->X_nodes - 1), tau + h_2 * V[grid->X_nodes - 1]);
-        MATRIX_APPEND (V_INDEX(grid->X_nodes - 1), h);
 
-        rh_side[row_number] = tau * G[grid->X_nodes - 1] +
-                   h_2 * G[grid->X_nodes - 1] * (V[grid->X_nodes - 1] - V[grid->X_nodes - 2]) -
-                   h_4 * 
-                     (G[grid->X_nodes - 1] * V[grid->X_nodes - 1] - 
-                      2 * G[grid->X_nodes - 2] * V[grid->X_nodes - 2] + 
-                      G[grid->X_nodes - 3] * V[grid->X_nodes - 3] +
-                        (2 - G[grid->X_nodes - 1]) * 
-                        (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
-                   rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
+        MATRIX_APPEND (G_INDEX(grid->X_nodes - 2), -1. * V[grid->X_nodes - 2]);
+        MATRIX_APPEND (V_INDEX(grid->X_nodes - 2), -2.);
+        MATRIX_APPEND (G_INDEX(grid->X_nodes - 1), h2_tau + V[grid->X_nodes - 1]);
+        MATRIX_APPEND (V_INDEX(grid->X_nodes - 1), 2.);
+
+        rh_side[row_number] = 
+            h2_tau * G[grid->X_nodes - 1] +
+            G[grid->X_nodes - 1] * (V[grid->X_nodes - 1] - V[grid->X_nodes - 2]) -
+            .5 * (
+              G[grid->X_nodes - 1] * V[grid->X_nodes - 1] - 
+              2 * G[grid->X_nodes - 2] * V[grid->X_nodes - 2] + 
+              G[grid->X_nodes - 3] * V[grid->X_nodes - 3] +
+              (2 - G[grid->X_nodes - 1]) * 
+                (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
+            2. * grid->X_step * rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
         ++row_number;
 
         /* dummy equation */ 
