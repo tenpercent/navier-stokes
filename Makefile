@@ -1,5 +1,5 @@
 BUILDDIR = build
-DEFINES =
+DEFINES = NO_LASPACK
 CC = cc
 ICC = icc
 CFLAGS = -Wall -g -Ilib -Ilib/laspack -std=c99
@@ -56,10 +56,17 @@ $(BUILDDIR)/laspack/%.o: lib/laspack/%.c $(BUILDDIR)/laspack/create-stamp Makefi
 $(BUILDDIR)/program/%.o: src/%.c $(BUILDDIR)/program/create-stamp Makefile
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
+$(BUILDDIR)/tests/%.o: tests/%.c $(BUILDDIR)/tests/create-stamp Makefile
+	$(CC) $(CFLAGS) $(CPPFLAGS) -Isrc -o $@ -c $<
+
 clean:
 	rm -rf $(BUILDDIR)
+
+test: $(BUILDDIR)/tests/test_sparse_matrix.o $(BUILDDIR)/program/sparse_matrix.o
+	$(LD) -o $(BUILDDIR)/test_sparse_matrix $< $(BUILDDIR)/program/sparse_matrix.o
+	./$(BUILDDIR)/test_sparse_matrix && echo "Test run successfully."
 
 distclean: clean
 	rm -f gas
 
-.SECONDARY: $(BUILDDIR)/laspack/create-stamp $(BUILDDIR)/program/create-stamp
+.SECONDARY: $(BUILDDIR)/laspack/create-stamp $(BUILDDIR)/program/create-stamp $(BUILDDIR)/tests/create-stamp
