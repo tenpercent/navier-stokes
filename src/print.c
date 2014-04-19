@@ -28,6 +28,8 @@ void print_iterative_algorithm_info (Iterative_Method_parameters const * paramet
 
     if (parameters->preconditioner_type == Precond_Jacobi) {
       sprintf (preconditioner_to_string, "Jacobi");
+    } else if (parameters->preconditioner_type == Precond_Null) {
+      sprintf (preconditioner_to_string, "Null");
     } else {
       /* nothing to do here */
       sprintf (preconditioner_to_string, "UNKNOWN");

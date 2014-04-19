@@ -52,6 +52,12 @@ void Precond_Jacobi (
     double              * y,
     double                omega);
 
+void Precond_Null (
+    Sparse_matrix const * matrix,
+    double const        * c,
+    double              * y,
+    double                omega);
+
 void Iterative_method_BiCGSTAB (
     Sparse_matrix * matrix,
     double        * x,

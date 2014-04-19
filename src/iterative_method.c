@@ -28,6 +28,15 @@ void Precond_Jacobi (
 
 }
 
+void Precond_Null (
+    Sparse_matrix const * matrix,
+    double const        * c,
+    double              * y,
+    double                omega) {
+
+  memcpy (y, c, matrix->size * sizeof(double));
+}
+
 /* Preconditioned BiCGSTAB method, described in: */
 /* http://en.wikipedia.org/wiki/Biconjugate_gradient_stabilized_method */
 
