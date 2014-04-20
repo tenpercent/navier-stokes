@@ -50,6 +50,12 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
   parameters->relaxation_constant = 1;
   parameters->accuracy = 1e-8;
 
+  if (argc > 1) {
+    if (strncasecmp (argv[1], "Null", 4) == 0) {
+      parameters->preconditioner_type = Precond_Null;
+    }
+  }
+
 #ifndef NO_LASPACK
   if (argc > 2) {
     parameters->implementation = Implementation_Laspack;

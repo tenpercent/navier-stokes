@@ -11,8 +11,8 @@
 
 typedef void (*Precond_type) (
     Sparse_matrix const *,   /* preconditioner matrix */
-    double const *,          /* c (FIXME: describe it) */
-    double       *,          /* y (FIXME: describe it) */
+    double const *,          /* c (source rightcol) */
+    double       *,          /* y (target rightcol) */
     double                   /* omega (relaxation constant) */
 );
 
@@ -47,6 +47,12 @@ typedef struct {
 } Iterative_Method_parameters;
 
 void Precond_Jacobi (
+    Sparse_matrix const * matrix,
+    double const        * c,
+    double              * y,
+    double                omega);
+
+void Precond_Null (
     Sparse_matrix const * matrix,
     double const        * c,
     double              * y,
