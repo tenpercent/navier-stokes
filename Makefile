@@ -1,5 +1,5 @@
 BUILDDIR = build
-DEFINES = NO_LASPACK
+DEFINES = ALTERNATIVE_OUTPUT NO_LASPACK
 CC = cc
 CFLAGS = -Wall -g -O2 -Ilib -Ilib/laspack
 CPPFLAGS = $(foreach define,$(DEFINES),-D$(define))
