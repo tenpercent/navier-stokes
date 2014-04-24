@@ -32,7 +32,7 @@ double residual_norm_L2 (double const * approximation,
   for (space_step = 0; space_step < dimension; ++space_step) {
     norm += square (approximation[space_step] - approximated (space_coordinate[space_step], time_upper_boundary));
   }
-  norm = sqrt (norm / dimension);
+  norm = sqrt (norm / (double) dimension);
   return norm;
 }
 

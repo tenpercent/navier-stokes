@@ -18,8 +18,8 @@ void grid_Initialize (
     Gas_parameters * parameters,
     unsigned time_steps_magnifier, 
     unsigned space_steps_magnifier) {
-  grid->X_nodes = 5 << space_steps_magnifier;
-  grid->T_nodes = 5 << time_steps_magnifier;
+  grid->X_nodes = 50 << space_steps_magnifier;
+  grid->T_nodes = 50 << time_steps_magnifier;
 
   grid->X_step = parameters->space_upper_boundary / (grid->X_nodes - 1);
   grid->T_step = parameters->time_upper_boundary / (grid->T_nodes - 1);
@@ -48,7 +48,7 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
   parameters->preconditioner_type = Precond_Jacobi;
   parameters->method = Iterative_method_BiCGSTAB;
   parameters->relaxation_constant = 1;
-  parameters->accuracy = 1e-10;
+  parameters->accuracy = 1e-8;
 
 #ifndef NO_LASPACK
   if (argc > 2) {

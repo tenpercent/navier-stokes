@@ -58,20 +58,9 @@ void write_current_results (
   return;
 }
 
-void export_results (double *const * results, unsigned total_experiments) {
-  FILE * csv_data; 
-  unsigned experiments_step = 0;
-  // should be careful with c-strings
-  char result_to_string[MAX_BUFFER_SIZE];
+void export_results_to_string (double *const * results, unsigned total_experiments, char * result_to_string) {
   char current_experiment_to_string[MAX_BUFFER_SIZE];
-
-  char filename[MAX_FILENAME_SIZE];
-  char time_representation[MAX_FILENAME_SIZE];
-
-  struct tm * time_info;
-  time_t timer = time(NULL);
-  time_info = localtime (&timer);
-  strftime (time_representation, MAX_FILENAME_SIZE, "%G_%b_%d_%H-%M-%S", time_info);
+  unsigned experiments_step = 0;
 
   strncpy (result_to_string, 
     ",Time elapsed,omega,tau,h,V residual in C,V residual in L2,G residual in C,G residual in L2\n",
@@ -103,7 +92,23 @@ void export_results (double *const * results, unsigned total_experiments) {
     strncat (result_to_string, current_experiment_to_string,
              MAX_BUFFER_SIZE - strlen(result_to_string) - 1);
   }
+  return;
+}
 
+void export_results (double *const * results, unsigned total_experiments) {
+  FILE * csv_data; 
+
+  char filename[MAX_FILENAME_SIZE];
+  char time_representation[MAX_FILENAME_SIZE];
+  char result_to_string[MAX_BUFFER_SIZE];
+
+  struct tm * time_info;
+  time_t timer = time(NULL);
+
+  time_info = localtime (&timer);
+  strftime (time_representation, MAX_FILENAME_SIZE, "%G_%b_%d_%H-%M-%S", time_info);
+
+  export_results_to_string (results, total_experiments, result_to_string);
   // might be cross-platform issues
   mkdir ("results", S_IRWXU);
   snprintf (filename, MAX_FILENAME_SIZE, "results/%s_results.csv", time_representation);
@@ -117,6 +122,54 @@ void export_results (double *const * results, unsigned total_experiments) {
 
   fputs (result_to_string, csv_data);
   fclose (csv_data);
+  return;
+}
+
+void export_residual_table_to_string (double const * residuals, 
+                            double const * header, 
+                            double const * left_column,
+                            unsigned const time_steps, 
+                            unsigned const space_steps,
+                            char * result) {
+  // result is output string
+
+  char current_experiment_to_string[MAX_BUFFER_SIZE];
+  unsigned time_step, space_step;
+
+  for (space_step = 0; space_step < space_steps; ++space_step) {
+    snprintf (current_experiment_to_string, 
+            MAX_BUFFER_SIZE,
+            "%.6lf",
+            header[space_step]);
+    strncat (result, current_experiment_to_string,
+             MAX_BUFFER_SIZE - strlen(result) - 1);
+  }
+
+  for (space_step = 0; space_step < space_steps; ++space_step) {
+    snprintf (current_experiment_to_string, 
+              MAX_BUFFER_SIZE,
+              "%.6lf",
+              left_column[space_step]);
+    strncat (result, current_experiment_to_string,
+             MAX_BUFFER_SIZE - strlen(result) - 1);
+
+    for (time_step = 0; time_step < time_steps; ++time_step) {
+      snprintf (current_experiment_to_string, 
+              MAX_BUFFER_SIZE,
+              "%le",
+              residuals[space_step * time_steps + time_step]);
+      strncat (result, current_experiment_to_string,
+             MAX_BUFFER_SIZE - strlen(result) - 1);
+    }
+
+    snprintf (current_experiment_to_string, 
+              MAX_BUFFER_SIZE,
+              "%s",
+              "\n");
+    strncat (result, current_experiment_to_string,
+             MAX_BUFFER_SIZE - strlen(result) - 1);
+  }
+
   return;
 }
 
