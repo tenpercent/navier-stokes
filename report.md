@@ -40,7 +40,7 @@ $$
 - V_{m-1} \cdot \frac{1}{2h}
 + G_{m}   \cdot \frac{1}{\tau}
 + G_{m+1} \cdot \frac{\hat{V}_{m-1} + \hat{V}_m}{4h}
-+ V_{m+1} \cdot \frac{1}{2h}
++ V_{m+1} \cdot \frac{1}{2h} = \\
 = \frac{\hat{G}_m}{\tau} +
   \frac{\hat{G}_m \cdot \left( \hat{V}_{m+1} - \hat{V}_{m-1} \right)}{4h} +
   R_1(m)
@@ -52,7 +52,7 @@ $$
   G_0 \cdot \left( \frac{1}{\tau} - \frac{\hat{V}_0}{2h} \right)
 - V_0 \cdot \frac{1}{h}
 + G_1 \cdot \frac{V_1}{2h}
-+ V_1 \cdot \frac{1}{h}
++ V_1 \cdot \frac{1}{h} = \\
 = \frac{\hat{G}_0}{\tau} +
   \frac{\hat{G}_0 \cdot \left( \hat{V}_1 - \hat{V}_0 \right)}{2h} +
   \frac{\hat{G}_2 \hat{V}_2 - 2 \hat{G}_1 V_1 + \hat{G}_0 \hat{V}_0 +
@@ -66,7 +66,7 @@ $$
 - G_{M-1} \cdot \frac{\hat{V}_{M-1}}{2h}
 - V_{M-1} \cdot \frac{1}{h}
 + G_{M}   \cdot \left( \frac{1}{\tau} + \frac{\hat{V}_M}{2h} \right)
-+ V_{M}   \cdot \frac{1}{h}
++ V_{M}   \cdot \frac{1}{h} = \\
 = \frac{\hat{G}_M}{\tau} +
   \frac{\hat{G}_M \left( \hat{V}_M - \hat{V}_{M-1} \right) }{2h} +
   \frac{\hat{G}_M \hat{V}_M - 2 \hat{G}_{M-1} \hat{V}_{M-1} + \hat{G}_{M-2} \hat{V}_{M-2} +
@@ -80,7 +80,7 @@ $$
 - G_{m-1} \cdot \frac{\tilde{p}'}{2h}
 - V_{m-1} \cdot \left( \frac{\hat{V}_{m-1} + \hat{V}_m}{6h} + \frac{4}{3}\tilde\mu \right)
 + V_{m}   \cdot \left( \frac{1}{\tau} + \frac{8}{3} \tilde\mu \right)
-+ G_{m+1} \cdot \frac{\tilde{p}'}{2h}
++ G_{m+1} \cdot \frac{\tilde{p}'}{2h} = \\
 + V_{m+1} \cdot \left( \frac{\hat{V}_m + \hat{V}_{m+1}}{6h} - \frac{4}{3}\tilde\mu \right)
 = \frac{\hat{V}_m}{\tau} +
   R_2(m)
