@@ -46,6 +46,34 @@ $$
   R_1(m)
 $$
 
+Начальное условие:
+
+$$
+  G_0 \cdot \left( \frac{1}{\tau} - \frac{\hat{V}_0}{2h} \right)
+- V_0 \cdot \frac{1}{h}
++ G_1 \cdot \frac{V_1}{2h}
++ V_1 \cdot \frac{1}{h}
+= \frac{\hat{G}_0}{\tau} +
+  \frac{\hat{G}_0 \cdot \left( \hat{V}_1 - \hat{V}_0 \right)}{2h} +
+  \frac{\hat{G}_2 \hat{V}_2 - 2 \hat{G}_1 V_1 + \hat{G}_0 \hat{V}_0 +
+      \left( 2 - \hat{G}_0 \right) \left( \hat{V}_2 - 2 \hat{V}_1 + \hat{V}_0 \right)}{4h} +
+  R_1(0)
+$$
+
+Конечное условие:
+
+$$
+- G_{M-1} \cdot \frac{\hat{V}_{M-1}}{2h}
+- V_{M-1} \cdot \frac{1}{h}
++ G_{M}   \cdot \left( \frac{1}{\tau} + \frac{\hat{V}_M}{2h} \right)
++ V_{M}   \cdot \frac{1}{h}
+= \frac{\hat{G}_M}{\tau} +
+  \frac{\hat{G}_M \left( \hat{V}_M - \hat{V}_{M-1} \right) }{2h} +
+  \frac{\hat{G}_M \hat{V}_M - 2 \hat{G}_{M-1} \hat{V}_{M-1} + \hat{G}_{M-2} \hat{V}_{M-2} +
+      \left( 2 - \hat{G}_M \right) \left( \hat{V}_M - 2 \hat{V}_{M-1} + \hat{V}_{M-2} \right) }{4h} +
+  R_1(M)
+$$
+
 Линейное уравнение для $V$ (в случае нулевой вязкости):
 
 $$
