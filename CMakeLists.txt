@@ -11,8 +11,6 @@ ENDIF ()
 set (CMAKE_C_FLAGS_RELEASE "-Wall -Wextra -pedantic -std=c99 -O2")
 set (CMAKE_C_FLAGS_DEBUG "-g -pg -Wall -Wextra -pedantic -std=c99 -O0")
 
-set (CMAKE_BUILD_TYPE RELEASE)
-
 option (PDESolver_NO_LASPack "Build without LASPack" OFF)
 option (PDESolver_COLORFUL_OUTPUT "Use fancy output style" OFF)
 
