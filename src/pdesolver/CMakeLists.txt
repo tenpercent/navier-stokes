@@ -6,7 +6,7 @@ if (NOT PDESolver_NO_LASPack)
 endif (NOT PDESolver_NO_LASPack)
 
 set (PDESolver_sources
-  main.c
+  pdesolver.c
   initialize.c
   construction.c
   calculation.c
