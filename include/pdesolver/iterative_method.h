@@ -11,8 +11,8 @@
 
 typedef void (*Precond_type) (
     Sparse_matrix const *,   /* preconditioner matrix */
-    double const *,          /* c (FIXME: describe it) */
-    double       *,          /* y (FIXME: describe it) */
+    double const *,          /* c (source rightcol) */
+    double       *,          /* y (target rightcol) */
     double                   /* omega (relaxation constant) */
 );
 

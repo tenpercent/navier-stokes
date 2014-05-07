@@ -60,6 +60,7 @@ void write_current_results (
 
 void export_results_to_string (double *const * results, unsigned total_experiments, char * result_to_string) {
   char current_experiment_to_string[MAX_BUFFER_SIZE];
+  const char delimiter = '&';
   unsigned experiments_step = 0;
 
   strncpy (result_to_string, 
@@ -69,23 +70,31 @@ void export_results_to_string (double *const * results, unsigned total_experimen
     snprintf (
       current_experiment_to_string,
       MAX_BUFFER_SIZE,
-      "%d,\
-      %.3lf s,\
-      %.3lf,\
-      %le,\
-      %le,\
-      %le,\
-      %le,\
-      %le,\
+      "%d%c\
+      %.3lf s%c\
+      %.3lf%c\
+      %le%c\
+      %le%c\
+      %le%c\
+      %le%c\
+      %le%c\
       %le\n",
         experiments_step + 1,
+        delimiter,
         results[0][experiments_step],
+        delimiter,
         results[7][experiments_step],
+        delimiter,
         results[5][experiments_step],
+        delimiter,
         results[6][experiments_step],
+        delimiter,
         results[1][experiments_step],
+        delimiter,
         results[2][experiments_step],
+        delimiter,
         results[3][experiments_step],
+        delimiter,
         results[4][experiments_step]
     );
     // |^ looks ugly, should fix later

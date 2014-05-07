@@ -51,7 +51,7 @@ void print_iterative_algorithm_info (Iterative_Method_parameters const * paramet
       sprintf (preconditioner_to_string, "SSOR");
     } else {
       /* nothing to do here */
-      sprintf (preconditioner_to_string, "UNKNOWN");
+      sprintf (preconditioner_to_string, "No");
     }
   }
 #endif /* NO_LASPACK */

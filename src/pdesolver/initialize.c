@@ -9,7 +9,7 @@ void gas_parameters_Initialize (Gas_parameters * parameters) {
   parameters->time_upper_boundary   = 1.;
   parameters->space_upper_boundary  = 10.;
   parameters->p_ro                  = 10.;
-  parameters->viscosity             = 0.;
+  parameters->viscosity             = 1.;
   return;
 }
 
@@ -59,7 +59,7 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
       parameters->preconditioner_type_laspack = SSORPrecond;
     } else {
       // default value
-      parameters->preconditioner_type_laspack = JacobiPrecond;
+      parameters->preconditioner_type_laspack = NULL;
     }
 
     if (strncasecmp (argv[2], "CGN", 3) == 0) {
