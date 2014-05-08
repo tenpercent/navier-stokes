@@ -9,7 +9,7 @@
 #endif
 
 double exp_1 (double x) {
-  return exp (-1. * x);
+  return exp (-x);
 }
 
 double u_exact (double x, double t) {
