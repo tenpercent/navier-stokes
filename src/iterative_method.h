@@ -24,7 +24,7 @@ typedef void (*Iterative_Method_type) (
     Precond_type,      /* preconditioner type */
     double,            /* omega (relaxation constant) */
     double,            /* accuracy */
-    double *           /* buffer (10 * size) */
+    double *           /* buffer (8 * size) */
 );
 
 typedef enum {

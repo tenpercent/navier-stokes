@@ -91,7 +91,7 @@ void find_approximate_solution (
   // will be found when we solve the system
   double * unknown_vector = NEW(double, 2 * grid->X_nodes);
   // buffer used by iterative method
-  double * buffer = NEW(double, 20 * grid->X_nodes);
+  double * buffer = NEW(double, 16 * grid->X_nodes);
 
   unsigned time_step = 0,
            space_step = 0;
