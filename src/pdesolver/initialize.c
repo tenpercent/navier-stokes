@@ -9,7 +9,7 @@ void gas_parameters_Initialize (Gas_parameters * parameters) {
   parameters->time_upper_boundary   = 1.;
   parameters->space_upper_boundary  = 10.;
   parameters->p_ro                  = 10.;
-  parameters->viscosity             = 1.;
+  parameters->viscosity             = 0.1;
   return;
 }
 
@@ -47,7 +47,7 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
   parameters->implementation = Implementation_Native;
   parameters->preconditioner_type = Precond_Jacobi;
   parameters->method = Iterative_method_BiCGSTAB;
-  parameters->relaxation_constant = 1;
+  parameters->relaxation_constant = 1.55;
   parameters->accuracy = 1e-8;
 
 #ifndef NO_LASPACK
@@ -57,6 +57,8 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
       parameters->preconditioner_type_laspack = JacobiPrecond;
     } else if (strncasecmp (argv[1], "SSOR", 4) == 0) {
       parameters->preconditioner_type_laspack = SSORPrecond;
+    } else if (strncasecmp (argv[1], "NULL", 4) == 0) {
+      parameters->preconditioner_type_laspack = NULL;
     } else {
       // default value
       parameters->preconditioner_type_laspack = NULL;

@@ -96,7 +96,7 @@ void find_approximate_solution (
   register unsigned time_step = 0,
            space_step = 0;
 
-  unsigned max_iterations = 500;
+  unsigned max_iterations = 50;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
   // initialize unknown vector
