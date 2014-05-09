@@ -25,15 +25,21 @@ void find_approximate_solution (
 // in the nodes of the initial time layer.
 // These values are obtained by applying
 // (g(x,t)) and (v(x,t)) to the points of the initial time layer
-// then fill (unknown_vector[]) with same values
 void fill_mesh_at_initial_time (
   double * G,
   double * V,
-  double * unknown_vector,
   double (*g) (double),
   double (*v) (double),
   double const * space_coordinates,
   unsigned space_nodes);
+
+// fill (unknown_vector[]) with values in G[] and V[]
+// in order in which (g, v) values are stored
+void fill_unknown_vector (
+    double * G,
+    double * V,
+    double * unknown_vector,
+    unsigned space_nodes);
 
 // fill the arrays (V[]) and (G[])
 // with the values obtained

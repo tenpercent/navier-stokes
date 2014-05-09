@@ -103,7 +103,7 @@ void find_approximate_solution (
   SetRTCAccuracy (iterative_method_parameters->accuracy);
 #endif /* NO_LASPACK */
 
-  fill_mesh_at_initial_time (G, V, unknown_vector, g_start, u_start, space_coordinates, grid->X_nodes); 
+  fill_unknown_vector (G, V, unknown_vector, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     // this may slow things up
@@ -149,15 +149,28 @@ void find_approximate_solution (
 void fill_mesh_at_initial_time (
     double * G,
     double * V,
-    double * unknown_vector,
     double (*g) (double), // log (ro_0)
     double (*v) (double), // u_0
     double const * space_coordinates,
     unsigned space_nodes) {
   register unsigned space_step = 0;
   for (space_step = 0; space_step < space_nodes; ++space_step) {
-    G[space_step] = unknown_vector[G_INDEX(space_step)] = g(space_coordinates[space_step]);
-    V[space_step] = unknown_vector[V_INDEX(space_step)] = v(space_coordinates[space_step]);
+    G[space_step] = g(space_coordinates[space_step]);
+    V[space_step] = v(space_coordinates[space_step]);
+  }
+  return;
+}
+
+void fill_unknown_vector (
+    double * G,
+    double * V,
+    double * unknown_vector,
+    unsigned space_nodes) {
+
+  register unsigned space_step = 0;
+  for (space_step = 0; space_step < space_nodes; ++space_step) {
+    unknown_vector[G_INDEX(space_step)] = G[space_step];
+    unknown_vector[V_INDEX(space_step)] = V[space_step];
   }
   return;
 }

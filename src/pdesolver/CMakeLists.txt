@@ -6,7 +6,6 @@ if (NOT PDESolver_NO_LASPack)
 endif (NOT PDESolver_NO_LASPack)
 
 set (PDESolver_common_sources 
-  pdesolver.c
   initialize.c
   construction.c
   calculation.c
@@ -21,16 +20,19 @@ set (PDESolver_common_sources
 set (PDESolver_12_specific_sources
   start_conditions_12.c
   fill_system_smooth.c
+  pdesolver_smooth.c
 )
 
 set (PDESolver_3_specific_sources
   start_conditions_3.c
   fill_system_non_smooth.c
+  pdesolver_non_smooth.c  
 )
 
 set (PDESolver_4_specific_sources
   fill_system_non_smooth.c
   start_conditions_4.c
+  pdesolver_non_smooth.c 
 )
 
 if (PDESolver_NO_LASPack)
