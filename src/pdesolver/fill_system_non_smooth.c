@@ -14,7 +14,7 @@
 /* Useful for Sparse_matrix filling */
 #define MATRIX_APPEND(col, value) Sparse_matrix_Append_element (lh_side, row_number, col, value)
 
-#define FI(m) (V[(m)] * V[(m)] * tau * eta)
+#define FI(m) (V[(m)] * V[(m)] * tau * eta * rev_h * rev_h)
 
 void fill_system (
     Sparse_matrix * lh_side,
@@ -57,9 +57,9 @@ void fill_system (
   for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
     switch (node_status[space_step]) {
       case LEFT:
-        MATRIX_APPEND (G_INDEX(0), rev_tau - rev_h_2 * V[0]);
+        MATRIX_APPEND (G_INDEX(0), rev_tau - rev_h_2 * V[0] + (FI(0) + FI(1)));
         MATRIX_APPEND (V_INDEX(0), -rev_h);
-        MATRIX_APPEND (G_INDEX(1), rev_h_2 * V[1]);
+        MATRIX_APPEND (G_INDEX(1), rev_h_2 * V[1] - (FI(0) + FI(1)));
         MATRIX_APPEND (V_INDEX(1), rev_h);
 
         rh_side[row_number] = rev_tau * G[0] +
@@ -78,10 +78,13 @@ void fill_system (
         break;
 
       case MIDDLE:
-        MATRIX_APPEND (G_INDEX(space_step - 1), -rev_h_4 * V[space_step] - rev_h_4 * V[space_step - 1]);
+        MATRIX_APPEND (G_INDEX(space_step - 1), -rev_h_4 * V[space_step] - rev_h_4 * V[space_step - 1] -
+                                               .5 * (FI(space_step) + FI(space_step - 1)));
         MATRIX_APPEND (V_INDEX(space_step - 1), -rev_h_2);
-        MATRIX_APPEND (G_INDEX(space_step), rev_tau);
-        MATRIX_APPEND (G_INDEX(space_step + 1), rev_h_4 * V[space_step] + rev_h_4 * V[space_step + 1]);
+        MATRIX_APPEND (G_INDEX(space_step), rev_tau + 
+                                            .5 * (FI(space_step - 1) + 2. * FI(space_step) + FI(space_step + 1)));
+        MATRIX_APPEND (G_INDEX(space_step + 1), rev_h_4 * V[space_step] + rev_h_4 * V[space_step + 1] - 
+                                               .5 * (FI(space_step) + FI(space_step + 1)));
         MATRIX_APPEND (V_INDEX(space_step + 1), rev_h_2);
 
         rh_side[row_number] = rev_tau * G[space_step] +
@@ -108,9 +111,11 @@ void fill_system (
         break;
 
       case RIGHT:
-        MATRIX_APPEND (G_INDEX(grid->X_nodes - 2), -rev_h_2 * V[grid->X_nodes - 2]);
+        MATRIX_APPEND (G_INDEX(grid->X_nodes - 2), -rev_h_2 * V[grid->X_nodes - 2] + 
+                                                  (FI(grid->X_nodes - 2) + FI(grid->X_nodes - 1)));
         MATRIX_APPEND (V_INDEX(grid->X_nodes - 2), -rev_h);
-        MATRIX_APPEND (G_INDEX(grid->X_nodes - 1), rev_tau + rev_h_2 * V[grid->X_nodes - 1]);
+        MATRIX_APPEND (G_INDEX(grid->X_nodes - 1), rev_tau + rev_h_2 * V[grid->X_nodes - 1] -
+                                                  (FI(grid->X_nodes - 2) + FI(grid->X_nodes - 1)));
         MATRIX_APPEND (V_INDEX(grid->X_nodes - 1), rev_h);
 
         rh_side[row_number] = rev_tau * G[grid->X_nodes - 1] +

@@ -14,7 +14,7 @@ set (CMAKE_C_FLAGS_DEBUG "-g -pg -Wall -Wextra -pedantic -std=c99 -O0")
 option (PDESolver_NO_LASPack "Build without LASPack" OFF)
 option (PDESolver_COLORFUL_OUTPUT "Use fancy output style" OFF)
 
-project (PDESolver_12 C)
+project (PDESolver C)
 
 set (EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set (LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
