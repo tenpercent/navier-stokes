@@ -25,8 +25,7 @@ void export_results (double *const * results, unsigned total_experiments);
 // write table of values to filename
 void write_value_table (double const * values,
                         double const * space_coordinates,
-                        unsigned space_nodes, 
-                        unsigned time_iter,
+                        unsigned space_nodes,
                         char * filename);
 
 void rewrite_file (char const * filename,

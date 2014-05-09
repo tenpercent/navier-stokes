@@ -25,10 +25,10 @@ void process_iteration(Iterative_Method_parameters const * method_parameters,
                              grid, method_parameters);
 
   generate_table_filename ("G", time_iter, filename);
-  write_value_table (G, space_coordinates, grid->X_nodes, time_iter, filename);
+  write_value_table (G, space_coordinates, grid->X_nodes, filename);
 
   generate_table_filename ("V", time_iter, filename);
-  write_value_table (V, space_coordinates, grid->X_nodes, time_iter, filename);
+  write_value_table (V, space_coordinates, grid->X_nodes, filename);
 
   return;
 }

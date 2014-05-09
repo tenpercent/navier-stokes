@@ -8,7 +8,7 @@
 #include "norm.h"
 
 #define MAX_BUFFER_SIZE (1U << 17)
-#define SMALL_BUFFER_SIZE (1U << 6)
+#define SMALL_BUFFER_SIZE (1U << 5)
 #define MAX_FILENAME_SIZE (1U << 6)
 
 void write_current_results (
@@ -176,8 +176,7 @@ void export_residual_table_to_string (double const * residuals,
 
 void write_value_table (double const * values,
                         double const * space_coordinates,
-                        unsigned space_nodes, 
-                        unsigned time_iter,
+                        unsigned space_nodes,
                         char * filename) {
 
   char values_to_string[MAX_BUFFER_SIZE];
@@ -192,7 +191,7 @@ void write_value_table (double const * values,
               "%.6lf %.6lf\n", 
               space_coordinates[space_step], 
               values[space_step]);
-    strncat (values_to_string, iteration_buffer, MAX_BUFFER_SIZE);
+    strncat (values_to_string, iteration_buffer, MAX_BUFFER_SIZE - strlen(values_to_string) - 1);
   }
 
   rewrite_file (filename, values_to_string);
