@@ -4,6 +4,7 @@
 
 #include "calculation.h"
 #include "fill_system.h"
+#include "start_conditions.h"
 #include "functions.h"
 #include "print.h"
 #include "norm.h"
@@ -94,24 +95,15 @@ void find_approximate_solution (
   register unsigned time_step = 0,
            space_step = 0;
 
-  unsigned max_iterations = 50;
+  unsigned const max_iterations = 50;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
-
-  // initialize unknown vector
-  // with the approximation of next time layer values
-  // which is this time layer values
-  // as the functions are continuous
-  for (space_step = 0; space_step < grid->X_nodes; ++space_step) {
-    unknown_vector[G_INDEX(space_step)] = g_exact (space_coordinates[space_step], 0.);
-    unknown_vector[V_INDEX(space_step)] = u_exact (space_coordinates[space_step], 0.);
-  }
 
 #ifndef NO_LASPACK
   // iterative algorithm accuracy
   SetRTCAccuracy (iterative_method_parameters->accuracy);
 #endif /* NO_LASPACK */
 
-  fill_mesh_at_initial_time (G, V, g_exact, u_exact, space_coordinates, grid->X_nodes); 
+  fill_mesh_at_initial_time (G, V, unknown_vector, g_start, u_start, space_coordinates, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
     // this may slow things up
@@ -157,14 +149,15 @@ void find_approximate_solution (
 void fill_mesh_at_initial_time (
     double * G,
     double * V,
-    double (*g) (double, double), // log (ro_0)
-    double (*v) (double, double), // u_0
+    double * unknown_vector,
+    double (*g) (double), // log (ro_0)
+    double (*v) (double), // u_0
     double const * space_coordinates,
     unsigned space_nodes) {
   register unsigned space_step = 0;
   for (space_step = 0; space_step < space_nodes; ++space_step) {
-    G[space_step] = g(space_coordinates[space_step], 0);
-    V[space_step] = v(space_coordinates[space_step], 0);
+    G[space_step] = unknown_vector[G_INDEX(space_step)] = g(space_coordinates[space_step]);
+    V[space_step] = unknown_vector[V_INDEX(space_step)] = v(space_coordinates[space_step]);
   }
   return;
 }
