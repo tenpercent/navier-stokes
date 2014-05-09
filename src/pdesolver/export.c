@@ -8,6 +8,7 @@
 #include "norm.h"
 
 #define MAX_BUFFER_SIZE (1U << 17)
+#define SMALL_BUFFER_SIZE (1U << 6)
 #define MAX_FILENAME_SIZE (1U << 6)
 
 void write_current_results (
@@ -105,8 +106,6 @@ void export_results_to_string (double *const * results, unsigned total_experimen
 }
 
 void export_results (double *const * results, unsigned total_experiments) {
-  FILE * csv_data; 
-
   char filename[MAX_FILENAME_SIZE];
   char time_representation[MAX_FILENAME_SIZE];
   char result_to_string[MAX_BUFFER_SIZE];
@@ -122,15 +121,8 @@ void export_results (double *const * results, unsigned total_experiments) {
   mkdir ("results", S_IRWXU);
   snprintf (filename, MAX_FILENAME_SIZE, "results/%s_results.csv", time_representation);
 
-  csv_data = fopen (filename, "w");
+  rewrite_file (filename, result_to_string);
 
-  if (!csv_data) {
-    printf ("Could not open file to write results\n");
-    return;
-  }
-
-  fputs (result_to_string, csv_data);
-  fclose (csv_data);
   return;
 }
 
@@ -179,6 +171,53 @@ void export_residual_table_to_string (double const * residuals,
              MAX_BUFFER_SIZE - strlen(result) - 1);
   }
 
+  return;
+}
+
+void write_value_table (double const * values,
+                        double const * space_coordinates,
+                        unsigned space_nodes, 
+                        unsigned time_iter,
+                        char * filename) {
+
+  char values_to_string[MAX_BUFFER_SIZE];
+
+  char iteration_buffer[SMALL_BUFFER_SIZE];
+
+  unsigned space_step = 0;
+
+  for (space_step = 0; space_step < space_nodes; ++space_step) {
+    snprintf (iteration_buffer, 
+              SMALL_BUFFER_SIZE, 
+              "%.6lf %.6lf\n", 
+              space_coordinates[space_step], 
+              values[space_step]);
+    strncat (values_to_string, iteration_buffer, MAX_BUFFER_SIZE);
+  }
+
+  rewrite_file (filename, values_to_string);
+  return;
+}
+
+void rewrite_file (char const * filename,
+                   char const * data) {
+
+  FILE * file_handler = fopen (filename, "w");
+  if (!file_handler) {
+    printf ("Could not open file %s to write results\n", filename);
+    return;
+  }
+  fputs (data, file_handler);
+  fclose (file_handler);
+  return;
+}
+
+void generate_table_filename (char const * sort,
+                              unsigned time_iter,
+                              char * filename) {
+
+  mkdir ("results", S_IRWXU);
+  snprintf (filename, MAX_FILENAME_SIZE, "results/%s_at_%u_iteration.dat", sort, time_iter);
   return;
 }
 

@@ -18,13 +18,13 @@ void results_Destruct (double ** results) {
   return;
 }
 
-void scheme_elements_Construct (double ** G, double ** V, unsigned X_nodes) {
+void value_arrays_Construct (double ** G, double ** V, unsigned X_nodes) {
   *V = (double *) malloc (X_nodes * sizeof (double));
   *G = (double *) malloc (X_nodes * sizeof (double));
   return;
 }
 
-void scheme_elements_Destruct (double * G, double * V) {
+void value_arrays_Destruct (double * G, double * V) {
   free (V);
   free (G);
   return;

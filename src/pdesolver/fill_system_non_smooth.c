@@ -66,8 +66,7 @@ void fill_system (
                    rev_h_2 * G[0] * (V[1] - V[0]) +
                    rev_h_4 *
                      (G[2] * V[2] - 2 * G[1] * V[1] + G[0] * V[0] +
-                       (2 - G[0]) * (V[2] - 2 * V[1] + V[0])) +
-                   rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
+                       (2 - G[0]) * (V[2] - 2 * V[1] + V[0]));
         ++row_number;
 
         /* dummy equation */
@@ -88,8 +87,7 @@ void fill_system (
         MATRIX_APPEND (V_INDEX(space_step + 1), rev_h_2);
 
         rh_side[row_number] = rev_tau * G[space_step] +
-                   rev_h_4 * G[space_step] * (V[space_step + 1] - V[space_step - 1]) +
-                   rhs_1st_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
+                   rev_h_4 * G[space_step] * (V[space_step + 1] - V[space_step - 1]);
         ++row_number;
         /* another equation */
         /* attention: these values should be changed when (viscosity != 0) */
@@ -105,8 +103,7 @@ void fill_system (
         rh_side[row_number] = rev_tau * V[space_step] -
                   rev_hh_4_3 *
                     (viscosity_norm - gas_parameters->viscosity * exp_1 (G[space_step])) *
-                    (V[space_step - 1] - 2 * V[space_step] + V[space_step + 1]) +
-                  rhs_2nd_equation (space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
+                    (V[space_step - 1] - 2 * V[space_step] + V[space_step + 1]);
         ++row_number;
         break;
 
@@ -125,8 +122,7 @@ void fill_system (
                       2 * G[grid->X_nodes - 2] * V[grid->X_nodes - 2] +
                       G[grid->X_nodes - 3] * V[grid->X_nodes - 3] +
                         (2 - G[grid->X_nodes - 1]) *
-                        (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3])) +
-                   rhs_1st_equation(space_coordinates[space_step], time_step * grid->T_step, gas_parameters);
+                        (V[grid->X_nodes - 1] - 2 * V[grid->X_nodes - 2] + V[grid->X_nodes - 3]));
         ++row_number;
 
         /* dummy equation */

@@ -27,7 +27,7 @@ void process_iteration(Iterative_Method_parameters * method_parameters,
 
   /* Initialize grid and mesh */
   grid_Initialize (&grid, gas_parameters, space_iter, time_iter);
-  scheme_elements_Construct (&G, &V, grid.X_nodes);
+  value_arrays_Construct (&G, &V, grid.X_nodes);
   mesh_elements_Construct (&node_statuses, &space_coordinates, grid.X_nodes);
   mesh_Initialize (node_statuses, space_coordinates, &grid);
   
@@ -48,7 +48,7 @@ void process_iteration(Iterative_Method_parameters * method_parameters,
   global_iter++;
 
   /* Clean up */
-  scheme_elements_Destruct (G, V);
+  value_arrays_Destruct (G, V);
   mesh_elements_Destruct (node_statuses, space_coordinates);
 }
 
