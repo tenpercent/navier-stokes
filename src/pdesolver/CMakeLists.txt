@@ -5,11 +5,12 @@ if (NOT PDESolver_NO_LASPack)
   include_directories(${PROJECT_SOURCE_DIR}/include)
 endif (NOT PDESolver_NO_LASPack)
 
-set (PDESolver_sources
+set (PDESolver_smooth_sources
   pdesolver.c
   initialize.c
   construction.c
   calculation.c
+  fill_system_smooth.c
   norm.c
   functions.c
   iterative_method.c
@@ -26,10 +27,10 @@ if (PDESolver_COLORFUL_OUTPUT)
   add_definitions(-DALTERNATIVE_OUTPUT)
 endif (PDESolver_COLORFUL_OUTPUT)
 
-add_executable (PDESolver ${PDESolver_sources})
+add_executable (PDESolver_12 ${PDESolver_smooth_sources})
 
 if (NOT PDESolver_NO_LASPack)
-  target_link_libraries (PDESolver LASPack m)
+  target_link_libraries (PDESolver_12 LASPack m)
 else (NOT PDESolver_NO_LASPack)
-  target_link_libraries (PDESolver m)
+  target_link_libraries (PDESolver_12 m)
 endif (NOT PDESolver_NO_LASPack)
