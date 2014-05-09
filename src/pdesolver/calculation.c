@@ -20,9 +20,6 @@
 /* Useful for arrays construction */
 #define NEW(type, len) ((type*)malloc((len)*sizeof(type)))
 
-/* Useful for Sparse_matrix filling */
-#define MATRIX_APPEND(col, value) Sparse_matrix_Append_element (lh_side, row_number, col, value)
-
 #ifndef NO_LASPACK
 #include <rtc.h>
 void call_laspack_method (
