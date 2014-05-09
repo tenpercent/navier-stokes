@@ -27,6 +27,9 @@ void fill_system (
     double const * G,
     double const * V) {
 
+  (void) space_coordinates;
+  (void) time_step;
+
   unsigned space_step = 0,
   // iterator through rows
            row_number = 0;

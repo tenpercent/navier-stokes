@@ -92,8 +92,7 @@ void find_approximate_solution (
   // buffer used by iterative method
   double * buffer = NEW(double, 20 * grid->X_nodes);
 
-  register unsigned time_step = 0,
-           space_step = 0;
+  register unsigned time_step;
 
   unsigned const max_iterations = 50;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);

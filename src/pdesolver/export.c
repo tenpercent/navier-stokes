@@ -181,6 +181,10 @@ void write_value_table (double const * values,
 
   char values_to_string[MAX_BUFFER_SIZE];
 
+// funny things happen without this line
+// I wonder why
+  values_to_string[0] = 0;
+
   char iteration_buffer[SMALL_BUFFER_SIZE];
 
   unsigned space_step = 0;
