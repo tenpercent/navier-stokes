@@ -10,6 +10,7 @@ void gas_parameters_Initialize (Gas_parameters * parameters) {
   parameters->space_upper_boundary  = 10.;
   parameters->p_ro                  = 10.;
   parameters->viscosity             = 0.1;
+  parameters->artificial_viscosity = 0.;
   return;
 }
 

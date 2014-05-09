@@ -14,7 +14,7 @@
 /* Useful for Sparse_matrix filling */
 #define MATRIX_APPEND(col, value) Sparse_matrix_Append_element (lh_side, row_number, col, value)
 
-#define FI(m) (V[(m)] * V[(m)])
+#define FI(m) (V[(m)] * V[(m)] * tau * eta)
 
 void fill_system (
     Sparse_matrix * lh_side,
@@ -38,7 +38,11 @@ void fill_system (
          rev_h_6 = rev_h / 6.,
          rev_hh_4_3 = rev_h * rev_h * 4. / 3.,
 
-         rev_tau = 1. / grid->T_step;
+         rev_tau = 1. / grid->T_step,
+
+         tau = grid->T_step,
+
+         eta = gas_parameters->artificial_viscosity;
 
   double const viscosity_norm =
     gas_parameters->viscosity * function_norm_C (G, grid->X_nodes, exp_1);

@@ -14,8 +14,6 @@
 /* Useful for Sparse_matrix filling */
 #define MATRIX_APPEND(col, value) Sparse_matrix_Append_element (lh_side, row_number, col, value)
 
-#define FI(m) (V[(m)] * V[(m)])
-
 void fill_system (
     Sparse_matrix * lh_side,
     double * rh_side,
