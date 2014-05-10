@@ -8,7 +8,7 @@ def main():
   results_path = "../../build/results/"
   ans_directory_name = "png"
   files = glob(results_path + "*.dat")
-  tables = [loadtxt(f, skiprows=1) for f in files]
+  tables = [loadtxt(f) for f in files]
   basenames = [splitext(basename(f))[0] for f in files]
 
   if not exists(ans_directory_name):

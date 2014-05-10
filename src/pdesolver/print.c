@@ -7,10 +7,11 @@
 #include "precond.h"
 #endif /* NO_LASPACK */
 
+#define BUFFER_SIZE 128
+
 void print_iterative_algorithm_info (Iterative_Method_parameters const * parameters) {
-  unsigned const BUFFER_SIZE = 128;
-  char method_to_string[BUFFER_SIZE];
-  char preconditioner_to_string[BUFFER_SIZE];
+  char method_to_string[BUFFER_SIZE] = "";
+  char preconditioner_to_string[BUFFER_SIZE] = "";
 
   if (parameters->implementation == Implementation_Native) {
     if (parameters->method == Iterative_method_BiCGSTAB) {
@@ -81,3 +82,5 @@ void print_info_about_current_iteration (unsigned time_step, Grid const * grid) 
   fflush (stdout);
   return;
 }
+
+#undef BUFFER_SIZE

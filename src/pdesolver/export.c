@@ -60,7 +60,7 @@ void write_current_results (
 }
 
 void export_results_to_string (double *const * results, unsigned total_experiments, char * result_to_string) {
-  char current_experiment_to_string[MAX_BUFFER_SIZE];
+  char current_experiment_to_string[MAX_BUFFER_SIZE] = "";
   const char delimiter = '&';
   unsigned experiments_step = 0;
 
@@ -71,14 +71,14 @@ void export_results_to_string (double *const * results, unsigned total_experimen
     snprintf (
       current_experiment_to_string,
       MAX_BUFFER_SIZE,
-      "%d%c\
-      %.3lf s%c\
-      %.3lf%c\
-      %le%c\
-      %le%c\
-      %le%c\
-      %le%c\
-      %le%c\
+      "%d %c\
+      %.3lf s %c\
+      %.3lf %c\
+      %le %c\
+      %le %c\
+      %le %c\
+      %le %c\
+      %le %c\
       %le\n",
         experiments_step + 1,
         delimiter,
@@ -106,9 +106,9 @@ void export_results_to_string (double *const * results, unsigned total_experimen
 }
 
 void export_results (double *const * results, unsigned total_experiments) {
-  char filename[MAX_FILENAME_SIZE];
-  char time_representation[MAX_FILENAME_SIZE];
-  char result_to_string[MAX_BUFFER_SIZE];
+  char filename[MAX_FILENAME_SIZE] = "";
+  char time_representation[MAX_FILENAME_SIZE] = "";
+  char result_to_string[MAX_BUFFER_SIZE] = "";
 
   struct tm * time_info;
   time_t timer = time(NULL);
@@ -134,7 +134,7 @@ void export_residual_table_to_string (double const * residuals,
                             char * result) {
   // result is output string
 
-  char current_experiment_to_string[MAX_BUFFER_SIZE];
+  char current_experiment_to_string[MAX_BUFFER_SIZE] = "";
   unsigned time_step, space_step;
 
   for (space_step = 0; space_step < space_steps; ++space_step) {
@@ -179,13 +179,9 @@ void write_value_table (double const * values,
                         unsigned space_nodes,
                         char * filename) {
 
-  char values_to_string[MAX_BUFFER_SIZE];
+  char values_to_string[MAX_BUFFER_SIZE] = "";
 
-// funny things happen without this line
-// I wonder why
-  values_to_string[0] = 0;
-
-  char iteration_buffer[SMALL_BUFFER_SIZE];
+  char iteration_buffer[SMALL_BUFFER_SIZE] = "";
 
   unsigned space_step = 0;
 
@@ -225,3 +221,6 @@ void generate_table_filename (char const * sort,
 }
 
 #undef MAX_BUFFER_SIZE
+#undef SMALL_BUFFER_SIZE
+#undef MAX_FILENAME_SIZE
+
