@@ -33,6 +33,7 @@ void rewrite_file (char const * filename,
 
 void generate_table_filename (char const * sort,
                               unsigned time_iter,
+                              unsigned global_iteration,
                               char * filename);
 
 #endif

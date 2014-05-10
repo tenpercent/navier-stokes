@@ -213,10 +213,22 @@ void rewrite_file (char const * filename,
 
 void generate_table_filename (char const * sort,
                               unsigned time_iter,
+                              unsigned global_iteration,
                               char * filename) {
 
   mkdir ("results", S_IRWXU);
-  snprintf (filename, MAX_FILENAME_SIZE, "results/%s_at_%u_iteration.dat", sort, time_iter);
+  mkdir ("results/dat", S_IRWXU);
+
+  char dirname[MAX_FILENAME_SIZE] = "";
+  snprintf(dirname, MAX_FILENAME_SIZE, "results/dat/%u", global_iteration);
+  mkdir (dirname, S_IRWXU);
+
+  snprintf (filename, 
+            MAX_FILENAME_SIZE, 
+            "results/dat/%u/%s_at_%u_iteration.dat", 
+            global_iteration, 
+            sort, 
+            time_iter);
   return;
 }
 

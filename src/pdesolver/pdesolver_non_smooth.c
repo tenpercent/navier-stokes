@@ -1,4 +1,4 @@
-#include <time.h>
+#include <stdio.h>
 
 #include "initialize.h"
 #include "calculation.h"
@@ -10,31 +10,32 @@
 static const unsigned time_maxiter = 10;
 static const unsigned MAX_FILENAME_SIZE = 64;
 
-void process_iteration(Iterative_Method_parameters const * method_parameters,
+void time_iteration(Iterative_Method_parameters const * method_parameters,
                        Gas_parameters const * gas_parameters,
                        Grid const * grid,
                        Node_status const * node_statuses,
                        double const * space_coordinates,
                        double * G,
                        double * V,
-                       unsigned time_iter) {
+                       unsigned time_iter,
+                       unsigned global_iteration) {
 
   char filename[MAX_FILENAME_SIZE];
 
   find_approximate_solution (G, V, node_statuses, space_coordinates, gas_parameters,
                              grid, method_parameters);
 
-  generate_table_filename ("G", time_iter, filename);
+  generate_table_filename ("G", time_iter, global_iteration, filename);
   write_value_table (G, space_coordinates, grid->X_nodes, filename);
 
-  generate_table_filename ("V", time_iter, filename);
+  generate_table_filename ("V", time_iter, global_iteration, filename);
   write_value_table (V, space_coordinates, grid->X_nodes, filename);
 
   return;
 }
 
-int main (int argc, char * argv[])
-{
+void test_iteration (double mu, double p_rho, double eta, unsigned global_iteration, int argc, char ** argv) {
+
   Iterative_Method_parameters method_parameters;
   Gas_parameters gas_parameters;
 
@@ -44,6 +45,10 @@ int main (int argc, char * argv[])
   initialize_iterative_algorithm_parameters (&method_parameters, argc, argv);
   print_iterative_algorithm_info (&method_parameters);
   gas_parameters_Initialize (&gas_parameters);
+
+  gas_parameters.viscosity = mu;
+  gas_parameters.artificial_viscosity = eta;
+  gas_parameters.p_ro = p_rho;
 
   Grid grid;
   Node_status * node_statuses;
@@ -61,19 +66,45 @@ int main (int argc, char * argv[])
   fill_mesh_at_initial_time (G, V, g_start, u_start, space_coordinates, grid.X_nodes);
 
   /* The main loop */
-  for (time_iter = 0; time_iter < time_maxiter; time_iter++) {
-    process_iteration(&method_parameters,
+  for (time_iter = 0; time_iter < time_maxiter; ++time_iter) {
+    time_iteration(&method_parameters,
                       &gas_parameters,
                       &grid,
                       node_statuses,
                       space_coordinates,
                       G,
                       V,
-                      time_iter);
+                      time_iter,
+                      global_iteration);
   }
 
   value_arrays_Destruct (G, V);
   mesh_elements_Destruct (node_statuses, space_coordinates);
+  return;
+}
+
+int main (int argc, char * argv[])
+{
+  double mu_values[] = {.1};
+  const unsigned MU_VALUES_SIZE = 1;
+  double eta_values[] = {.5};
+  const unsigned ETA_VALUES_SIZE = 1;
+  double p_rho_values[] = {10.};
+  const unsigned P_RHO_VALUES_SIZE = 1;
+
+  unsigned i = 0, 
+           j = 0, 
+           k = 0, 
+           global_iteration = 0;
+
+  for (i = 0; i < MU_VALUES_SIZE; ++i) {
+    for (j = 0; j < P_RHO_VALUES_SIZE; ++j) {
+      for (k = 0; k < ETA_VALUES_SIZE; ++k) {
+        test_iteration (mu_values[i], p_rho_values[j], eta_values[k], global_iteration, argc, argv);
+        global_iteration += 1;
+      }
+    }
+  }
 
   return 0;
 }
