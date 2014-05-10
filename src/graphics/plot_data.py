@@ -8,11 +8,17 @@ ans_directory_name = "png"
 results_path = "../../build/results/"
 
 
+def parse_num(string):
+    return int (string[5])
+
 def plot_figure (index, table, basenames):
     clf()
     xlabel("x")
-    ylabel("values")
-    title(basenames[index])
+    ylabel(basenames[index][0], dict(rotation=0,
+                                     horizontalalignment='right',
+                                     verticalalignment='center',
+                                     x=-0.01))
+    title("%s(x, t) at t = %d" % (basenames[index][0], parse_num(basenames[index]) + 1))
     plot(table[:,0], table[:,1])
     grid(True)
     savefig('%s/%s.png' % (ans_directory_name, basenames[index]))
