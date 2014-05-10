@@ -111,10 +111,10 @@ void fill_system (
         break;
 
       case RIGHT:
-        MATRIX_APPEND (G_INDEX(grid->X_nodes - 2), -rev_h_2 * V[grid->X_nodes - 2] + 
+        MATRIX_APPEND (G_INDEX(grid->X_nodes - 2), -rev_h_2 * V[grid->X_nodes - 2] - 
                                                   (FI(grid->X_nodes - 2) + FI(grid->X_nodes - 1)));
         MATRIX_APPEND (V_INDEX(grid->X_nodes - 2), -rev_h);
-        MATRIX_APPEND (G_INDEX(grid->X_nodes - 1), rev_tau + rev_h_2 * V[grid->X_nodes - 1] -
+        MATRIX_APPEND (G_INDEX(grid->X_nodes - 1), rev_tau + rev_h_2 * V[grid->X_nodes - 1] +
                                                   (FI(grid->X_nodes - 2) + FI(grid->X_nodes - 1)));
         MATRIX_APPEND (V_INDEX(grid->X_nodes - 1), rev_h);
 
