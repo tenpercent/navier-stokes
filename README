@@ -1,6 +1,20 @@
-1st task for 8th semester of practical programming at Department of Computational Mathematics, Faculty of Mechanics & Mathematics, Moscow SU
+In order to build you need CMake (>=2.6.0) and GNU Make
 
-Numerical solution of 1D Navier-Stokes equation in some simple case
+How to build (simple):
 
-Uses LASPack library, which can be found at http://www.mgnet.org/mgnet/Codes/laspack/
+1. $> cd build
+2. $> cmake .. -DCMAKE_BUILD_TYPE=<DEBUG | RELEASE>
+3. $> make
+
+How to build (advanced):
+1. $> cd build
+2. $> ccmake ..
+3. set different options
+4. $> make
+
+How to run:
+
+1. $> ./build/bin/PDESolver
+
+Results of current run are stored in file "results.csv" in directory where the program is run. Might want to collect them in separate directory, some time.
 
