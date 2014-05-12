@@ -44,7 +44,7 @@ void process_iteration(Iterative_Method_parameters * method_parameters,
                          &grid, space_coordinates, V, G);
 
   /* Print results to file */
-  print_results_at_current_iteration (results, global_iter);
+  print_results_at_current_iteration (results[0][global_iter], global_iter);
   global_iter++;
 
   /* Clean up */
