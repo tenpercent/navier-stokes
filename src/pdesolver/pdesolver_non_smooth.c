@@ -21,9 +21,13 @@ void time_iteration(Iterative_Method_parameters const * method_parameters,
                        unsigned global_iteration) {
 
   char filename[MAX_FILENAME_SIZE];
+  double time_elapsed;
+  const clock_t start_time = clock();
 
   find_approximate_solution (G, V, node_statuses, space_coordinates, gas_parameters,
                              grid, method_parameters);
+
+  time_elapsed = (clock() - start_time) / (double) CLOCKS_PER_SEC;
 
   generate_table_filename ("G", time_iter, global_iteration, filename);
   write_value_table (G, space_coordinates, grid->X_nodes, filename);
@@ -31,10 +35,12 @@ void time_iteration(Iterative_Method_parameters const * method_parameters,
   generate_table_filename ("V", time_iter, global_iteration, filename);
   write_value_table (V, space_coordinates, grid->X_nodes, filename);
 
+  print_results_at_current_iteration (time_elapsed, global_iteration);
+
   return;
 }
 
-void test_iteration (double mu, double p_rho, double eta, unsigned global_iteration, int argc, char ** argv) {
+void test_iteration (double mu, double p_rho, double eta, unsigned * global_iteration, int argc, char ** argv) {
 
   Iterative_Method_parameters method_parameters;
   Gas_parameters gas_parameters;
@@ -75,7 +81,7 @@ void test_iteration (double mu, double p_rho, double eta, unsigned global_iterat
                       G,
                       V,
                       time_iter,
-                      global_iteration);
+                      (*global_iteration)++);
   }
 
   value_arrays_Destruct (G, V);
@@ -100,8 +106,7 @@ int main (int argc, char * argv[])
   for (i = 0; i < MU_VALUES_SIZE; ++i) {
     for (j = 0; j < P_RHO_VALUES_SIZE; ++j) {
       for (k = 0; k < ETA_VALUES_SIZE; ++k) {
-        test_iteration (mu_values[i], p_rho_values[j], eta_values[k], global_iteration, argc, argv);
-        global_iteration += 1;
+        test_iteration (mu_values[i], p_rho_values[j], eta_values[k], &global_iteration, argc, argv);
       }
     }
   }
