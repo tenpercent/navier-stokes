@@ -65,8 +65,8 @@ void Sparse_matrix_Destruct (
 }
 
 void Sparse_matrix_Apply_to_vector (
-    Sparse_matrix * this,
-    double * vector,
+    Sparse_matrix const * this,
+    double const * vector,
     double * newVector) {
 
   register unsigned i, ind;

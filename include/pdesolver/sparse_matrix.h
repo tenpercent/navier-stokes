@@ -32,8 +32,8 @@ void Sparse_matrix_Destruct (
     Sparse_matrix * this);
 
 void Sparse_matrix_Apply_to_vector (
-    Sparse_matrix * this,
-    double * vector,
+    Sparse_matrix const * this,
+    double const * vector,
     double * newVector);
 
 #ifndef NO_LASPACK

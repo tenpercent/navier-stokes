@@ -10,21 +10,21 @@
 /* Some typedefs forked from Laspack */
 
 typedef void (*Precond_type) (
-    Sparse_matrix const *,   /* preconditioner matrix */
-    double const *,          /* c (source rightcol) */
-    double       *,          /* y (target rightcol) */
-    double                   /* omega (relaxation constant) */
+    Sparse_matrix const *,  /* preconditioner matrix */
+    double const *,         /* c (source rightcol) */
+    double       *,         /* y (target rightcol) */
+    double                  /* omega (relaxation constant) */
 );
 
 typedef void (*Iterative_Method_type) (
-    Sparse_matrix *,   /* matrix */
-    double *,          /* unknown_vector */
-    double *,          /* rightcol */
-    unsigned,          /* maximal number of iterations */
-    Precond_type,      /* preconditioner type */
-    double,            /* omega (relaxation constant) */
-    double,            /* accuracy */
-    double *           /* buffer (8 * size) */
+    Sparse_matrix const *,  /* matrix */
+    double *,               /* unknown_vector */
+    double const *,         /* rightcol */
+    unsigned,               /* maximal number of iterations */
+    Precond_type,           /* preconditioner type */
+    double,                 /* omega (relaxation constant) */
+    double,                 /* accuracy */
+    double *                /* buffer (8 * size) */
 );
 
 typedef enum {
@@ -59,13 +59,13 @@ void Precond_Null (
     double                omega);
 
 void Iterative_method_BiCGSTAB (
-    Sparse_matrix * matrix,
-    double        * x,
-    double        * b,
-    unsigned        max_iter,
-    Precond_type    precond,
-    double          omega,
-    double          accuracy,
-    double        * buffer);
+    Sparse_matrix const * matrix,
+    double              * x,
+    double        const * b,
+    unsigned              max_iter,
+    Precond_type          precond,
+    double                omega,
+    double                accuracy,
+    double              * buffer);
 
 #endif /* _ITERATIVE_METHOD_H */

@@ -41,14 +41,14 @@ void Precond_Null (
 /* http://en.wikipedia.org/wiki/Biconjugate_gradient_stabilized_method */
 
 void Iterative_method_BiCGSTAB (
-    Sparse_matrix * matrix,
-    double        * x,
-    double        * b,
-    unsigned        max_iter,
-    Precond_type    precond,
-    double          omega_precond, /* default = 1 */
-    double          accuracy,
-    double        * buffer /* we need 8 * size */
+    Sparse_matrix const * matrix,
+    double              * x,
+    double const        * b,
+    unsigned              max_iter,
+    Precond_type          precond,
+    double                omega_precond, /* default = 1 */
+    double                accuracy,
+    double              * buffer /* we need 8 * size */
   ) {
 
   register unsigned size   = matrix->size;
