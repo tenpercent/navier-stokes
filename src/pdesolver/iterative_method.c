@@ -40,11 +40,6 @@ void Precond_Null (
 /* Preconditioned BiCGSTAB method, described in: */
 /* http://en.wikipedia.org/wiki/Biconjugate_gradient_stabilized_method */
 
-void Print_error(unsigned iter) {
-
-  printf("Iteration %u reached\n", iter);
-}
-
 void Iterative_method_BiCGSTAB (
     Sparse_matrix * matrix,
     double        * x,
@@ -115,5 +110,5 @@ void Iterative_method_BiCGSTAB (
       r[i] = s[i] - omega * t[i];
     }
   }
-  Print_error(max_iter);
+  printf ("\nWarning: maximum number of iterations reached: %u.\n", max_iter);
 }
