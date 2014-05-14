@@ -63,10 +63,12 @@ void Iterative_method_BiCGSTAB (
   double *z       = buffer + size * 5;
   double *s       = buffer + size * 6;
   double *t       = buffer + size * 7;
-  double *diff    = y;
 
   register unsigned i, iter;
-  register double beta, rhoold, residual2;
+  register double beta, rhoold;
+
+  register const double bnorm2 = scalar_product(b, b, size);
+  register const double accuracy2 = accuracy * accuracy;
 
   Sparse_matrix_Apply_to_vector (matrix, x, r);
   memset (v, 0, size * sizeof(double));
@@ -98,12 +100,7 @@ void Iterative_method_BiCGSTAB (
     for (i = 0; i < size; ++i) {
       x[i] += (alpha * y[i] + omega * z[i]);
     }
-    Sparse_matrix_Apply_to_vector (matrix, x, diff);
-    for (i = 0; i < size; ++i) {
-      diff[i] -= b[i];
-    }
-    residual2 = scalar_product (diff, diff, size);
-    if (residual2 < accuracy * accuracy) {
+    if (scalar_product(r, r, size) < accuracy2 * bnorm2) {
       return;
     }
     for (i = 0; i < size; ++i) {
