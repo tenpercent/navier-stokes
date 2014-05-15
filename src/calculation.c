@@ -22,7 +22,7 @@
 #define NEW(type, len) ((type*)malloc((len)*sizeof(type)))
 
 #ifndef NO_LASPACK
-#include <rtc.h>
+#include <laspack/rtc.h>
 void call_laspack_method (
     IterProcType    method,
     Sparse_matrix * lh_side,

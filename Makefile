@@ -1,5 +1,5 @@
 BUILDDIR = build
-DEFINES = ALTERNATIVE_OUTPUT
+DEFINES =
 CC = cc
 CFLAGS = -Wall -g -O2
 CPPFLAGS_LASPACK = -Ilib 
@@ -52,8 +52,8 @@ $(BUILDDIR)/tests/%.o: tests/%.c $(BUILDDIR)/tests/create-stamp Makefile
 clean:
 	rm -rf $(BUILDDIR)
 
-test: $(BUILDDIR)/tests/test_sparse_matrix.o $(BUILDDIR)/program/sparse_matrix.o
-	$(LD) -o $(BUILDDIR)/test_sparse_matrix $< $(BUILDDIR)/program/sparse_matrix.o
+test: $(BUILDDIR)/tests/test_sparse_matrix.o $(BUILDDIR)/program/sparse_matrix.o $(LASPACKOFILES)
+	$(LD) -o $(BUILDDIR)/test_sparse_matrix $< $(BUILDDIR)/program/sparse_matrix.o $(LASPACKOFILES) $(LFLAGS)
 	./$(BUILDDIR)/test_sparse_matrix && echo "Test run successfully."
 
 distclean: clean
