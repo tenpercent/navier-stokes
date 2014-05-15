@@ -1,8 +1,9 @@
 BUILDDIR = build
 DEFINES = ALTERNATIVE_OUTPUT
 CC = cc
-CFLAGS = -Wall -g -O2 -Ilib -Ilib/laspack
-CPPFLAGS = $(foreach define,$(DEFINES),-D$(define))
+CFLAGS = -Wall -g -O2
+CPPFLAGS_LASPACK = -Ilib 
+CPPFLAGS_PROGRAM = -Ilib $(foreach define,$(DEFINES),-D$(define))
 LD = cc
 LFLAGS = -lm -g -O2
 
@@ -40,13 +41,13 @@ gas_nonsmooth_4: $(COMMONOFILES) $(NSMOOTH4OFILES) $(LASPACKOFILES)
 	$(LD) -o $@ $(COMMONOFILES) $(NSMOOTH4OFILES) $(LASPACKOFILES) $(LFLAGS)
 
 $(BUILDDIR)/laspack/%.o: lib/laspack/%.c $(BUILDDIR)/laspack/create-stamp Makefile
-	$(CC) $(CFLAGS)  -o $@ -c $<
+	$(CC) $(CFLAGS) $(CPPFLAGS_LASPACK) -o $@ -c $<
 
 $(BUILDDIR)/program/%.o: src/%.c $(BUILDDIR)/program/create-stamp Makefile
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) $(CPPFLAGS_PROGRAM) -o $@ -c $<
 
 $(BUILDDIR)/tests/%.o: tests/%.c $(BUILDDIR)/tests/create-stamp Makefile
-	$(CC) $(CFLAGS) $(CPPFLAGS) -Isrc -o $@ -c $<
+	$(CC) $(CFLAGS) $(CPPFLAGS_PROGRAM) -Isrc -o $@ -c $<
 
 clean:
 	rm -rf $(BUILDDIR)
