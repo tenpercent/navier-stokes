@@ -2,7 +2,7 @@
 #define _ITERATIVE_METHOD_H
 
 #ifndef NO_LASPACK
-#include <itersolv.h>
+#include <laspack/itersolv.h>
 #endif /* NO_LASPACK */
 
 #include "sparse_matrix.h"

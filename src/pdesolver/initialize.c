@@ -2,7 +2,7 @@
 #include <strings.h>
 
 #ifndef NO_LASPACK
-#include <itersolv.h>
+#include <laspack/itersolv.h>
 #endif /* NO_LASPACK */
 
 void gas_parameters_Initialize (Gas_parameters * parameters) {

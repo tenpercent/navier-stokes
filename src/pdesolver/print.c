@@ -3,8 +3,8 @@
 #include <string.h>
 
 #ifndef NO_LASPACK
-#include "itersolv.h"
-#include "precond.h"
+#include <laspack/itersolv.h>
+#include <laspack/precond.h>
 #endif /* NO_LASPACK */
 
 #if defined (_WIN32) || defined (WIN32)
