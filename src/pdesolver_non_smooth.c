@@ -68,7 +68,7 @@ void test_iteration (double mu, double p_rho, double eta, unsigned * global_iter
   mesh_elements_Construct (&node_statuses, &space_coordinates, grid.X_nodes);
 
   mesh_Initialize (node_statuses, space_coordinates, &grid);
- 
+
   fill_mesh_at_initial_time (G, V, g_start, u_start, space_coordinates, grid.X_nodes);
 
   /* The main loop */

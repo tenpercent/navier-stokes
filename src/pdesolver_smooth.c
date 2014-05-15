@@ -30,7 +30,7 @@ void process_iteration(Iterative_Method_parameters * method_parameters,
   value_arrays_Construct (&G, &V, grid.X_nodes);
   mesh_elements_Construct (&node_statuses, &space_coordinates, grid.X_nodes);
   mesh_Initialize (node_statuses, space_coordinates, &grid);
- 
+
   fill_mesh_at_initial_time (G, V, g_start, u_start, space_coordinates, grid.X_nodes);
 
   /* Run the solver and calculate time */
