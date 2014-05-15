@@ -9,7 +9,8 @@ void gas_parameters_Initialize (Gas_parameters * parameters) {
   parameters->time_upper_boundary   = 1.;
   parameters->space_upper_boundary  = 10.;
   parameters->p_ro                  = 10.;
-  parameters->viscosity             = .01;
+  parameters->viscosity             = 0.1;
+  parameters->artificial_viscosity  = 5;
   return;
 }
 
@@ -18,8 +19,8 @@ void grid_Initialize (
     Gas_parameters * parameters,
     unsigned time_steps_magnifier,
     unsigned space_steps_magnifier) {
-  grid->X_nodes = 400 << space_steps_magnifier;
-  grid->T_nodes = 400 << time_steps_magnifier;
+  grid->X_nodes = 50 << space_steps_magnifier;
+  grid->T_nodes = 50 << time_steps_magnifier;
 
   grid->X_step = parameters->space_upper_boundary / (grid->X_nodes - 1);
   grid->T_step = parameters->time_upper_boundary / (grid->T_nodes - 1);
@@ -47,7 +48,7 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
   parameters->implementation = Implementation_Native;
   parameters->preconditioner_type = Precond_Jacobi;
   parameters->method = Iterative_method_BiCGSTAB;
-  parameters->relaxation_constant = 1;
+  parameters->relaxation_constant = 1.55;
   parameters->accuracy = 1e-8;
 
   if (argc > 1) {
@@ -63,9 +64,11 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
       parameters->preconditioner_type_laspack = JacobiPrecond;
     } else if (strncasecmp (argv[1], "SSOR", 4) == 0) {
       parameters->preconditioner_type_laspack = SSORPrecond;
+    } else if (strncasecmp (argv[1], "NULL", 4) == 0) {
+      parameters->preconditioner_type_laspack = NULL;
     } else {
       // default value
-      parameters->preconditioner_type_laspack = JacobiPrecond;
+      parameters->preconditioner_type_laspack = NULL;
     }
 
     if (strncasecmp (argv[2], "CGN", 3) == 0) {
@@ -83,5 +86,8 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
       parameters->method_laspack = CGNIter;
     }
   }
+#else
+  (void) argc;
+  (void) argv;
 #endif /* NO_LASPACK */
 }

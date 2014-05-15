@@ -13,10 +13,10 @@ void results_Destruct (double ** results);
 // allocate memory for arrays V and G
 // which store the values of sought functions
 // in mesh nodes
-void scheme_elements_Construct (double ** G, double ** V, unsigned X_nodes);
+void value_arrays_Construct (double ** G, double ** V, unsigned X_nodes);
 
 // free memory of arrays V and G
-void scheme_elements_Destruct (double * G, double * V);
+void value_arrays_Destruct (double * G, double * V);
 
 // allocate memory for the information of node positions in the mesh (node_statuses)
 // and the coordinates of the mesh nodes (space_coordinates)

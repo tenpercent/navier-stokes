@@ -9,6 +9,7 @@ typedef struct {
                                   // we consider it is linear
                                   // i.e. p(ro) = p_ro * ro
   double viscosity;               // viscosity; also look into the problem statement. MU
+  double artificial_viscosity;    // artificial viscosity; also look into the problem statement. eta
 } Gas_parameters;
 
 // structure to store grid parameters:

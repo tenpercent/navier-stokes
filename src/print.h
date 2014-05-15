@@ -14,7 +14,7 @@ void print_iterative_algorithm_info (Iterative_Method_parameters const * iterati
 // currently implemented: time elapsed only
 // because shorter is more beautiful
 void print_results_at_current_iteration (
-    double *const *results,
+    double const time_elapsed_at_iteration,
     unsigned global_iteration);
 
 // print information about something during {time_step}

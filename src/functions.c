@@ -1,6 +1,3 @@
-#ifndef FUNCTIONS
-#define FUNCTIONS
-
 #include <math.h>
 #include "structures.h"
 
@@ -9,7 +6,7 @@
 #endif
 
 double exp_1 (double x) {
-  return exp (-1. * x);
+  return exp (-x);
 }
 
 double u_exact (double x, double t) {
@@ -25,10 +22,12 @@ double g_exact (double x, double t) {
 }
 
 double g_x (double x, double t) {
+  (void) t;
   return -.1 * M_PI * sin (.1 * M_PI * x) / (cos (.1 * M_PI * x) + 1.5);
 }
 
 double g_t (double x, double t) {
+  (void) x, (void) t;
   return 1.;
 }
 
@@ -50,24 +49,19 @@ double rho_x (double x, double t) {
 
 double u_xx (double x, double t) {
   return .02 * M_PI * cos(2 * M_PI * t) *
-    ( cos(M_PI * x * x * .01) +
-      M_PI * -.02 * x * x * sin(M_PI * x * x * .01)
+    (cos(M_PI * x * x * .01) -
+     .02 * M_PI * x * x * sin(M_PI * x * x * .01)
     );
 }
 
-double rhs_1st_equation (double x, double t, Gas_parameters * parameters) {
-  return g_t (x, t) +
-          .5 * (
-              2 * u_exact (x, t) * g_x (x, t) +
-              g_exact(x, t) * u_x (x, t) +
-              (2 - g_exact (x, t)) * u_x (x, t));
+double rhs_1st_equation (double x, double t, Gas_parameters const * parameters) {
+  (void) parameters;
+  return g_t (x, t) + u_exact (x, t) * g_x (x, t) + u_x (x, t);
 }
 
-double rhs_2nd_equation (double x, double t, Gas_parameters * parameters) {
+double rhs_2nd_equation (double x, double t, Gas_parameters const * parameters) {
   return u_t (x, t) +
           u_exact (x, t) * u_x (x, t) +
           parameters->p_ro * g_x (x, t) -
           parameters->viscosity * exp_1 (g_exact (x, t)) * u_xx (x, t);
 }
-
-#endif
