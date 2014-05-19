@@ -49,14 +49,18 @@ $(BUILDDIR)/program/%.o: src/%.c $(BUILDDIR)/program/create-stamp Makefile
 $(BUILDDIR)/tests/%.o: tests/%.c $(BUILDDIR)/tests/create-stamp Makefile
 	$(CC) $(CFLAGS) $(CPPFLAGS_PROGRAM) -Isrc -o $@ -c $<
 
-clean:
-	rm -rf $(BUILDDIR)
-
 test: $(BUILDDIR)/tests/test_sparse_matrix.o $(BUILDDIR)/program/sparse_matrix.o $(LASPACKOFILES)
 	$(LD) -o $(BUILDDIR)/test_sparse_matrix $< $(BUILDDIR)/program/sparse_matrix.o $(LASPACKOFILES) $(LFLAGS)
 	./$(BUILDDIR)/test_sparse_matrix && echo "Test run successfully."
 
+pngs:
+	./generate_pngs.py results/dat
+
+clean:
+	rm -rf $(BUILDDIR)
+
 distclean: clean
+	rm -rf results
 	rm -f gas_smooth gas_nonsmooth_3 gas_nonsmooth_4
 
 .SECONDARY: $(BUILDDIR)/laspack/create-stamp $(BUILDDIR)/program/create-stamp $(BUILDDIR)/tests/create-stamp
