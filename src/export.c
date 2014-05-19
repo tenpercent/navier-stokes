@@ -6,6 +6,7 @@
 #include "export.h"
 #include "functions.h"
 #include "norm.h"
+#include "print.h"
 
 #define MAX_BUFFER_SIZE (1U << 17)
 #define SMALL_BUFFER_SIZE (1U << 5)
@@ -122,6 +123,8 @@ void export_results (double *const * results, unsigned total_experiments) {
   snprintf (filename, MAX_FILENAME_SIZE, "results/%s_results.csv", time_representation);
 
   rewrite_file (filename, result_to_string);
+
+  printf(FANCY_INFO "Results saved to file `%s'.\n", filename);
 
   return;
 }

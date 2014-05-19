@@ -4,6 +4,14 @@
 #include "iterative_method.h"
 #include "structures.h"
 
+#if defined (_WIN32) || defined (WIN32)
+  #define FANCY(color, text) text
+#else
+  #define FANCY(color, text) "\x1b[3" #color ";01m" text "\x1b[00m"
+#endif
+#define FANCY_INFO "[" FANCY(5, "info") "] "
+#define FANCY_OK "[ " FANCY(2, "ok") " ] "
+
 // print the information about used iterative method
 // and precontitioner type
 // to stdio
