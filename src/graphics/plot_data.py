@@ -1,17 +1,30 @@
 from numpy import loadtxt
 from glob import glob
 from pylab import plot, grid, xlabel, ylabel, title, savefig, clf
-from os.path import splitext, basename, exists
-from os import makedirs
 
-ans_directory_name = "png"
-results_path = "../../build/results/"
+import os
+import argparse
+import sys
+
+
+def make_argument_parser():
+
+    parser = argparse.ArgumentParser(description="Plot graphics using .dat files in directory")
+    parser.add_argument('-i', help="input directory")
+
+    if not len(sys.argv) > 1:
+        msg = "empty argument list"
+        parser.print_help()
+        raise argparse.ArgumentTypeError(msg)
+
+    return parser
 
 
 def parse_num(string):
     return int (string[5])
 
-def plot_figure (index, table, basenames):
+
+def plot_figure (index, table, basenames, ans_directory_name):
     clf()
     xlabel("x")
     ylabel(basenames[index][0], dict(rotation=0,
@@ -26,16 +39,24 @@ def plot_figure (index, table, basenames):
 
 
 def main():
-    files = glob(results_path + "*.dat")
+    args = make_argument_parser().parse_args()
+    results_dir = args.i
 
-    tables = [loadtxt(f) for f in files]
-    basenames = [splitext(basename(f))[0] for f in files]
+    results_subdirs = os.walk(results_dir).next()[1]
 
-    if not exists(ans_directory_name):
-        makedirs(ans_directory_name)
+    for subdir in results_subdirs:
 
-    for (index, table) in enumerate(tables):
-        plot_figure(index, table, basenames)
+        files = glob(results_dir + subdir + '/' + "*.dat")
+        ans_directory_name = results_dir + subdir + '/png'
+
+        tables = [loadtxt(f) for f in files]
+        basenames = [os.path.splitext(os.path.basename(f))[0] for f in files]
+
+        if not os.path.exists(ans_directory_name):
+            os.makedirs(ans_directory_name)
+
+        for (index, table) in enumerate(tables):
+            plot_figure(index, table, basenames, ans_directory_name)
     return
 
 
