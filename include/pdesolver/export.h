@@ -36,4 +36,6 @@ void generate_table_filename (char const * sort,
                               unsigned global_iteration,
                               char * filename);
 
+void write_iteration_info (double mu, double p_rho, double eta, unsigned global_iteration);
+
 #endif
