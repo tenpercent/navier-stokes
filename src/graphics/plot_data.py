@@ -4,7 +4,7 @@ from numpy import loadtxt
 from glob import glob
 from pylab import plot, grid, xlabel, ylabel, title, savefig, clf
 from os.path import basename, exists, join, splitext
-from multiprocessing import Process
+from multiprocessing import Pool
 
 import os
 import argparse
@@ -13,6 +13,7 @@ import argparse
 def make_argument_parser():
     parser = argparse.ArgumentParser(description="Plot graphics using .dat files in directory")
     parser.add_argument('input_directory', help="input directory")
+    parser.add_argument('-j', '--processes', help="number of processes in the pool", type=int)
     return parser
 
 
@@ -52,14 +53,12 @@ def main():
         if not exists(ans_directory_name):
             os.makedirs(ans_directory_name)
 
-        processes = []
-        for index, f in enumerate(files):
-            process = Process(target=plot_figure,
-                              args=(index, loadtxt(f), basenames, ans_directory_name))
-            process.start()
-            processes.append(process)
-        for process in processes:
-            process.join()
+        with Pool(processes=args.processes) as pool:
+            for index, f in enumerate(files):
+                pool.apply_async(plot_figure,
+                                 (index, loadtxt(f), basenames, ans_directory_name))
+            pool.close()
+            pool.join()
 
 
 if __name__ == '__main__':
