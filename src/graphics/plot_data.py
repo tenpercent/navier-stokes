@@ -4,6 +4,7 @@ from numpy import loadtxt
 from glob import glob
 from pylab import plot, grid, xlabel, ylabel, title, savefig, clf
 from os.path import basename, exists, join, splitext
+from multiprocessing import Process
 
 import os
 import argparse
@@ -42,7 +43,8 @@ def main():
 
     for subdir in results_subdirs:
         files = glob(join(results_dir, subdir, '*.dat'))
-        print('Files in %s: %s' % (subdir, ', '.join(files) or 'no files'))
+        print('Files in %s: %s' % (subdir, ', '.join((basename(f) for f in files))
+                                           or 'no files'))
         ans_directory_name = join(results_dir, subdir, 'png')
 
         basenames = [splitext(basename(f))[0] for f in files]
@@ -50,8 +52,14 @@ def main():
         if not exists(ans_directory_name):
             os.makedirs(ans_directory_name)
 
+        processes = []
         for index, f in enumerate(files):
-            plot_figure(index, loadtxt(f), basenames, ans_directory_name)
+            process = Process(target=plot_figure,
+                              args=(index, loadtxt(f), basenames, ans_directory_name))
+            process.start()
+            processes.append(process)
+        for process in processes:
+            process.join()
 
 
 if __name__ == '__main__':
