@@ -34,7 +34,7 @@ void time_iteration(Iterative_Method_parameters const * method_parameters,
   generate_table_filename ("V", time_iter, global_iteration, filename);
   write_value_table (V, space_coordinates, grid->X_nodes, filename);
 
-  print_results_at_current_iteration (time_elapsed, global_iteration);
+  print_results_at_current_iteration (time_elapsed, time_iter);
 
   return;
 }
@@ -82,6 +82,8 @@ void test_iteration (double mu, double p_rho, double eta, unsigned global_iterat
                       time_iter,
                       global_iteration);
   }
+
+  write_iteration_info (mu, p_rho, eta, global_iteration);
 
   value_arrays_Destruct (G, V);
   mesh_elements_Destruct (node_statuses, space_coordinates);
