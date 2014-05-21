@@ -235,6 +235,24 @@ void generate_table_filename (char const * sort,
   return;
 }
 
+void write_iteration_info (double mu, double p_rho, double eta, unsigned global_iteration) {
+  char filename[MAX_FILENAME_SIZE] = "";
+  char info[MAX_BUFFER_SIZE];
+
+  snprintf (filename, MAX_FILENAME_SIZE, "results/dat/%u/info", global_iteration);
+  snprintf (info, MAX_BUFFER_SIZE, 
+    "mu value: %.le\n\
+p_rho value: %.le\n\
+eta value: %.le\n\
+     ",
+     mu,
+     p_rho,
+     eta);
+
+  rewrite_file (filename, info);
+}
+
+
 #undef MAX_BUFFER_SIZE
 #undef SMALL_BUFFER_SIZE
 #undef MAX_FILENAME_SIZE

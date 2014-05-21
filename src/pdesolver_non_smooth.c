@@ -7,7 +7,6 @@
 #include "export.h"
 #include "print.h"
 
-static const unsigned time_maxiter = 10;
 static const unsigned MAX_FILENAME_SIZE = 64;
 
 void time_iteration(Iterative_Method_parameters const * method_parameters,
@@ -35,18 +34,18 @@ void time_iteration(Iterative_Method_parameters const * method_parameters,
   generate_table_filename ("V", time_iter, global_iteration, filename);
   write_value_table (V, space_coordinates, grid->X_nodes, filename);
 
-  print_results_at_current_iteration (time_elapsed, global_iteration);
+  print_results_at_current_iteration (time_elapsed, time_iter);
 
   return;
 }
 
-void test_iteration (double mu, double p_rho, double eta, unsigned * global_iteration, int argc, char ** argv) {
+void test_iteration (double mu, double p_rho, double eta, unsigned global_iteration, int argc, char ** argv) {
 
   Iterative_Method_parameters method_parameters;
   Gas_parameters gas_parameters;
 
   unsigned time_iter   = 0;
-
+  const unsigned time_maxiter = 10;
   /* Initialize global structures */
   initialize_iterative_algorithm_parameters (&method_parameters, argc, argv);
   print_iterative_algorithm_info (&method_parameters);
@@ -81,8 +80,10 @@ void test_iteration (double mu, double p_rho, double eta, unsigned * global_iter
                       G,
                       V,
                       time_iter,
-                      (*global_iteration)++);
+                      global_iteration);
   }
+
+  write_iteration_info (mu, p_rho, eta, global_iteration);
 
   value_arrays_Destruct (G, V);
   mesh_elements_Destruct (node_statuses, space_coordinates);
@@ -91,12 +92,12 @@ void test_iteration (double mu, double p_rho, double eta, unsigned * global_iter
 
 int main (int argc, char * argv[])
 {
-  double mu_values[] = {.1};
-  const unsigned MU_VALUES_SIZE = 1;
-  double eta_values[] = {.5};
-  const unsigned ETA_VALUES_SIZE = 1;
-  double p_rho_values[] = {10.};
-  const unsigned P_RHO_VALUES_SIZE = 1;
+  double mu_values[] = {.1, .01, .001};
+  const unsigned MU_VALUES_SIZE = 3;
+  double eta_values[] = {.1, 1., 10.};
+  const unsigned ETA_VALUES_SIZE = 3;
+  double p_rho_values[] = {1., 10., 100.};
+  const unsigned P_RHO_VALUES_SIZE = 3;
 
   unsigned i = 0,
            j = 0,
@@ -106,7 +107,8 @@ int main (int argc, char * argv[])
   for (i = 0; i < MU_VALUES_SIZE; ++i) {
     for (j = 0; j < P_RHO_VALUES_SIZE; ++j) {
       for (k = 0; k < ETA_VALUES_SIZE; ++k) {
-        test_iteration (mu_values[i], p_rho_values[j], eta_values[k], &global_iteration, argc, argv);
+        test_iteration (mu_values[i], p_rho_values[j], eta_values[k], global_iteration, argc, argv);
+        global_iteration += 1;
       }
     }
   }
