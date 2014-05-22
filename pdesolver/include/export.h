@@ -5,8 +5,9 @@
 #include "structures.h"
 #include "iterative_method.h"
 
-// write results at current iteration
-// to array results[][]
+/* write results at current iteration
+ * to array results[][]
+ */
 void write_current_results (
     double ** results,
     unsigned global_iteration, 
@@ -18,11 +19,15 @@ void write_current_results (
     double const * space_coordinates,
     double const * V,
     double const * G);
-// export the results of calculation
-// to csv file "./results.csv"
+
+
+/* export the results of calculation
+ * to csv file "./results.csv"
+ */
 void export_results (double *const * results, unsigned total_experiments);
 
-// write table of values to filename
+/* write table of values to filename
+ */
 void write_value_table (double const * values,
                         double const * space_coordinates,
                         unsigned space_nodes,

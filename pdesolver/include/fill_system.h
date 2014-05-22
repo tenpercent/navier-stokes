@@ -4,9 +4,10 @@
 #include "structures.h"
 #include "sparse_matrix.h"
 
-// fill the system of linear equations
-// which purpose is to find the values of sought functions
-// in the mesh nodes of next time layer
+/* fill the system of linear equations
+ * which purpose is to find the values of sought functions
+ * in the mesh nodes of next time layer
+ */
 void fill_system (
     Sparse_matrix * lh_side,
     double * rh_side,

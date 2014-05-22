@@ -83,13 +83,13 @@ void find_approximate_solution (
     Grid const * grid,
     Iterative_Method_parameters const * iterative_method_parameters) {
 
-  // left-hand side of the system
+  /* left-hand side of the system */
   Sparse_matrix lh_side; 
-  // right-hand side of the system
+  /* right-hand side of the system */
   double * rh_side = NEW(double, 2 * grid->X_nodes); 
-  // will be found when we solve the system
+  /* will be found when we solve the system */
   double * unknown_vector = NEW(double, 2 * grid->X_nodes);
-  // buffer used by iterative method
+  /* buffer used by iterative method */
   double * buffer = NEW(double, 20 * grid->X_nodes);
 
   register unsigned time_step;
@@ -98,19 +98,20 @@ void find_approximate_solution (
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
 #ifndef NO_LASPACK
-  // iterative algorithm accuracy
+  /* iterative algorithm accuracy */
   SetRTCAccuracy (iterative_method_parameters->accuracy);
 #endif /* NO_LASPACK */
 
   fill_unknown_vector (G, V, unknown_vector, grid->X_nodes); 
 
   for (time_step = 1; time_step < grid->T_nodes; ++time_step) {
-    // this may slow things up
-    // print_info_about_current_iteration (time_step, grid);
+    /* this may slow things up
+     * print_info_about_current_iteration (time_step, grid);
+     */
 
     fill_system (&lh_side, rh_side, grid, node_status, gas_parameters, space_coordinates, time_step, G, V);
 
-    // launch iteration algorithm
+    /* launch iteration algorithm */
     if (iterative_method_parameters->implementation == Implementation_Native) {
       iterative_method_parameters->method (&lh_side,
               unknown_vector,
@@ -148,8 +149,8 @@ void find_approximate_solution (
 void fill_mesh_at_initial_time (
     double * G,
     double * V,
-    double (*g) (double), // log (ro_0)
-    double (*v) (double), // u_0
+    double (*g) (double),
+    double (*v) (double),
     double const * space_coordinates,
     unsigned space_nodes) {
   register unsigned space_step = 0;

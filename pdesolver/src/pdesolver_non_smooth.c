@@ -7,7 +7,7 @@
 #include "export.h"
 #include "print.h"
 
-static const unsigned MAX_FILENAME_SIZE = 64;
+#define MAX_FILENAME_SIZE 64
 
 void time_iteration(Iterative_Method_parameters const * method_parameters,
                        Gas_parameters const * gas_parameters,
@@ -34,7 +34,8 @@ void time_iteration(Iterative_Method_parameters const * method_parameters,
   generate_table_filename ("V", time_iter, global_iteration, filename);
   write_value_table (V, space_coordinates, grid->X_nodes, filename);
 
-  // print_results_at_current_iteration (time_elapsed, global_iteration);
+  /* print_results_at_current_iteration (time_elapsed, global_iteration);
+   */
 
   return;
 }
@@ -43,6 +44,12 @@ void test_iteration (double mu, double p_rho, double eta, unsigned global_iterat
 
   Iterative_Method_parameters method_parameters;
   Gas_parameters gas_parameters;
+
+  Grid grid;
+  Node_status * node_statuses;
+  double * V;
+  double * G;
+  double * space_coordinates;
 
   unsigned time_iter   = 0;
   const unsigned time_maxiter = 10;
@@ -54,12 +61,6 @@ void test_iteration (double mu, double p_rho, double eta, unsigned global_iterat
   gas_parameters.viscosity = mu;
   gas_parameters.artificial_viscosity = eta;
   gas_parameters.p_ro = p_rho;
-
-  Grid grid;
-  Node_status * node_statuses;
-  double * V;
-  double * G;
-  double * space_coordinates;
 
   grid_Initialize (&grid, &gas_parameters, 3, 3);
 
@@ -117,3 +118,5 @@ int main (int argc, char * argv[])
 
   return 0;
 }
+
+#undef MAX_FILENAME_SIZE

@@ -98,7 +98,8 @@ void export_results_to_string (double *const * results, unsigned total_experimen
         delimiter,
         results[4][experiments_step]
     );
-    // |^ looks ugly, should fix later
+    /* |^ looks ugly, should fix later
+     */
     strncat (result_to_string, current_experiment_to_string,
              MAX_BUFFER_SIZE - strlen(result_to_string) - 1);
   }
@@ -117,7 +118,9 @@ void export_results (double *const * results, unsigned total_experiments) {
   strftime (time_representation, MAX_FILENAME_SIZE, "%G_%b_%d_%H-%M-%S", time_info);
 
   export_results_to_string (results, total_experiments, result_to_string);
-  // might be cross-platform issues
+  /*
+   * might be cross-platform issues
+   */
   mkdir ("results", S_IRWXU);
   snprintf (filename, MAX_FILENAME_SIZE, "results/%s_results.csv", time_representation);
 
@@ -132,8 +135,8 @@ void export_residual_table_to_string (double const * residuals,
                             unsigned const time_steps, 
                             unsigned const space_steps,
                             char * result) {
-  // result is output string
-
+  /* result is output string
+   */
   char current_experiment_to_string[MAX_BUFFER_SIZE] = "";
   unsigned time_step, space_step;
 
@@ -216,10 +219,11 @@ void generate_table_filename (char const * sort,
                               unsigned global_iteration,
                               char * filename) {
 
+  char dirname[MAX_FILENAME_SIZE] = "";
+
   mkdir ("results", S_IRWXU);
   mkdir ("results/dat", S_IRWXU);
 
-  char dirname[MAX_FILENAME_SIZE] = "";
   snprintf(dirname, MAX_FILENAME_SIZE, "results/dat/%u", global_iteration);
   mkdir (dirname, S_IRWXU);
 

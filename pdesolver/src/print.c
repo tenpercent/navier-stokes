@@ -13,8 +13,10 @@
 #define FANCY(color, text) "\x1b[3" #color ";01m" text "\x1b[00m"
 #endif
 
+#define BUFFER_SIZE 128
+
+
 void print_iterative_algorithm_info (Iterative_Method_parameters const * parameters) {
-  unsigned const BUFFER_SIZE = 128;
   char method_to_string[BUFFER_SIZE];
   char preconditioner_to_string[BUFFER_SIZE];
 
@@ -81,7 +83,8 @@ void print_results_at_current_iteration (
     double const time_elapsed_at_iteration,
     unsigned global_iteration) {
 
-// mitya's magic work  
+/* mitya's magic work  
+ */
 #ifdef ALTERNATIVE_OUTPUT
   printf ("\r[ "FANCY(2, "ok")" ] Iteration %u finished in %.1lf seconds.\n",
 #else
@@ -108,3 +111,5 @@ void print_info_about_current_iteration (unsigned time_step, Grid const * grid) 
   fflush (stdout);
   return;
 }
+
+#undef BUFFER_SIZE

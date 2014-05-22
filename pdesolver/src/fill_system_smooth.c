@@ -26,10 +26,10 @@ void fill_system (
     double const * V) {
 
   unsigned space_step = 0,
-  // iterator through rows
+  /* iterator through rows */
            row_number = 0;
 
-  // auxiliary constants
+  /* auxiliary constants */
   double const rev_h   = 1. / grid->X_step,
          rev_h_2 = .5 * rev_h,
          rev_h_4 = .25 * rev_h,
@@ -50,6 +50,7 @@ void fill_system (
       case LEFT:
         MATRIX_APPEND (G_INDEX(0), rev_tau - rev_h_2 * V[0]);
         MATRIX_APPEND (V_INDEX(0), -rev_h);
+
         MATRIX_APPEND (G_INDEX(1), rev_h_2 * V[1]);
         MATRIX_APPEND (V_INDEX(1), rev_h);
 
@@ -71,7 +72,9 @@ void fill_system (
       case MIDDLE:
         MATRIX_APPEND (G_INDEX(space_step - 1), -rev_h_4 * V[space_step] - rev_h_4 * V[space_step - 1]);
         MATRIX_APPEND (V_INDEX(space_step - 1), -rev_h_2);
+
         MATRIX_APPEND (G_INDEX(space_step), rev_tau);
+
         MATRIX_APPEND (G_INDEX(space_step + 1), rev_h_4 * V[space_step] + rev_h_4 * V[space_step + 1]);
         MATRIX_APPEND (V_INDEX(space_step + 1), rev_h_2);
 
@@ -82,14 +85,12 @@ void fill_system (
         /* another equation */
         /* attention: these values should be changed when (viscosity != 0) */
         MATRIX_APPEND (G_INDEX(space_step - 1), -rev_h_2 * gas_parameters->p_ro);
-        // change me!
         MATRIX_APPEND (V_INDEX(space_step - 1), -rev_h_6 * V[space_step] - rev_h_6 * V[space_step - 1] - mu_tilda_rev_hh_4_3);
-        // change me!
+
         MATRIX_APPEND (V_INDEX(space_step), rev_tau + 2 * mu_tilda_rev_hh_4_3);
+
         MATRIX_APPEND (G_INDEX(space_step + 1), rev_h_2 * gas_parameters->p_ro);
-        // change me!
         MATRIX_APPEND (V_INDEX(space_step + 1), rev_h_6 * V[space_step] + rev_h_6 * V[space_step + 1] - mu_tilda_rev_hh_4_3);
-        // change me!
         rh_side[row_number] = rev_tau * V[space_step] -
                   rev_hh_4_3 *
                     (viscosity_norm - gas_parameters->viscosity * exp_1 (G[space_step])) *
@@ -101,6 +102,7 @@ void fill_system (
       case RIGHT:
         MATRIX_APPEND (G_INDEX(grid->X_nodes - 2), -rev_h_2 * V[grid->X_nodes - 2]);
         MATRIX_APPEND (V_INDEX(grid->X_nodes - 2), -rev_h);
+        
         MATRIX_APPEND (G_INDEX(grid->X_nodes - 1), rev_tau + rev_h_2 * V[grid->X_nodes - 1]);
         MATRIX_APPEND (V_INDEX(grid->X_nodes - 1), rev_h);
 

@@ -67,7 +67,7 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
     } else if (strncasecmp (argv[1], "NULL", 4) == 0) {
       parameters->preconditioner_type_laspack = NULL;
     } else {
-      // default value
+      /* default value */
       parameters->preconditioner_type_laspack = NULL;
     }
 
@@ -82,7 +82,7 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
     } else if (strncasecmp (argv[2], "GMRES", 5) == 0) {
       parameters->method_laspack = GMRESIter;
     } else {
-      // default value
+      /* default value */
       parameters->method_laspack = CGNIter;
     }
   }

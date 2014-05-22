@@ -2,11 +2,11 @@
 #include <math.h>
 #include <assert.h>
 
-inline double max (double x, double y) {
+double max (double x, double y) {
   return (x > y) ? x : y;
 }
 
-inline double square (double x) {
+double square (double x) {
   return x * x;
 }
 
@@ -40,11 +40,12 @@ double residual_norm_L2 (double const * approximation,
 double function_norm_C (double const * node_values,
                         unsigned dimension,
                         double (*function) (double)) {
-
+  double norm;
+  unsigned space_step;
+  
   assert (dimension >= 3);
 
-  double norm = fabs (function (node_values[1]));
-  unsigned space_step;
+  norm = fabs (function (node_values[1]));
   for (space_step = 2; space_step + 1 < dimension; ++space_step) {
     norm = max (fabs (function (node_values[space_step])), norm);
   }

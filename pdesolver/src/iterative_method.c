@@ -83,8 +83,6 @@ void Iterative_method_BiCGSTAB (
   for (iter = 1; iter < max_iter; ++iter) {
     rhoold = rho;
     rho = scalar_product (rcap, r, size);
-    // beta = (rho / rhoold) * (alpha / omega);
-    // should be faster:
     beta = (rho * alpha) / (rhoold * omega);
     for (i = 0; i < size; ++i) {
       p[i] = r[i] + beta * (p[i] - omega * v[i]);
