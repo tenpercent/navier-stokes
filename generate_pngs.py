@@ -28,7 +28,7 @@ def plot_figure(index, table, basenames, ans_directory_name):
                                      horizontalalignment='right',
                                      verticalalignment='center',
                                      x=-0.01))
-    title("%s(x, t) at t = %d" % (basenames[index][0], parse_num(basenames[index]) + 1))
+    title("%s(x, %d)" % (basenames[index][0], parse_num(basenames[index]) + 1))
     plot(table[:,0], table[:,1])
     grid(True)
     filename = join(ans_directory_name, '%s.png' % basenames[index])
