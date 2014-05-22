@@ -12,6 +12,8 @@
   #endif
   #define FANCY_INFO "[" FANCY(5, "info") "] "
   #define FANCY_OK "[ " FANCY(2, "ok") " ] "
+
+void print_grid_info (Grid *grid);
 #endif /* ALTERNATIVE_OUTPUT */
 
 // print the information about used iterative method

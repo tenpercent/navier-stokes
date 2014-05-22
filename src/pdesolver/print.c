@@ -71,6 +71,12 @@ void print_iterative_algorithm_info (Iterative_Method_parameters const * paramet
   return;
 }
 
+#ifdef ALTERNATIVE_OUTPUT
+void print_grid_info (Grid *grid) {
+  printf (FANCY_INFO "Grid: %u space nodes, %u time nodes.\n", grid->X_nodes, grid->T_nodes);
+}
+#endif /* ALTERNATIVE_OUTPUT */
+
 void print_results_at_current_iteration (
     double const time_elapsed_at_iteration,
     unsigned global_iteration) {
