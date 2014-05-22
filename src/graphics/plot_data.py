@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from numpy import loadtxt
-from glob import glob
+from glob import glob1
 from pylab import plot, grid, xlabel, ylabel, title, savefig, clf
 from os.path import basename, exists, join, splitext
 from multiprocessing import Pool
@@ -40,21 +40,19 @@ def main():
     args = make_argument_parser().parse_args()
     results_dir = args.input_directory
 
-    results_subdirs = next(os.walk(results_dir))[1]
-
-    for subdir in results_subdirs:
-        files = glob(join(results_dir, subdir, '*.dat'))
-        print('Files in %s: %s' % (subdir, ', '.join((basename(f) for f in files))
-                                           or 'no files'))
+    for subdir in os.listdir(results_dir):
+        files = glob1(join(results_dir, subdir), '*.dat')
+        print('Files in %s: %s' % (subdir, ', '.join(files) or 'no files'))
         ans_directory_name = join(results_dir, subdir, 'png')
 
-        basenames = [splitext(basename(f))[0] for f in files]
+        basenames = [splitext(f)[0] for f in files]
 
         if not exists(ans_directory_name):
             os.makedirs(ans_directory_name)
 
         with Pool(processes=args.processes) as pool:
-            for index, f in enumerate(files):
+            for index, filename in enumerate(files):
+                f = join(results_dir, subdir, filename)
                 pool.apply_async(plot_figure,
                                  (index, loadtxt(f), basenames, ans_directory_name))
             pool.close()
