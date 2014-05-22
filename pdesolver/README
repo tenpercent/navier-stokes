@@ -1,0 +1,29 @@
+In order to build you need CMake (>=2.6.0) and GNU Make
+
+How to build (simple):
+
+1. $> cd build
+2. $> cmake .. -DCMAKE_BUILD_TYPE=<DEBUG | RELEASE>
+3. $> make
+
+How to build (advanced):
+1. $> cd build
+2. $> ccmake ..
+3. set different options
+4. $> make
+
+How to run:
+
+1. $> ./build/bin/PDESolver_12
+2. $> ./build/bin/PDESolver_3
+3. $> ./build/bin/PDESolver_4
+
+How to plot:
+
+1. $> python ./src/graphics/plot_data.py -i ["dat" directory]
+
+Results of current run of PDESolver_12 are stored in file "*-results.csv" in directory <run directory>/results/
+
+Results of current run of PDESolver_3 and PDESolver_4 are stored in directory <run directory>/results/
+
+
