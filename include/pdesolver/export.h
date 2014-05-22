@@ -22,4 +22,20 @@ void write_current_results (
 // to csv file "./results.csv"
 void export_results (double *const * results, unsigned total_experiments);
 
+// write table of values to filename
+void write_value_table (double const * values,
+                        double const * space_coordinates,
+                        unsigned space_nodes,
+                        char * filename);
+
+void rewrite_file (char const * filename,
+                   char const * data);
+
+void generate_table_filename (char const * sort,
+                              unsigned time_iter,
+                              unsigned global_iteration,
+                              char * filename);
+
+void print_iteration_info (double mu, double p_rho, double eta, unsigned global_iteration);
+
 #endif

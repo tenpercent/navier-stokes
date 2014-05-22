@@ -78,10 +78,9 @@ void print_iterative_algorithm_info (Iterative_Method_parameters const * paramet
 }
 
 void print_results_at_current_iteration (
-    double *const *results, 
+    double const time_elapsed_at_iteration,
     unsigned global_iteration) {
 
-  double const *const time_elapsed_at_iteration = results[0];
 // mitya's magic work  
 #ifdef ALTERNATIVE_OUTPUT
   printf ("\r[ "FANCY(2, "ok")" ] Iteration %u finished in %.1lf seconds.\n",
@@ -89,11 +88,17 @@ void print_results_at_current_iteration (
   printf ("\rFinished iteration %u in %.1lf seconds.\n",
 #endif /* ALTERNATIVE_OUTPUT */
           global_iteration + 1,
-          time_elapsed_at_iteration[global_iteration]);
+          time_elapsed_at_iteration);
 
   return;
 }
-  
+ 
+void print_nonfancy_results_at_current_iteration(unsigned global_iteration) {
+  printf ("\nFinished iteration %u\n",
+          global_iteration + 1);
+  return;
+}
+
 void print_info_about_current_iteration (unsigned time_step, Grid const * grid) {
 #ifdef ALTERNATIVE_OUTPUT
   printf ("\r[....] Time step is %u of %u.", time_step + 1, grid->T_nodes);

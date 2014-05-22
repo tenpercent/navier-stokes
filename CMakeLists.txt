@@ -8,15 +8,12 @@ IF (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
   MESSAGE (FATAL_ERROR "remove CMakeCache.txt manually to rebuild")
 ENDIF ()
 
-set (CMAKE_C_FLAGS_RELEASE "-Wall -Wextra -pedantic -std=c99 -O2")
-set (CMAKE_C_FLAGS_DEBUG "-g -pg -Wall -Wextra -pedantic -std=c99 -O0")
-
-set (CMAKE_BUILD_TYPE RELEASE)
+project (PDESolver C)
 
 option (PDESolver_NO_LASPack "Build without LASPack" OFF)
 option (PDESolver_COLORFUL_OUTPUT "Use fancy output style" OFF)
 
-project (PDESolver C)
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -std=c99")
 
 set (EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set (LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)

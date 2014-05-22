@@ -1,5 +1,6 @@
 #include "norm.h"
 #include <math.h>
+#include <assert.h>
 
 inline double max (double x, double y) {
   return (x > y) ? x : y;
@@ -32,16 +33,19 @@ double residual_norm_L2 (double const * approximation,
   for (space_step = 0; space_step < dimension; ++space_step) {
     norm += square (approximation[space_step] - approximated (space_coordinate[space_step], time_upper_boundary));
   }
-  norm = sqrt (norm / dimension);
+  norm = sqrt (norm / (double) dimension);
   return norm;
 }
 
 double function_norm_C (double const * node_values,
                         unsigned dimension,
                         double (*function) (double)) {
-  double norm = fabs (function (node_values[0]));
+
+  assert (dimension >= 3);
+
+  double norm = fabs (function (node_values[1]));
   unsigned space_step;
-  for (space_step = 1; space_step < dimension; ++space_step) {
+  for (space_step = 2; space_step + 1 < dimension; ++space_step) {
     norm = max (fabs (function (node_values[space_step])), norm);
   }
   return norm;
