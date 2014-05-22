@@ -62,7 +62,7 @@ void write_current_results (
 
 void export_results_to_string (double *const * results, unsigned total_experiments, char * result_to_string) {
   char current_experiment_to_string[MAX_BUFFER_SIZE] = "";
-  const char delimiter = '&';
+  const char delimiter = ',';
   unsigned experiments_step = 0;
 
   strncpy (result_to_string,
@@ -72,15 +72,15 @@ void export_results_to_string (double *const * results, unsigned total_experimen
     snprintf (
       current_experiment_to_string,
       MAX_BUFFER_SIZE,
-      "%d %c\
-      %.3lf s %c\
-      %.3lf %c\
-      %le %c\
-      %le %c\
-      %le %c\
-      %le %c\
-      %le %c\
-      %le\n",
+      "%d%c"
+      "%.3lf s%c"
+      "%.3lf%c"
+      "%le%c"
+      "%le%c"
+      "%le%c"
+      "%le%c"
+      "%le%c"
+      "%le\n",
         experiments_step + 1,
         delimiter,
         results[0][experiments_step],
