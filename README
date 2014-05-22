@@ -20,7 +20,7 @@ How to run:
 
 How to plot:
 
-1. $> python ./src/graphics/plot_data.py -i ["dat" directory]
+1. $> python ./grapher/plot_data.py -i ["dat" directory]
 
 Results of current run of PDESolver_12 are stored in file "*-results.csv" in directory <run directory>/results/
 
