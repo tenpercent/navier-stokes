@@ -48,7 +48,7 @@ void initialize_iterative_algorithm_parameters (Iterative_Method_parameters * pa
   parameters->implementation = Implementation_Native;
   parameters->preconditioner_type = Precond_Jacobi;
   parameters->method = Iterative_method_BiCGSTAB;
-  parameters->relaxation_constant = 1.55;
+  parameters->relaxation_constant = 1.;
   parameters->accuracy = 1e-8;
 
   if (argc > 1) {

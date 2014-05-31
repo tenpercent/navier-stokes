@@ -14,6 +14,7 @@ set (PDESolver_common_sources
   sparse_matrix.c
   print.c
   export.c
+  relax_system.c
 )
 
 set (PDESolver_12_specific_sources

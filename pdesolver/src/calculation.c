@@ -7,7 +7,7 @@
 #include "start_conditions.h"
 #include "functions.h"
 #include "print.h"
-#include "norm.h"
+#include "relax_system.h"
 
 /* G and V values are packed as follows:
  *
@@ -94,7 +94,7 @@ void find_approximate_solution (
 
   register unsigned time_step;
 
-  unsigned const max_iterations = 50;
+  unsigned const max_iterations = 500;
   Sparse_matrix_Construct (&lh_side, 2 * grid->X_nodes, 10 * grid->X_nodes - 10);
 
 #ifndef NO_LASPACK
@@ -110,6 +110,11 @@ void find_approximate_solution (
      */
 
     fill_system (&lh_side, rh_side, grid, node_status, gas_parameters, space_coordinates, time_step, G, V);
+    /*
+     * does not help much;
+     * maybe relaxation constant should be adjusted
+    */
+    relax_system (&lh_side, rh_side, 1. / (double) grid->X_nodes);
 
     /* launch iteration algorithm */
     if (iterative_method_parameters->implementation == Implementation_Native) {
